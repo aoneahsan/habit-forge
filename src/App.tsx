@@ -1,16 +1,13 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
-import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'sonner';
-import { ErrorBoundary } from 'react-error-boundary';
-import { routeTree } from './routes';
-import { AuthProvider } from '@/features/auth/providers/AuthProvider';
-import { ThemeProvider } from '@/features/theme/providers/ThemeProvider';
-import ErrorFallback from '@/components/common/ErrorFallback';
 import { useEffect } from 'react';
-import { initializeAnalytics } from '@/services/analytics/analytics.service';
-import { initializeErrorTracking } from '@/services/error/error.service';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '@/config/firebase.config';
+import { useAuthStore } from '@/stores/auth.store';
+import { getUserProfile } from '@/services/firebase/user.service';
+import { routeTree } from './routeTree.gen';
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient({
@@ -28,9 +25,14 @@ const queryClient = new QueryClient({
 const router = createRouter({
   routeTree,
   defaultPreload: 'intent',
+  defaultPreloadStaleTime: 0,
   context: {
     queryClient,
-    auth: undefined!, // Will be set by AuthProvider
+    auth: {
+      user: null,
+      userProfile: null,
+      isAuthenticated: false,
+    },
   },
 });
 
@@ -42,35 +44,59 @@ declare module '@tanstack/react-router' {
 }
 
 function App() {
+  const { setUser, setUserProfile, setLoading } = useAuthStore();
+
   useEffect(() => {
-    // Initialize analytics and error tracking
-    if (import.meta.env.PROD) {
-      initializeAnalytics();
-      initializeErrorTracking();
-    }
-  }, []);
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      setLoading(true);
+      
+      if (firebaseUser) {
+        const user = {
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          displayName: firebaseUser.displayName,
+          photoURL: firebaseUser.photoURL,
+          emailVerified: firebaseUser.emailVerified,
+        };
+        
+        setUser(user);
+        
+        try {
+          const profile = await getUserProfile(firebaseUser.uid);
+          if (profile) {
+            setUserProfile(profile);
+          }
+        } catch (error) {
+          console.error('Error fetching user profile:', error);
+        }
+      } else {
+        setUser(null);
+        setUserProfile(null);
+      }
+      
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [setUser, setUserProfile, setLoading]);
+
+  const auth = useAuthStore((state) => ({
+    user: state.user,
+    userProfile: state.userProfile,
+    isAuthenticated: state.isAuthenticated,
+  }));
 
   return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <HelmetProvider>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider>
-            <AuthProvider>
-              <RouterProvider router={router} />
-              <Toaster
-                position="top-center"
-                richColors
-                closeButton
-                expand={false}
-                duration={4000}
-                theme="system"
-              />
-              {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
-            </AuthProvider>
-          </ThemeProvider>
-        </QueryClientProvider>
-      </HelmetProvider>
-    </ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} context={{ queryClient, auth }} />
+      <Toaster 
+        position="top-right"
+        richColors
+        closeButton
+        duration={4000}
+      />
+      {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+    </QueryClientProvider>
   );
 }
 
