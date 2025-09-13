@@ -10,7 +10,7 @@ import {
   updatePassword,
   EmailAuthProvider,
   reauthenticateWithCredential,
-  User,
+  type User,
 } from 'firebase/auth';
 import { auth } from '@/config/firebase.config';
 

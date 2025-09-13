@@ -14,7 +14,7 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { db } from '@/config/firebase.config';
-import { Habit, HabitFormData, HabitCompletion } from '@/types/habit.types';
+import type { Habit, HabitFormData, HabitCompletion } from '@/types/habit.types';
 import { APP_CONFIG } from '@/constants/app.constants';
 
 const HABITS_COLLECTION = `${APP_CONFIG.firebase.projectPrefix}habits`;
@@ -122,14 +122,14 @@ export async function completeHabit(habitId: string): Promise<void> {
     if (lastCompleted) {
       const daysDiff = Math.floor((now.getTime() - lastCompleted.getTime()) / (1000 * 60 * 60 * 24));
       if (daysDiff === 1) {
-        newStreak = habit.streak + 1;
+        newStreak = (habit.streak || 0) + 1;
       }
     }
 
     // Update habit
     await updateDoc(doc(db, HABITS_COLLECTION, habitId), {
       streak: newStreak,
-      longestStreak: Math.max(newStreak, habit.longestStreak),
+      longestStreak: Math.max(newStreak, habit.longestStreak || 0),
       totalCompletions: increment(1),
       lastCompletedAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
@@ -140,12 +140,12 @@ export async function completeHabit(habitId: string): Promise<void> {
       habitId,
       userId: habit.userId,
       completedAt: serverTimestamp(),
-      points: habit.points,
+      points: (habit.points || 0),
       streak: newStreak,
     });
 
     // Update user stats
-    await updateUserStats(habit.userId, habit.points, newStreak);
+    await updateUserStats(habit.userId, (habit.points || 0), newStreak);
   } catch (error) {
     console.error('Error completing habit:', error);
     throw error;
@@ -175,11 +175,15 @@ export async function getHabitCompletions(habitId: string, limit = 30): Promise<
     );
 
     const snapshot = await getDocs(q);
-    return snapshot.docs.slice(0, limit).map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      completedAt: doc.data().completedAt?.toDate?.() || new Date(),
-    } as HabitCompletion));
+    return snapshot.docs.slice(0, limit).map(doc => {
+      const data = doc.data();
+      return {
+        habitId: data.habitId,
+        userId: data.userId,
+        completedAt: data.completedAt?.toDate?.() || new Date(),
+        notes: data.notes,
+      } as HabitCompletion;
+    });
   } catch (error) {
     console.error('Error fetching completions:', error);
     throw new Error('Failed to fetch completions');

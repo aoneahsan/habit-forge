@@ -146,7 +146,7 @@ function HabitsPage() {
         </div>
         <div className="card p-4">
           <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-            {habits.filter(h => h.streak > 0).length}
+            {habits.filter(h => (h.streak || 0) > 0).length}
           </div>
           <div className="text-sm text-gray-600 dark:text-gray-400">With Streaks</div>
         </div>

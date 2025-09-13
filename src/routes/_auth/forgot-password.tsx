@@ -61,7 +61,7 @@ function ForgotPasswordPage() {
           </p>
           <Button
             variant="outline"
-            onClick={() => navigate({ to: '/auth/signin' })}
+            onClick={() => navigate({ to: '/signin' })}
             className="w-full"
           >
             Back to Sign In
@@ -76,7 +76,7 @@ function ForgotPasswordPage() {
       <div className="card p-8">
         <div className="mb-8">
           <Link
-            to="/auth/signin"
+            to="/signin"
             className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />

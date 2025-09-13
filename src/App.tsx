@@ -44,43 +44,33 @@ declare module '@tanstack/react-router' {
 }
 
 function App() {
-  const { setUser, setUserProfile, setLoading } = useAuthStore();
+  const { setAuth, clearAuth, setLoading } = useAuthStore();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setLoading(true);
       
       if (firebaseUser) {
-        const user = {
-          uid: firebaseUser.uid,
-          email: firebaseUser.email,
-          displayName: firebaseUser.displayName,
-          photoURL: firebaseUser.photoURL,
-          emailVerified: firebaseUser.emailVerified,
-        };
-        
-        setUser(user);
-        
         try {
           const profile = await getUserProfile(firebaseUser.uid);
           if (profile) {
-            setUserProfile(profile);
+            setAuth(firebaseUser, profile);
           }
         } catch (error) {
           console.error('Error fetching user profile:', error);
+          clearAuth();
         }
       } else {
-        setUser(null);
-        setUserProfile(null);
+        clearAuth();
       }
       
       setLoading(false);
     });
 
     return () => unsubscribe();
-  }, [setUser, setUserProfile, setLoading]);
+  }, [setAuth, clearAuth, setLoading]);
 
-  const auth = useAuthStore((state) => ({
+  const authState = useAuthStore((state) => ({
     user: state.user,
     userProfile: state.userProfile,
     isAuthenticated: state.isAuthenticated,
@@ -88,7 +78,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} context={{ queryClient, auth }} />
+      <RouterProvider router={router} context={{ queryClient, auth: authState }} />
       <Toaster 
         position="top-right"
         richColors

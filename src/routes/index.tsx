@@ -8,7 +8,7 @@ export const Route = createFileRoute('/')({
       });
     } else {
       throw redirect({
-        to: '/auth/signin',
+        to: '/signin',
       });
     }
   },

@@ -124,7 +124,7 @@ function SignInPage() {
               <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
             </label>
             <Link
-              to="/auth/forgot-password"
+              to="/forgot-password"
               className="text-sm text-primary-600 hover:text-primary-500"
             >
               Forgot password?
@@ -192,7 +192,7 @@ function SignInPage() {
 
         <p className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
           Don't have an account?{' '}
-          <Link to="/auth/signup" className="font-medium text-primary-600 hover:text-primary-500">
+          <Link to="/signup" className="font-medium text-primary-600 hover:text-primary-500">
             Sign up
           </Link>
         </p>

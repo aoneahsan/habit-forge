@@ -1,4 +1,4 @@
-import { Habit } from '@/types/habit.types';
+import type { Habit } from '@/types/habit.types';
 import { Check, Clock, Flame, MoreVertical } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
@@ -63,10 +63,10 @@ export function HabitCard({ habit }: HabitCardProps) {
             <h3 className="font-medium text-gray-900 dark:text-white">
               {habit.name}
             </h3>
-            {habit.streak > 0 && (
+            {(habit.streak || 0) > 0 && (
               <div className="flex items-center space-x-1 text-orange-500">
                 <Flame className="h-4 w-4" />
-                <span className="text-sm font-medium">{habit.streak}</span>
+                <span className="text-sm font-medium">{(habit.streak || 0)}</span>
               </div>
             )}
           </div>

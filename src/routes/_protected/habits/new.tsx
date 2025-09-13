@@ -9,7 +9,7 @@ import { useAuthStore } from '@/stores/auth.store';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { ArrowLeft, Plus, Info } from 'lucide-react';
-import { HabitFormData } from '@/types/habit.types';
+import type { HabitFormData } from '@/types/habit.types';
 
 const habitSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(50),
@@ -79,15 +79,18 @@ function NewHabitPage() {
     setIsCreating(true);
     try {
       const habitData: HabitFormData = {
-        ...data,
+        name: data.name,
         description: data.description || '',
-        reminderTime: data.reminder ? data.reminderTime : undefined,
-        fiveFactors: {
-          cue: data.cue,
-          craving: data.craving,
-          response: data.response,
-          reward: data.reward,
-          investment: data.investment,
+        category: data.category,
+        type: 'build' as const,
+        frequency: data.frequency,
+        target: data.targetCount,
+        unit: data.targetUnit,
+        timeOfDay: data.timeOfDay,
+        habitLoop: {
+          cue: data.cue || '',
+          routine: data.response || '',
+          reward: data.reward || '',
         },
       };
 

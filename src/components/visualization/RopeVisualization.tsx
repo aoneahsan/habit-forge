@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import { Habit } from '@/types/habit.types';
+import type { Habit } from '@/types/habit.types';
 
 interface RopeVisualizationProps {
   habits: Habit[];
@@ -16,13 +16,13 @@ export function RopeVisualization({ habits, currentStreak, maxStreak = 30 }: Rop
   // Calculate rope strength based on habits and streaks
   const calculateRopeStrength = () => {
     const activeHabits = habits.filter(h => h.status === 'active');
-    const avgStreak = activeHabits.reduce((acc, h) => acc + h.streak, 0) / (activeHabits.length || 1);
+    const avgStreak = activeHabits.reduce((acc, h) => acc + (h.streak || 0), 0) / (activeHabits.length || 1);
     const completionRate = activeHabits.filter(h => {
       const today = new Date().toDateString();
       return h.lastCompletedAt && new Date(h.lastCompletedAt).toDateString() === today;
     }).length / (activeHabits.length || 1);
     
-    // Strength is combination of current streak, average habit streaks, and today's completion
+    // Strength is combination of current streak, average (habit.streak || 0)s, and today's completion
     const strength = (currentStreak / maxStreak) * 0.4 + 
                     (avgStreak / maxStreak) * 0.3 + 
                     completionRate * 0.3;
@@ -164,12 +164,12 @@ export function RopeVisualization({ habits, currentStreak, maxStreak = 30 }: Rop
 
     // Add knots at habit positions
     const knotPositions = habits
-      .filter(h => h.status === 'active' && h.streak > 0)
+      .filter(h => h.status === 'active' && (h.streak || 0) > 0)
       .slice(0, 5)
       .map((h, i) => ({
         x: ((i + 1) / 6) * innerWidth,
         y: innerHeight / 2,
-        strength: Math.min(1, h.streak / 30),
+        strength: Math.min(1, (h.streak || 0) / 30),
         name: h.name,
       }));
 

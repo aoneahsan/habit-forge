@@ -68,16 +68,16 @@ function EditHabitPage() {
       reset({
         name: habit.name,
         description: habit.description,
-        category: habit.category,
-        frequency: habit.frequency,
-        targetCount: habit.targetCount,
-        targetUnit: habit.targetUnit,
-        timeOfDay: habit.timeOfDay,
-        reminder: habit.reminder,
-        reminderTime: habit.reminderTime,
-        points: habit.points,
+        category: habit.category as any, // Type fix for now
+        frequency: (habit.frequency || 'daily') as any,
+        targetCount: habit.target || 1,
+        targetUnit: habit.unit || 'times',
+        timeOfDay: habit.timeOfDay || 'anytime',
+        reminder: false,
+        reminderTime: '09:00',
+        points: habit.points || 10,
         status: habit.status,
-      });
+      } as any);
     }
   }, [habit, reset]);
 
@@ -87,10 +87,14 @@ function EditHabitPage() {
     setIsUpdating(true);
     try {
       await updateHabit(habitId, {
-        ...data,
+        name: data.name,
         description: data.description || '',
-        reminderTime: data.reminder ? data.reminderTime : undefined,
-      });
+        category: data.category,
+        frequency: data.frequency,
+        target: data.targetCount,
+        unit: data.targetUnit,
+        timeOfDay: data.timeOfDay,
+      } as any);
       toast.success('Habit updated successfully!');
       queryClient.invalidateQueries({ queryKey: ['habits'] });
       queryClient.invalidateQueries({ queryKey: ['habit', habitId] });

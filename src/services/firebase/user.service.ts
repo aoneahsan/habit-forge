@@ -1,5 +1,5 @@
 import { doc, getDoc, setDoc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
-import { User as FirebaseUser } from 'firebase/auth';
+import type { User as FirebaseUser } from 'firebase/auth';
 import { db } from '@/config/firebase.config';
 import { APP_CONFIG } from '@/constants/app.constants';
 import type { UserProfile } from '@/types/user.types';
@@ -27,73 +27,91 @@ export async function getUserProfile(userId: string): Promise<UserProfile | null
   }
 }
 
-export async function createUserProfile(data: {
-  userId: string;
-  email: string;
-  displayName?: string;
-  photoURL?: string;
-}): Promise<boolean> {
+export async function createUserProfile(user: FirebaseUser): Promise<UserProfile> {
   try {
-    const userRef = doc(db, USERS_COLLECTION, data.userId);
+    const userRef = doc(db, USERS_COLLECTION, user.uid);
     const userDoc = await getDoc(userRef);
 
     if (!userDoc.exists()) {
       // Create new user profile
-      const newProfile: Omit<UserProfile, 'id'> = {
-        userId: data.userId,
-        email: data.email,
-        displayName: data.displayName || data.email.split('@')[0],
-        photoURL: data.photoURL || null,
-        bio: '',
-        level: 1,
-        experience: 0,
+      const newProfile = {
+        id: user.uid,
+        email: user.email || '',
+        displayName: user.displayName || user.email?.split('@')[0] || 'User',
+        photoURL: user.photoURL || undefined,
+        accountTier: 'free' as const,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        preferences: {
+          theme: 'system' as const,
+          notifications: {
+            email: true,
+            push: true,
+            sms: false,
+            reminderTime: '09:00',
+            dailyDigest: true,
+            weeklyReport: true,
+            achievementAlerts: true,
+            socialAlerts: true,
+            reminders: true,
+          },
+          privacy: {
+            profileVisibility: 'public' as const,
+            shareProgress: true,
+            allowFriendRequests: true,
+            showInLeaderboard: true,
+            showStats: true,
+          },
+          language: 'en',
+          dateFormat: 'MM/DD/YYYY',
+          timeFormat: '12h' as const,
+          weekStartsOn: 0 as const,
+        },
         stats: {
           totalHabits: 0,
           activeHabits: 0,
           completedHabits: 0,
-          totalPoints: 0,
+          totalHabitsCompleted: 0,
+          totalEntries: 0,
           currentStreak: 0,
           longestStreak: 0,
-          totalHabitsCompleted: 0,
+          totalAchievements: 0,
+          joinedChallenges: 0,
+          accountabilityPartners: 0,
+          totalPoints: 0,
         },
-        preferences: {
-          theme: 'system',
-          notifications: {
-            email: true,
-            push: true,
-            reminders: true,
-          },
-          privacy: {
-            profileVisibility: 'public',
-            showStats: true,
-            showAchievements: true,
-          },
+        settings: {
+          biometricAuth: false,
+          twoFactorAuth: false,
+          dataExportEnabled: true,
+          analyticsEnabled: true,
+          crashReportingEnabled: true,
         },
-        achievements: [],
         subscription: {
-          plan: 'free',
-          status: 'active',
+          id: `sub_${user.uid}`,
+          tier: 'free' as const,
+          plan: 'free' as const,
+          status: 'active' as const,
           startDate: new Date(),
-          endDate: null,
+          autoRenew: false,
         },
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
+      } satisfies UserProfile;
 
       await setDoc(userRef, {
         ...newProfile,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
-      return false; // New profile created
+      return newProfile;
     } else {
-      // Update existing profile if needed
-      await updateDoc(userRef, {
-        displayName: data.displayName || userDoc.data().displayName,
-        photoURL: data.photoURL || userDoc.data().photoURL,
-        updatedAt: serverTimestamp(),
-      });
-      return true; // Profile already existed
+      // Return existing profile
+      const data = userDoc.data();
+      return {
+        ...data,
+        id: userDoc.id,
+        createdAt: data.createdAt?.toDate() || new Date(),
+        updatedAt: data.updatedAt?.toDate() || new Date(),
+      } as UserProfile;
     }
   } catch (error) {
     console.error('Error creating user profile:', error);

@@ -1,0 +1,92 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isValidImage() {
+      return request.resource.contentType.matches('image/.*') &&
+             request.resource.size < 5 * 1024 * 1024; // 5MB max
+    }
+    
+    function isValidDocument() {
+      return request.resource.contentType.matches('application/pdf') &&
+             request.resource.size < 10 * 1024 * 1024; // 10MB max
+    }
+    
+    // User profile images
+    match /users/{userId}/profile/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId) && isValidImage();
+      allow delete: if isOwner(userId);
+    }
+    
+    // User habit images
+    match /users/{userId}/habits/{habitId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId) && isValidImage();
+      allow delete: if isOwner(userId);
+    }
+    
+    // Achievement badges (read-only for users)
+    match /achievements/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Only admins through Admin SDK
+    }
+    
+    // Community post images
+    match /posts/{postId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidImage();
+      allow update: if false; // Images are immutable
+      allow delete: if isAuthenticated(); // Should verify post ownership in app
+    }
+    
+    // Challenge images
+    match /challenges/{challengeId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && isValidImage();
+      allow delete: if isAuthenticated(); // Should verify challenge ownership in app
+    }
+    
+    // Habit progress photos
+    match /users/{userId}/progress/{date}/{fileName} {
+      allow read: if isOwner(userId);
+      allow write: if isOwner(userId) && isValidImage();
+      allow delete: if isOwner(userId);
+    }
+    
+    // Exported data
+    match /exports/{userId}/{fileName} {
+      allow read: if isOwner(userId);
+      allow write: if isOwner(userId) && isValidDocument();
+      allow delete: if isOwner(userId);
+    }
+    
+    // Temporary uploads (auto-deleted after 24 hours)
+    match /temp/{userId}/{fileName} {
+      allow read: if isOwner(userId);
+      allow write: if isOwner(userId) && 
+                      request.resource.size < 20 * 1024 * 1024; // 20MB max for temp
+      allow delete: if isOwner(userId);
+    }
+    
+    // Public assets (app logos, default images)
+    match /public/{fileName} {
+      allow read: if true; // Public access
+      allow write: if false; // Only admins
+    }
+    
+    // Backup data (restricted)
+    match /backups/{any}/{document=**} {
+      allow read: if false; // Only service account
+      allow write: if false; // Only service account
+    }
+  }
+}

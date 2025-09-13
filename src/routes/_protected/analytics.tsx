@@ -45,7 +45,7 @@ function AnalyticsPage() {
 
     // Best performing habits
     const topHabits = [...habits]
-      .sort((a, b) => b.streak - a.streak)
+      .sort((a, b) => (b.streak || 0) - (a.streak || 0))
       .slice(0, 5);
 
     // Weekly progress data
@@ -68,7 +68,7 @@ function AnalyticsPage() {
       totalPoints: userProfile?.stats?.totalPoints || 0,
       currentStreak: userProfile?.stats?.currentStreak || 0,
       longestStreak: userProfile?.stats?.longestStreak || 0,
-      totalCompletions: habits.reduce((acc, h) => acc + h.totalCompletions, 0),
+      totalCompletions: habits.reduce((acc, h) => acc + (h.totalCompletions || 0), 0),
     };
   }, [habits, userProfile]);
 

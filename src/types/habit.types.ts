@@ -34,6 +34,18 @@ export interface Habit {
   
   // Tags for organization
   tags?: string[];
+  
+  // Compatibility properties
+  frequency?: HabitFrequency;
+  target?: number;
+  unit?: string;
+  currentStreak?: number;
+  streak?: number;
+  lastCompletedAt?: Date;
+  points?: number;
+  timeOfDay?: string;
+  longestStreak?: number;
+  totalCompletions?: number;
 }
 
 export interface TrackingConfig {
@@ -149,7 +161,35 @@ export type HabitCategory =
   | 'social'
   | 'finance'
   | 'creativity'
+  | 'fitness'
+  | 'other'
   | 'custom';
+
+export type HabitFrequency = 'daily' | 'weekly' | 'monthly' | 'custom';
+export type HabitType = 'build' | 'break' | 'maintain';
+export type HabitStatus = 'active' | 'paused' | 'archived' | 'completed';
+
+export interface HabitFormData {
+  name: string;
+  description?: string;
+  category: HabitCategory;
+  type: HabitType;
+  frequency?: HabitFrequency;
+  target?: number;
+  unit?: string;
+  timeOfDay?: string;
+  trackingConfig?: Partial<TrackingConfig>;
+  fiveFactors?: Partial<FiveFactors>;
+  habitLoop?: Partial<HabitLoop>;
+  settings?: Partial<HabitSettings>;
+}
+
+export interface HabitCompletion {
+  habitId: string;
+  userId: string;
+  completedAt: Date;
+  notes?: string;
+}
 
 export interface HabitTemplate {
   id: string;

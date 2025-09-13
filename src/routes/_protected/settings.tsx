@@ -1,7 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useAuthStore } from '@/stores/auth.store';
-import { updateUserProfile, updateUserEmail, updateUserPassword } from '@/services/firebase/auth.service';
+import { updateUserEmail, updateUserPassword } from '@/services/firebase/auth.service';
+import { updateUserProfile } from '@/services/firebase/user.service';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { toast } from 'sonner';
@@ -96,7 +97,6 @@ function ProfileSettings() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      await updateUserProfile({ displayName });
       if (user?.uid && userProfile) {
         await updateUserProfile(user.uid, { displayName, bio });
       }

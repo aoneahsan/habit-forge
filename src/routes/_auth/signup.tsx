@@ -45,11 +45,7 @@ function SignUpPage() {
     setIsLoading(true);
     try {
       const user = await signUpWithEmail(data.email, data.password, data.name);
-      await createUserProfile({
-        userId: user.uid,
-        email: user.email!,
-        displayName: data.name,
-      });
+      await createUserProfile(user);
       toast.success('Account created successfully!');
       navigate({ to: '/dashboard' });
     } catch (error: any) {
@@ -63,18 +59,8 @@ function SignUpPage() {
     setIsLoading(true);
     try {
       const user = await signInWithGoogle();
-      const profileExists = await createUserProfile({
-        userId: user.uid,
-        email: user.email!,
-        displayName: user.displayName || undefined,
-        photoURL: user.photoURL || undefined,
-      });
-      
-      if (!profileExists) {
-        toast.success('Account created successfully!');
-      } else {
-        toast.success('Welcome back!');
-      }
+      await createUserProfile(user);
+      toast.success('Welcome to HabitForge!');
       navigate({ to: '/dashboard' });
     } catch (error: any) {
       toast.error(error.message);
@@ -192,13 +178,13 @@ function SignUpPage() {
             <input type="checkbox" id="terms" className="rounded border-gray-300" required />
             <label htmlFor="terms" className="ml-2 text-sm text-gray-600 dark:text-gray-400">
               I agree to the{' '}
-              <Link to="/terms" className="text-primary-600 hover:text-primary-500">
+              <a href="#" className="text-primary-600 hover:text-primary-500">
                 Terms of Service
-              </Link>{' '}
+              </a>{' '}
               and{' '}
-              <Link to="/privacy" className="text-primary-600 hover:text-primary-500">
+              <a href="#" className="text-primary-600 hover:text-primary-500">
                 Privacy Policy
-              </Link>
+              </a>
             </label>
           </div>
 
@@ -263,7 +249,7 @@ function SignUpPage() {
 
         <p className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
           Already have an account?{' '}
-          <Link to="/auth/signin" className="font-medium text-primary-600 hover:text-primary-500">
+          <Link to="/signin" className="font-medium text-primary-600 hover:text-primary-500">
             Sign in
           </Link>
         </p>

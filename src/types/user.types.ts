@@ -12,6 +12,7 @@ export interface UserProfile {
   timezone?: string;
   locale?: string;
   phoneNumber?: string;
+  level?: number;
   
   // Preferences
   preferences: UserPreferences;
@@ -45,6 +46,7 @@ export interface NotificationPreferences {
   weeklyReport: boolean;
   achievementAlerts: boolean;
   socialAlerts: boolean;
+  reminders?: boolean;
 }
 
 export interface PrivacySettings {
@@ -52,23 +54,27 @@ export interface PrivacySettings {
   shareProgress: boolean;
   allowFriendRequests: boolean;
   showInLeaderboard: boolean;
+  showStats?: boolean;
 }
 
 export interface UserStats {
   totalHabits: number;
   activeHabits: number;
   completedHabits: number;
+  totalHabitsCompleted?: number;
   totalEntries: number;
   currentStreak: number;
   longestStreak: number;
   totalAchievements: number;
   joinedChallenges: number;
   accountabilityPartners: number;
+  totalPoints?: number;
 }
 
 export interface Subscription {
   id: string;
   tier: 'free' | 'premium' | 'pro' | 'enterprise';
+  plan?: 'free' | 'premium' | 'pro' | 'enterprise';
   status: 'active' | 'cancelled' | 'expired' | 'trial';
   startDate: Date;
   endDate?: Date;

@@ -1,4 +1,4 @@
-import { Habit } from '@/types/habit.types';
+import type { Habit } from '@/types/habit.types';
 import { HabitCard } from './HabitCard';
 
 interface HabitListProps {

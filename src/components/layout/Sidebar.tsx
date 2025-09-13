@@ -1,4 +1,4 @@
-import { NavLink } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 import { 
   Home, 
   Target, 
@@ -78,32 +78,28 @@ export function Sidebar() {
 
           {/* Create Habit Button */}
           <div className="p-4">
-            <NavLink to="/habits/new">
+            <Link to="/habits/new">
               <Button className="w-full">
                 <Plus className="mr-2 h-4 w-4" />
                 New Habit
               </Button>
-            </NavLink>
+            </Link>
           </div>
 
           {/* Main Navigation */}
           <nav className="flex-1 space-y-1 px-4">
             {navigation.map((item) => (
-              <NavLink
+              <Link
                 key={item.name}
                 to={item.href}
-                className={({ isActive }) =>
-                  cn(
-                    'group flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-                    isActive
-                      ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400'
-                      : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
-                  )
-                }
+                activeProps={{
+                  className: 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400'
+                }}
+                className="group flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
               >
                 <item.icon className="mr-3 h-5 w-5 flex-shrink-0" />
                 {item.name}
-              </NavLink>
+              </Link>
             ))}
           </nav>
 
@@ -111,21 +107,17 @@ export function Sidebar() {
           <div className="border-t border-gray-200 p-4 dark:border-gray-700">
             <nav className="space-y-1">
               {bottomNavigation.map((item) => (
-                <NavLink
+                <Link
                   key={item.name}
                   to={item.href}
-                  className={({ isActive }) =>
-                    cn(
-                      'group flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-                      isActive
-                        ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400'
-                        : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
-                    )
-                  }
+                  activeProps={{
+                    className: 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400'
+                  }}
+                  className="group flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
                 >
                   <item.icon className="mr-3 h-5 w-5 flex-shrink-0" />
                   {item.name}
-                </NavLink>
+                </Link>
               ))}
               
               <button
