@@ -10,58 +10,21 @@
   "start_url": "/",
   "icons": [
     {
-      "src": "/icon-192.png",
+      "src": "/icon-192.svg",
       "sizes": "192x192",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-512.png",
+      "src": "/icon-512.svg",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ],
-  "categories": ["productivity", "health", "lifestyle"],
-  "screenshots": [
-    {
-      "src": "/screenshot-1.png",
-      "sizes": "1080x1920",
-      "type": "image/png",
-      "label": "Dashboard view"
-    },
-    {
-      "src": "/screenshot-2.png",
-      "sizes": "1080x1920",
-      "type": "image/png",
-      "label": "Habit tracking"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Add Habit",
-      "short_name": "Add",
-      "description": "Create a new habit",
-      "url": "/habits/new",
-      "icons": [{ "src": "/icon-96.png", "sizes": "96x96" }]
-    },
-    {
-      "name": "Today's Habits",
-      "short_name": "Today",
-      "description": "View today's habits",
-      "url": "/dashboard",
-      "icons": [{ "src": "/icon-96.png", "sizes": "96x96" }]
-    }
-  ],
-  "prefer_related_applications": false,
-  "related_applications": [
-    {
-      "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=com.habitforge.app"
-    },
-    {
-      "platform": "itunes",
-      "url": "https://apps.apple.com/app/habitforge/id123456789"
-    }
+  "categories": [
+    "productivity",
+    "health",
+    "lifestyle"
   ]
 }

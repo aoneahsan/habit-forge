@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { Toaster } from 'sonner';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/config/firebase.config';
 import { useAuthStore } from '@/stores/auth.store';
@@ -45,6 +45,7 @@ declare module '@tanstack/react-router' {
 
 function App() {
   const { setAuth, clearAuth, setLoading } = useAuthStore();
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
@@ -65,6 +66,7 @@ function App() {
       }
       
       setLoading(false);
+      setIsInitialized(true);
     });
 
     return () => unsubscribe();
@@ -75,6 +77,18 @@ function App() {
     userProfile: state.userProfile,
     isAuthenticated: state.isAuthenticated,
   }));
+
+  // Don't render until auth is initialized to prevent hydration mismatches
+  if (!isInitialized) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mx-auto"></div>
+          <p className="mt-2 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>

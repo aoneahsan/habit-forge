@@ -42,17 +42,22 @@ export const messaging = typeof window !== 'undefined'
   ? isMessagingSupported().then(yes => yes ? getMessaging(app) : null)
   : Promise.resolve(null);
 
-// Firebase emulator configuration (for development)
-if (import.meta.env.VITE_USE_FIREBASE_EMULATOR === 'true') {
+// Firebase emulator configuration (for development only)
+if (import.meta.env.DEV && import.meta.env.VITE_USE_FIREBASE_EMULATOR === 'true') {
   const { connectAuthEmulator } = await import('firebase/auth');
   const { connectFirestoreEmulator } = await import('firebase/firestore');
   const { connectStorageEmulator } = await import('firebase/storage');
   const { connectFunctionsEmulator } = await import('firebase/functions');
 
-  connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
-  connectFirestoreEmulator(db, 'localhost', 8080);
-  connectStorageEmulator(storage, 'localhost', 9199);
-  connectFunctionsEmulator(functions, 'localhost', 5001);
+  try {
+    connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+    connectFirestoreEmulator(db, 'localhost', 8080);
+    connectStorageEmulator(storage, 'localhost', 9199);
+    connectFunctionsEmulator(functions, 'localhost', 5001);
+    console.log('🔥 Firebase emulators connected');
+  } catch (error) {
+    console.warn('Firebase emulator connection failed:', error);
+  }
 }
 
 export default app;
