@@ -3,6 +3,7 @@ import type { User as FirebaseUser } from 'firebase/auth';
 import { db } from '@/config/firebase.config';
 import { APP_CONFIG } from '@/constants/app.constants';
 import type { UserProfile } from '@/types/user.types';
+import { cleanForFirestore, timestampToDate } from '@/lib/firebase-utils';
 
 const USERS_COLLECTION = `${APP_CONFIG.firebase.projectPrefix}users`;
 
@@ -15,8 +16,8 @@ export async function getUserProfile(userId: string): Promise<UserProfile | null
       return {
         ...data,
         id: userDoc.id,
-        createdAt: data.createdAt?.toDate() || new Date(),
-        updatedAt: data.updatedAt?.toDate() || new Date(),
+        createdAt: timestampToDate(data.createdAt),
+        updatedAt: timestampToDate(data.updatedAt),
       } as UserProfile;
     }
     
@@ -33,12 +34,11 @@ export async function createUserProfile(user: FirebaseUser): Promise<UserProfile
     const userDoc = await getDoc(userRef);
 
     if (!userDoc.exists()) {
-      // Create new user profile
-      const newProfile = {
+      // Create new user profile - build base profile without undefined values
+      const newProfile: any = {
         id: user.uid,
         email: user.email || '',
         displayName: user.displayName || user.email?.split('@')[0] || 'User',
-        photoURL: user.photoURL || undefined,
         accountTier: 'free' as const,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -95,10 +95,18 @@ export async function createUserProfile(user: FirebaseUser): Promise<UserProfile
           startDate: new Date(),
           autoRenew: false,
         },
-      } satisfies UserProfile;
+      };
+      
+      // Add photoURL only if it exists
+      if (user.photoURL) {
+        newProfile.photoURL = user.photoURL;
+      }
+
+      // Clean the profile object for Firestore
+      const cleanProfile = cleanForFirestore(newProfile);
 
       await setDoc(userRef, {
-        ...newProfile,
+        ...cleanProfile,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
@@ -109,8 +117,8 @@ export async function createUserProfile(user: FirebaseUser): Promise<UserProfile
       return {
         ...data,
         id: userDoc.id,
-        createdAt: data.createdAt?.toDate() || new Date(),
-        updatedAt: data.updatedAt?.toDate() || new Date(),
+        createdAt: timestampToDate(data.createdAt),
+        updatedAt: timestampToDate(data.updatedAt),
       } as UserProfile;
     }
   } catch (error) {
@@ -124,8 +132,11 @@ export async function updateUserProfile(
   updates: Partial<UserProfile>
 ): Promise<void> {
   try {
+    // Clean the updates object for Firestore
+    const cleanUpdates = cleanForFirestore(updates);
+
     await updateDoc(doc(db, USERS_COLLECTION, userId), {
-      ...updates,
+      ...cleanUpdates,
       updatedAt: serverTimestamp(),
     });
   } catch (error) {
