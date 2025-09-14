@@ -47,7 +47,10 @@ function SignUpPage() {
       const user = await signUpWithEmail(data.email, data.password, data.name);
       await createUserProfile(user);
       toast.success('Account created successfully!');
-      navigate({ to: '/dashboard' });
+      // Delay navigation to allow auth state to update
+      setTimeout(() => {
+        navigate({ to: '/dashboard', replace: true });
+      }, 100);
     } catch (error: any) {
       toast.error(error.message);
     } finally {
@@ -61,7 +64,10 @@ function SignUpPage() {
       const user = await signInWithGoogle();
       await createUserProfile(user);
       toast.success('Welcome to HabitForge!');
-      navigate({ to: '/dashboard' });
+      // Delay navigation to allow auth state to update
+      setTimeout(() => {
+        navigate({ to: '/dashboard', replace: true });
+      }, 100);
     } catch (error: any) {
       toast.error(error.message);
     } finally {

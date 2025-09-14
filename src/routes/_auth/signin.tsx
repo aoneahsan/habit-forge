@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { toast } from 'sonner';
 import { Loader2, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { signInWithEmail, signInWithGoogle } from '@/services/firebase/auth.service';
+import { createUserProfile } from '@/services/firebase/user.service';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Link } from '@tanstack/react-router';
@@ -37,9 +38,14 @@ function SignInPage() {
   const onSubmit = async (data: SignInForm) => {
     setIsLoading(true);
     try {
-      await signInWithEmail(data.email, data.password);
+      const user = await signInWithEmail(data.email, data.password);
+      // Ensure user profile exists
+      await createUserProfile(user);
       toast.success('Welcome back!');
-      navigate({ to: '/dashboard' });
+      // Delay navigation to allow auth state to update
+      setTimeout(() => {
+        navigate({ to: '/dashboard', replace: true });
+      }, 100);
     } catch (error: any) {
       toast.error(error.message);
     } finally {
@@ -50,9 +56,14 @@ function SignInPage() {
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
     try {
-      await signInWithGoogle();
+      const user = await signInWithGoogle();
+      // Ensure user profile exists
+      await createUserProfile(user);
       toast.success('Welcome back!');
-      navigate({ to: '/dashboard' });
+      // Delay navigation to allow auth state to update
+      setTimeout(() => {
+        navigate({ to: '/dashboard', replace: true });
+      }, 100);
     } catch (error: any) {
       toast.error(error.message);
     } finally {
