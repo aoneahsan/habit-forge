@@ -3753,7 +3753,7 @@
   dependencies:
     "@tanstack/query-core" "5.87.4"
 
-"@tanstack/react-router-devtools@1.131.42":
+"@tanstack/react-router-devtools@^1.131.42":
   version "1.131.42"
   resolved "https://registry.yarnpkg.com/@tanstack/react-router-devtools/-/react-router-devtools-1.131.42.tgz#8ddfe8ce3b8d62d5d5c66fab518267dc9df1a098"
   integrity sha512-7pymFB1CCimRHot2Zp0ZekQjd1iN812V88n9NLPSeiv9sVRtRVIaLphJjDeudx1NNgkfSJPx2lOhz6K38cuZog==
@@ -3815,15 +3815,6 @@
     clsx "^2.1.1"
     goober "^2.1.16"
     solid-js "^1.9.5"
-
-"@tanstack/router-devtools@^1.131.42":
-  version "1.131.42"
-  resolved "https://registry.yarnpkg.com/@tanstack/router-devtools/-/router-devtools-1.131.42.tgz#bb2a2c2c6e39e3266a16c93c855580aaf42bae84"
-  integrity sha512-iWJzr4aN/IOsDSaF/kysM7tPSYj89hnzcWMKNuYN9redIwHgg7rNZ4toKhfNWYNfzxdhKwL9/Yvpf7bDemyc+Q==
-  dependencies:
-    "@tanstack/react-router-devtools" "1.131.42"
-    clsx "^2.1.1"
-    goober "^2.1.16"
 
 "@tanstack/store@0.7.5", "@tanstack/store@^0.7.0":
   version "0.7.5"

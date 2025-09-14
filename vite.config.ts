@@ -5,11 +5,13 @@ import { VitePWA } from 'vite-plugin-pwa'
 import svgr from 'vite-plugin-svgr'
 import viteCompression from 'vite-plugin-compression'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
+    tailwindcss(),
     tsconfigPaths(),
     svgr({
       include: '**/*.svg?react',

@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { Toaster } from 'sonner';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -44,7 +45,9 @@ declare module '@tanstack/react-router' {
 }
 
 function App() {
-  const { setAuth, clearAuth, setLoading } = useAuthStore();
+  const setAuth = useAuthStore((state) => state.setAuth);
+  const clearAuth = useAuthStore((state) => state.clearAuth);
+  const setLoading = useAuthStore((state) => state.setLoading);
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
@@ -70,13 +73,14 @@ function App() {
     });
 
     return () => unsubscribe();
-  }, [setAuth, clearAuth, setLoading]);
+  }, []); // Remove dependencies to prevent re-subscription
 
-  const authState = useAuthStore((state) => ({
-    user: state.user,
-    userProfile: state.userProfile,
-    isAuthenticated: state.isAuthenticated,
-  }));
+  // Use shallow comparison for auth state
+  const user = useAuthStore((state) => state.user);
+  const userProfile = useAuthStore((state) => state.userProfile);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  
+  const authState = { user, userProfile, isAuthenticated };
 
   // Don't render until auth is initialized to prevent hydration mismatches
   if (!isInitialized) {
@@ -99,7 +103,12 @@ function App() {
         closeButton
         duration={4000}
       />
-      {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+      {import.meta.env.DEV && (
+        <>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <TanStackRouterDevtools router={router} initialIsOpen={false} />
+        </>
+      )}
     </QueryClientProvider>
   );
 }

@@ -77,6 +77,13 @@ coverage/
 cypress/downloads/
 cypress/screenshots/
 cypress/videos/
+cypress/results/
+cypress/reports/
+cypress/.cypress/
+cypress.env.json
+mochawesome-report/
+test-results/
+*.cy.*.snap
 
 # Build
 build/
