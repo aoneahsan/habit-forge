@@ -20,10 +20,16 @@ type SignInForm = z.infer<typeof signInSchema>;
 
 export const Route = createFileRoute('/_auth/signin')({
   component: SignInPage,
+  validateSearch: (search: Record<string, unknown>) => {
+    return {
+      redirect: typeof search.redirect === 'string' ? search.redirect : undefined,
+    };
+  },
 });
 
 function SignInPage() {
   const navigate = useNavigate();
+  const { redirect } = Route.useSearch();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -44,7 +50,7 @@ function SignInPage() {
       toast.success('Welcome back!');
       // Delay navigation to allow auth state to update
       setTimeout(() => {
-        navigate({ to: '/dashboard', replace: true });
+        navigate({ to: redirect || '/dashboard', replace: true });
       }, 100);
     } catch (error: any) {
       toast.error(error.message);
@@ -62,7 +68,7 @@ function SignInPage() {
       toast.success('Welcome back!');
       // Delay navigation to allow auth state to update
       setTimeout(() => {
-        navigate({ to: '/dashboard', replace: true });
+        navigate({ to: redirect || '/dashboard', replace: true });
       }, 100);
     } catch (error: any) {
       toast.error(error.message);
@@ -136,6 +142,7 @@ function SignInPage() {
             </label>
             <Link
               to="/forgot-password"
+              search={{ redirect: undefined }}
               className="text-sm text-primary-600 hover:text-primary-500"
             >
               Forgot password?
@@ -203,7 +210,7 @@ function SignInPage() {
 
         <p className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
           Don't have an account?{' '}
-          <Link to="/signup" className="font-medium text-primary-600 hover:text-primary-500">
+          <Link to="/signup" search={{ redirect: undefined }} className="font-medium text-primary-600 hover:text-primary-500">
             Sign up
           </Link>
         </p>

@@ -79,8 +79,9 @@ function App() {
   const user = useAuthStore((state) => state.user);
   const userProfile = useAuthStore((state) => state.userProfile);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const isLoading = useAuthStore((state) => state.isLoading);
   
-  const authState = { user, userProfile, isAuthenticated };
+  const authState = { user, userProfile, isAuthenticated, isLoading };
 
   // Don't render until auth is initialized to prevent hydration mismatches
   if (!isInitialized) {

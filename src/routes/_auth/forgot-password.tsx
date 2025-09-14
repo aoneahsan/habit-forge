@@ -61,7 +61,7 @@ function ForgotPasswordPage() {
           </p>
           <Button
             variant="outline"
-            onClick={() => navigate({ to: '/signin' })}
+            onClick={() => navigate({ to: '/signin', search: { redirect: undefined } })}
             className="w-full"
           >
             Back to Sign In
@@ -77,6 +77,7 @@ function ForgotPasswordPage() {
         <div className="mb-8">
           <Link
             to="/signin"
+            search={{ redirect: undefined }}
             className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />

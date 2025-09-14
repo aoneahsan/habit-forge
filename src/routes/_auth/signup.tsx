@@ -25,10 +25,16 @@ type SignUpForm = z.infer<typeof signUpSchema>;
 
 export const Route = createFileRoute('/_auth/signup')({
   component: SignUpPage,
+  validateSearch: (search: Record<string, unknown>) => {
+    return {
+      redirect: typeof search.redirect === 'string' ? search.redirect : undefined,
+    };
+  },
 });
 
 function SignUpPage() {
   const navigate = useNavigate();
+  const { redirect } = Route.useSearch();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +55,7 @@ function SignUpPage() {
       toast.success('Account created successfully!');
       // Delay navigation to allow auth state to update
       setTimeout(() => {
-        navigate({ to: '/dashboard', replace: true });
+        navigate({ to: redirect || '/dashboard', replace: true });
       }, 100);
     } catch (error: any) {
       toast.error(error.message);
@@ -66,7 +72,7 @@ function SignUpPage() {
       toast.success('Welcome to HabitForge!');
       // Delay navigation to allow auth state to update
       setTimeout(() => {
-        navigate({ to: '/dashboard', replace: true });
+        navigate({ to: redirect || '/dashboard', replace: true });
       }, 100);
     } catch (error: any) {
       toast.error(error.message);
@@ -255,7 +261,7 @@ function SignUpPage() {
 
         <p className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
           Already have an account?{' '}
-          <Link to="/signin" className="font-medium text-primary-600 hover:text-primary-500">
+          <Link to="/signin" search={{ redirect: undefined }} className="font-medium text-primary-600 hover:text-primary-500">
             Sign in
           </Link>
         </p>

@@ -1,15 +1,10 @@
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
+import { createFileRoute, Outlet } from '@tanstack/react-router';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
+import { requireAuth } from '@/lib/auth-guards';
 
 export const Route = createFileRoute('/_protected')({
-  beforeLoad: async ({ context }) => {
-    if (!context.auth.isAuthenticated) {
-      throw redirect({
-        to: '/signin',
-      });
-    }
-  },
+  beforeLoad: requireAuth,
   component: ProtectedLayout,
 });
 
