@@ -36,6 +36,18 @@
     --success-900: 20 83 45;
   }
   
+  html {
+    @apply antialiased;
+  }
+  
+  body {
+    @apply bg-gray-50 text-gray-900 transition-colors duration-200;
+  }
+  
+  .dark body {
+    @apply bg-gray-900 text-gray-100;
+  }
+  
   .dark {
     color-scheme: dark;
   }
@@ -43,36 +55,19 @@
 
 @layer components {
   .card {
-    border-radius: 0.5rem;
-    border-width: 1px;
-    border-color: rgb(229 231 235);
-    background-color: rgb(255 255 255);
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    @apply rounded-lg border border-gray-200 bg-white shadow-sm transition-all;
   }
   
   .dark .card {
-    border-color: rgb(55 65 81);
-    background-color: rgb(31 41 55);
+    @apply border-gray-700 bg-gray-800 shadow-lg shadow-black/20;
   }
   
   .card-hover {
-    border-radius: 0.5rem;
-    border-width: 1px;
-    border-color: rgb(229 231 235);
-    background-color: rgb(255 255 255);
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    transition-property: box-shadow;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
+    @apply rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md;
   }
   
   .dark .card-hover {
-    border-color: rgb(55 65 81);
-    background-color: rgb(31 41 55);
-  }
-  
-  .card-hover:hover {
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    @apply border-gray-700 bg-gray-800 hover:border-gray-600 hover:shadow-lg hover:shadow-black/30;
   }
 }
 

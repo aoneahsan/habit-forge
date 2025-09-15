@@ -127,7 +127,7 @@ function SignInPage() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
               >
                 {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
               </button>
@@ -139,7 +139,7 @@ function SignInPage() {
 
           <div className="flex items-center justify-between">
             <label className="flex items-center">
-              <input type="checkbox" className="rounded border-gray-300" />
+              <input type="checkbox" className="rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-primary-500 dark:focus:ring-primary-400" />
               <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
             </label>
             <Link

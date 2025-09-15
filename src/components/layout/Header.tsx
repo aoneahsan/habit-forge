@@ -1,4 +1,4 @@
-import { Bell, Search, Moon, Sun, User, LogOut, Settings, ChevronDown } from 'lucide-react';
+import { Search, Moon, Sun, User, LogOut, Settings, ChevronDown } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { useAuthStore } from '@/stores/auth.store';
 import { Button } from '@/components/ui/Button';
@@ -6,6 +6,7 @@ import { getInitials } from '@/lib/utils';
 import { signOutUser } from '@/services/firebase/auth.service';
 import { useNavigate, Link } from '@tanstack/react-router';
 import { toast } from 'sonner';
+import { NotificationsDropdown } from './NotificationsDropdown';
 
 export function Header() {
   const navigate = useNavigate();
@@ -91,10 +92,7 @@ export function Header() {
         </Button>
 
         {/* Notifications */}
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
-          <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-danger-500"></span>
-        </Button>
+        <NotificationsDropdown />
 
         {/* User Profile with Dropdown */}
         <div className="relative" ref={dropdownRef}>

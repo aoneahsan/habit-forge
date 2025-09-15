@@ -1,7 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useAuthStore } from '@/stores/auth.store';
 import { useHabitStore } from '@/stores/habit.store';
-import { Calendar, Target, TrendingUp, Users, Award, Activity } from 'lucide-react';
+import { Calendar, Target, TrendingUp, Users, Award, Activity, Plus } from 'lucide-react';
 import { StatsCard } from '@/components/dashboard/StatsCard';
 import { HabitList } from '@/components/habits/HabitList';
 import { QuickActions } from '@/components/dashboard/QuickActions';
@@ -14,6 +14,7 @@ export const Route = createFileRoute('/_protected/dashboard')({
 });
 
 function DashboardPage() {
+  const navigate = useNavigate();
   const userProfile = useAuthStore((state) => state.userProfile);
   const user = useAuthStore((state) => state.user);
   
@@ -35,11 +36,11 @@ function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div className="rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 p-6 text-white">
-        <h1 className="text-3xl font-bold">
+      <div className="rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 p-6 shadow-lg">
+        <h1 className="text-3xl font-bold text-white">
           Welcome back, {userProfile?.displayName || 'Habit Forger'}! 👋
         </h1>
-        <p className="mt-2 text-primary-50">
+        <p className="mt-2 text-primary-50/90">
           {currentStreak > 0 
             ? `You're on a ${currentStreak} day streak! Keep it up!`
             : "Let's start building great habits today!"}
@@ -96,12 +97,21 @@ function DashboardPage() {
               ) : habits.length > 0 ? (
                 <HabitList habits={habits} />
               ) : (
-                <div className="flex h-32 flex-col items-center justify-center text-center">
-                  <Target className="mb-2 h-12 w-12 text-gray-300" />
-                  <p className="text-gray-500">No habits yet</p>
-                  <p className="mt-1 text-sm text-gray-400">
-                    Create your first habit to get started
+                <div className="flex flex-col items-center justify-center py-8 text-center">
+                  <Target className="mb-4 h-16 w-16 text-gray-300 dark:text-gray-600" />
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+                    No habits yet
+                  </h3>
+                  <p className="mb-6 max-w-sm text-sm text-gray-500 dark:text-gray-400">
+                    Start your journey to building better habits. Create your first habit and begin tracking your progress today!
                   </p>
+                  <button
+                    onClick={() => navigate({ to: '/habits/new' })}
+                    className="inline-flex items-center rounded-lg bg-primary-600 px-6 py-3 text-sm font-medium text-white shadow-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-all transform hover:scale-105"
+                  >
+                    <Plus className="mr-2 h-5 w-5" />
+                    Create Your First Habit
+                  </button>
                 </div>
               )}
             </div>

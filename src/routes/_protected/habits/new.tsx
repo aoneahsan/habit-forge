@@ -151,7 +151,7 @@ function NewHabitPage() {
               <textarea
                 {...register('description')}
                 placeholder="Brief description of your habit"
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700"
+                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400"
                 rows={3}
               />
               {errors.description && (
@@ -165,7 +165,7 @@ function NewHabitPage() {
               </label>
               <select
                 {...register('category')}
-                className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700"
+                className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
               >
                 <option value="health">Health</option>
                 <option value="productivity">Productivity</option>
@@ -192,7 +192,7 @@ function NewHabitPage() {
               </label>
               <select
                 {...register('frequency')}
-                className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700"
+                className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
               >
                 <option value="daily">Daily</option>
                 <option value="weekly">Weekly</option>
@@ -238,7 +238,7 @@ function NewHabitPage() {
               </label>
               <select
                 {...register('timeOfDay')}
-                className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700"
+                className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
               >
                 <option value="anytime">Anytime</option>
                 <option value="morning">Morning</option>
@@ -275,7 +275,7 @@ function NewHabitPage() {
               <input
                 {...register('reminder')}
                 type="checkbox"
-                className="rounded border-gray-300"
+                className="rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-primary-500 dark:focus:ring-primary-400"
               />
               <label className="ml-2 text-sm text-gray-700 dark:text-gray-300">
                 Enable daily reminder

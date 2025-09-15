@@ -152,7 +152,7 @@ function SignUpPage() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
               >
                 {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
               </button>
@@ -180,7 +180,7 @@ function SignUpPage() {
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
               >
                 {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
               </button>
@@ -191,7 +191,7 @@ function SignUpPage() {
           </div>
 
           <div className="flex items-center">
-            <input type="checkbox" id="terms" className="rounded border-gray-300" required />
+            <input type="checkbox" id="terms" className="rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-primary-500 dark:focus:ring-primary-400" required />
             <label htmlFor="terms" className="ml-2 text-sm text-gray-600 dark:text-gray-400">
               I agree to the{' '}
               <a href="#" className="text-primary-600 hover:text-primary-500">
