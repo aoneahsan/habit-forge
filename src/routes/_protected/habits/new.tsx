@@ -111,7 +111,7 @@ function NewHabitPage() {
         <div className="flex items-center space-x-4">
           <button
             onClick={() => navigate({ to: '/habits' })}
-            className="rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+            className="rounded-lg p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <ArrowLeft className="h-5 w-5" />
           </button>
@@ -127,7 +127,7 @@ function NewHabitPage() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Basic Information */}
         <div className="card p-6">
-          <h2 className="mb-4 text-lg font-semibold">Basic Information</h2>
+          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Basic Information</h2>
           
           <div className="space-y-4">
             <div>
@@ -140,7 +140,7 @@ function NewHabitPage() {
                 className="mt-1"
               />
               {errors.name && (
-                <p className="mt-1 text-sm text-danger-600">{errors.name.message}</p>
+                <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.name.message}</p>
               )}
             </div>
 
@@ -151,11 +151,11 @@ function NewHabitPage() {
               <textarea
                 {...register('description')}
                 placeholder="Brief description of your habit"
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400"
+                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-500 focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400"
                 rows={3}
               />
               {errors.description && (
-                <p className="mt-1 text-sm text-danger-600">{errors.description.message}</p>
+                <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.description.message}</p>
               )}
             </div>
 
@@ -165,7 +165,7 @@ function NewHabitPage() {
               </label>
               <select
                 {...register('category')}
-                className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+                className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
               >
                 <option value="health">Health</option>
                 <option value="productivity">Productivity</option>
@@ -183,7 +183,7 @@ function NewHabitPage() {
 
         {/* Frequency and Target */}
         <div className="card p-6">
-          <h2 className="mb-4 text-lg font-semibold">Frequency & Target</h2>
+          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Frequency & Target</h2>
           
           <div className="space-y-4">
             <div>
@@ -192,7 +192,7 @@ function NewHabitPage() {
               </label>
               <select
                 {...register('frequency')}
-                className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+                className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
               >
                 <option value="daily">Daily</option>
                 <option value="weekly">Weekly</option>
@@ -213,7 +213,7 @@ function NewHabitPage() {
                   className="mt-1"
                 />
                 {errors.targetCount && (
-                  <p className="mt-1 text-sm text-danger-600">{errors.targetCount.message}</p>
+                  <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.targetCount.message}</p>
                 )}
               </div>
 
@@ -227,7 +227,7 @@ function NewHabitPage() {
                   className="mt-1"
                 />
                 {errors.targetUnit && (
-                  <p className="mt-1 text-sm text-danger-600">{errors.targetUnit.message}</p>
+                  <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.targetUnit.message}</p>
                 )}
               </div>
             </div>
@@ -238,7 +238,7 @@ function NewHabitPage() {
               </label>
               <select
                 {...register('timeOfDay')}
-                className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+                className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
               >
                 <option value="anytime">Anytime</option>
                 <option value="morning">Morning</option>
@@ -259,16 +259,16 @@ function NewHabitPage() {
                 className="mt-1"
               />
               {errors.points && (
-                <p className="mt-1 text-sm text-danger-600">{errors.points.message}</p>
+                <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.points.message}</p>
               )}
-              <p className="mt-1 text-xs text-gray-500">Points earned for completing this habit</p>
+              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Points earned for completing this habit</p>
             </div>
           </div>
         </div>
 
         {/* Reminders */}
         <div className="card p-6">
-          <h2 className="mb-4 text-lg font-semibold">Reminders</h2>
+          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Reminders</h2>
           
           <div className="space-y-4">
             <div className="flex items-center">
@@ -300,7 +300,7 @@ function NewHabitPage() {
         {/* Five-Factor Model */}
         <div className="card p-6">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Habit Loop Analysis</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Habit Loop Analysis</h2>
             <button
               type="button"
               onClick={() => setShowFiveFactors(!showFiveFactors)}
@@ -327,7 +327,7 @@ function NewHabitPage() {
                   className="mt-1"
                 />
                 {errors.cue && (
-                  <p className="mt-1 text-sm text-danger-600">{errors.cue.message}</p>
+                  <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.cue.message}</p>
                 )}
               </div>
 
@@ -341,7 +341,7 @@ function NewHabitPage() {
                   className="mt-1"
                 />
                 {errors.craving && (
-                  <p className="mt-1 text-sm text-danger-600">{errors.craving.message}</p>
+                  <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.craving.message}</p>
                 )}
               </div>
 
@@ -355,7 +355,7 @@ function NewHabitPage() {
                   className="mt-1"
                 />
                 {errors.response && (
-                  <p className="mt-1 text-sm text-danger-600">{errors.response.message}</p>
+                  <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.response.message}</p>
                 )}
               </div>
 
@@ -369,7 +369,7 @@ function NewHabitPage() {
                   className="mt-1"
                 />
                 {errors.reward && (
-                  <p className="mt-1 text-sm text-danger-600">{errors.reward.message}</p>
+                  <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.reward.message}</p>
                 )}
               </div>
 
@@ -383,7 +383,7 @@ function NewHabitPage() {
                   className="mt-1"
                 />
                 {errors.investment && (
-                  <p className="mt-1 text-sm text-danger-600">{errors.investment.message}</p>
+                  <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.investment.message}</p>
                 )}
               </div>
             </div>
@@ -391,7 +391,7 @@ function NewHabitPage() {
         </div>
 
         {/* Actions */}
-        <div className="flex justify-end space-x-4">
+        <div className="flex justify-end space-x-4 pb-6">
           <Button
             type="button"
             variant="outline"

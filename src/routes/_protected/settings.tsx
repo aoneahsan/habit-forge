@@ -111,7 +111,7 @@ function ProfileSettings() {
   return (
     <div className="space-y-6">
       <div className="card p-6">
-        <h2 className="mb-4 text-xl font-semibold">Profile Information</h2>
+        <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Profile Information</h2>
         
         <div className="space-y-4">
           <div>
@@ -135,7 +135,7 @@ function ProfileSettings() {
               disabled
               className="mt-1"
             />
-            <p className="mt-1 text-xs text-gray-500">Contact support to change your email</p>
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Contact support to change your email</p>
           </div>
 
           <div>
@@ -145,7 +145,7 @@ function ProfileSettings() {
             <textarea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700"
+              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
               rows={3}
               placeholder="Tell us about yourself"
             />
@@ -170,7 +170,7 @@ function ProfileSettings() {
       </div>
 
       <div className="card p-6">
-        <h2 className="mb-4 text-xl font-semibold text-danger-600">Danger Zone</h2>
+        <h2 className="mb-4 text-xl font-semibold text-danger-600 dark:text-danger-400">Danger Zone</h2>
         <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
           These actions are irreversible. Please be certain.
         </p>
@@ -197,7 +197,7 @@ function NotificationSettings() {
 
   return (
     <div className="card p-6">
-      <h2 className="mb-4 text-xl font-semibold">Notification Preferences</h2>
+      <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Notification Preferences</h2>
       
       <div className="space-y-4">
         <div className="flex items-center justify-between">
@@ -266,7 +266,7 @@ function PrivacySettings() {
   return (
     <div className="space-y-6">
       <div className="card p-6">
-        <h2 className="mb-4 text-xl font-semibold">Privacy Settings</h2>
+        <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Privacy Settings</h2>
         
         <div className="space-y-4">
           <div className="flex items-center justify-between">
@@ -276,7 +276,7 @@ function PrivacySettings() {
                 Control who can see your profile
               </p>
             </div>
-            <select className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-700">
+            <select className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100">
               <option>Public</option>
               <option>Friends Only</option>
               <option>Private</option>
@@ -299,7 +299,7 @@ function PrivacySettings() {
       </div>
 
       <div className="card p-6">
-        <h2 className="mb-4 text-xl font-semibold">Security</h2>
+        <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Security</h2>
         
         <div className="space-y-4">
           <Button variant="outline" className="w-full justify-start">
@@ -341,7 +341,7 @@ function AppearanceSettings() {
 
   return (
     <div className="card p-6">
-      <h2 className="mb-4 text-xl font-semibold">Appearance</h2>
+      <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Appearance</h2>
       
       <div className="space-y-4">
         <div>
@@ -386,14 +386,14 @@ function AppearanceSettings() {
 function LanguageSettings() {
   return (
     <div className="card p-6">
-      <h2 className="mb-4 text-xl font-semibold">Language & Region</h2>
+      <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Language & Region</h2>
       
       <div className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Language
           </label>
-          <select className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-700">
+          <select className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100">
             <option>English (US)</option>
             <option>Spanish</option>
             <option>French</option>
@@ -406,7 +406,7 @@ function LanguageSettings() {
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Time Zone
           </label>
-          <select className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-700">
+          <select className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100">
             <option>UTC-08:00 Pacific Time</option>
             <option>UTC-05:00 Eastern Time</option>
             <option>UTC+00:00 GMT</option>
@@ -418,7 +418,7 @@ function LanguageSettings() {
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Date Format
           </label>
-          <select className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-700">
+          <select className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100">
             <option>MM/DD/YYYY</option>
             <option>DD/MM/YYYY</option>
             <option>YYYY-MM-DD</option>
@@ -436,7 +436,7 @@ function LanguageSettings() {
 function MobileSettings() {
   return (
     <div className="card p-6">
-      <h2 className="mb-4 text-xl font-semibold">Mobile App Settings</h2>
+      <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Mobile App Settings</h2>
       
       <div className="space-y-4">
         <div className="rounded-lg bg-primary-50 p-4 dark:bg-primary-900/20">
@@ -487,7 +487,7 @@ function SubscriptionSettings() {
   return (
     <div className="space-y-6">
       <div className="card p-6">
-        <h2 className="mb-4 text-xl font-semibold">Current Plan</h2>
+        <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Current Plan</h2>
         
         <div className="rounded-lg border border-primary-200 bg-primary-50 p-4 dark:border-primary-800 dark:bg-primary-900/20">
           <div className="flex items-center justify-between">
@@ -544,7 +544,7 @@ function SubscriptionSettings() {
 
       {userProfile?.subscription?.plan === 'premium' && (
         <div className="card p-6">
-          <h2 className="mb-4 text-xl font-semibold">Billing</h2>
+          <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Billing</h2>
           
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
@@ -572,7 +572,7 @@ function HelpSettings() {
   return (
     <div className="space-y-6">
       <div className="card p-6">
-        <h2 className="mb-4 text-xl font-semibold">Help & Support</h2>
+        <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Help & Support</h2>
         
         <div className="space-y-3">
           <Button variant="outline" className="w-full justify-start">
@@ -592,7 +592,7 @@ function HelpSettings() {
       </div>
 
       <div className="card p-6">
-        <h2 className="mb-4 text-xl font-semibold">Resources</h2>
+        <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Resources</h2>
         
         <div className="space-y-3">
           <a href="#" className="block text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400">
@@ -611,7 +611,7 @@ function HelpSettings() {
       </div>
 
       <div className="card p-6">
-        <h2 className="mb-4 text-xl font-semibold">Legal</h2>
+        <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Legal</h2>
         
         <div className="space-y-3">
           <a href="#" className="block text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400">

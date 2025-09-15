@@ -40,7 +40,7 @@ function DashboardPage() {
         <h1 className="text-3xl font-bold text-white">
           Welcome back, {userProfile?.displayName || 'Habit Forger'}! 👋
         </h1>
-        <p className="mt-2 text-primary-50/90">
+        <p className="mt-2 text-primary-50">
           {currentStreak > 0 
             ? `You're on a ${currentStreak} day streak! Keep it up!`
             : "Let's start building great habits today!"}
