@@ -13,11 +13,18 @@ import {
   Plus
 } from 'lucide-react';
 import { useState } from 'react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 import { signOutUser } from '@/services/firebase/auth.service';
 import { toast } from 'sonner';
 import { APP_CONFIG } from '@/constants/app.constants';
+import { 
+  Box, 
+  Flex, 
+  Button, 
+  IconButton,
+  Text,
+  Separator,
+  Heading
+} from '@radix-ui/themes';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
@@ -47,90 +54,158 @@ export function Sidebar() {
   return (
     <>
       {/* Mobile menu button */}
-      <button
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="fixed left-4 top-4 z-50 rounded-lg bg-white p-2 shadow-md dark:bg-gray-800 lg:hidden"
+      <Box 
+        position="fixed" 
+        left="4" 
+        top="4" 
+        display={{ lg: 'none' }}
+        style={{ zIndex: 50 }}
       >
-        {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-      </button>
+        <IconButton
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          size="3"
+          variant="solid"
+        >
+          {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+        </IconButton>
+      </Box>
 
       {/* Mobile overlay */}
       {isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
+        <Box
+          position="fixed"
+          inset="0"
+          display={{ lg: 'none' }}
+          style={{ 
+            zIndex: 40,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)'
+          }}
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <div
-        className={cn(
-          'fixed left-0 top-0 z-40 flex h-full w-64 flex-col bg-white dark:bg-gray-800 lg:relative lg:z-0',
-          'transform transition-transform duration-200 ease-in-out lg:transform-none',
-          isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-        )}
+      <Box
+        position={{ initial: 'fixed', lg: 'relative' }}
+        left="0"
+        top="0"
+        width="256px"
+        height="100%"
+        display={{ initial: isMobileMenuOpen ? 'block' : 'none', lg: 'block' }}
+        style={{
+          zIndex: isMobileMenuOpen ? 40 : 0,
+          backgroundColor: 'var(--color-background)',
+          borderRight: '1px solid var(--gray-6)',
+          transition: 'transform 200ms ease-in-out'
+        }}
       >
-        <div className="flex h-full flex-col">
+        <Flex direction="column" height="100%">
           {/* Logo */}
-          <div className="flex h-16 items-center justify-center border-b border-gray-200 px-6 dark:border-gray-700">
-            <h1 className="text-2xl font-bold text-primary-600">{APP_CONFIG.name}</h1>
-          </div>
+          <Flex 
+            align="center" 
+            justify="center" 
+            height="64px" 
+            px="6"
+            style={{ borderBottom: '1px solid var(--gray-6)' }}
+          >
+            <Heading size="7" color="teal">{APP_CONFIG.name}</Heading>
+          </Flex>
 
           {/* Create Habit Button */}
-          <div className="p-4">
-            <Link to="/habits/new">
-              <Button className="w-full">
-                <Plus className="mr-2 h-4 w-4" />
+          <Box p="4">
+            <Link to="/habits/new" style={{ textDecoration: 'none' }}>
+              <Button size="3" style={{ width: '100%' }}>
+                <Plus size={16} />
                 New Habit
               </Button>
             </Link>
-          </div>
+          </Box>
 
           {/* Main Navigation */}
-          <nav className="flex-1 space-y-1 px-4">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                activeProps={{
-                  className: 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400'
-                }}
-                className="group flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-              >
-                <item.icon className="mr-3 h-5 w-5 flex-shrink-0" />
-                {item.name}
-              </Link>
-            ))}
-          </nav>
+          <Box flexGrow="1" px="4">
+            <Flex direction="column" gap="1">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  style={{ textDecoration: 'none' }}
+                  activeProps={{
+                    style: { 
+                      backgroundColor: 'var(--teal-3)',
+                      color: 'var(--teal-11)'
+                    }
+                  }}
+                >
+                  <Flex
+                    align="center"
+                    px="3"
+                    py="2"
+                    style={{
+                      borderRadius: 'var(--radius-2)',
+                      transition: 'background-color 0.2s',
+                      cursor: 'pointer'
+                    }}
+                    className="hover:bg-gray-100 dark:hover:bg-gray-800"
+                  >
+                    <item.icon size={20} style={{ marginRight: '12px' }} />
+                    <Text size="2" weight="medium">{item.name}</Text>
+                  </Flex>
+                </Link>
+              ))}
+            </Flex>
+          </Box>
 
           {/* Bottom Navigation */}
-          <div className="border-t border-gray-200 p-4 dark:border-gray-700">
-            <nav className="space-y-1">
+          <Box style={{ borderTop: '1px solid var(--gray-6)' }} p="4">
+            <Flex direction="column" gap="1">
               {bottomNavigation.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
+                  style={{ textDecoration: 'none' }}
                   activeProps={{
-                    className: 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400'
+                    style: { 
+                      backgroundColor: 'var(--teal-3)',
+                      color: 'var(--teal-11)'
+                    }
                   }}
-                  className="group flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
                 >
-                  <item.icon className="mr-3 h-5 w-5 flex-shrink-0" />
-                  {item.name}
+                  <Flex
+                    align="center"
+                    px="3"
+                    py="2"
+                    style={{
+                      borderRadius: 'var(--radius-2)',
+                      transition: 'background-color 0.2s',
+                      cursor: 'pointer'
+                    }}
+                    className="hover:bg-gray-100 dark:hover:bg-gray-800"
+                  >
+                    <item.icon size={20} style={{ marginRight: '12px' }} />
+                    <Text size="2" weight="medium">{item.name}</Text>
+                  </Flex>
                 </Link>
               ))}
               
-              <button
+              <Flex
+                align="center"
+                px="3"
+                py="2"
                 onClick={handleSignOut}
-                className="group flex w-full items-center rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                style={{
+                  borderRadius: 'var(--radius-2)',
+                  transition: 'background-color 0.2s',
+                  cursor: 'pointer'
+                }}
+                className="hover:bg-gray-100 dark:hover:bg-gray-800"
               >
-                <LogOut className="mr-3 h-5 w-5 flex-shrink-0" />
-                Sign Out
-              </button>
-            </nav>
-          </div>
-        </div>
-      </div>
+                <LogOut size={20} style={{ marginRight: '12px' }} />
+                <Text size="2" weight="medium">Sign Out</Text>
+              </Flex>
+            </Flex>
+          </Box>
+        </Flex>
+      </Box>
     </>
   );
 }

@@ -8,6 +8,7 @@ import { QuickActions } from '@/components/dashboard/QuickActions';
 import { StreakCalendar } from '@/components/dashboard/StreakCalendar';
 import { useQuery } from '@tanstack/react-query';
 import { getUserHabits } from '@/services/firebase/habit.service';
+import { Card, Flex, Box, Text, Heading, Button, Grid, Container } from '@radix-ui/themes';
 
 export const Route = createFileRoute('/_protected/dashboard')({
   component: DashboardPage,
@@ -34,177 +35,194 @@ function DashboardPage() {
   const totalPoints = userProfile?.stats?.totalPoints || 0;
 
   return (
-    <div className="space-y-6">
-      {/* Welcome Section */}
-      <div className="rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 p-6 shadow-lg">
-        <h1 className="text-3xl font-bold text-white">
-          Welcome back, {userProfile?.displayName || 'Habit Forger'}! 👋
-        </h1>
-        <p className="mt-2 text-primary-50">
-          {currentStreak > 0 
-            ? `You're on a ${currentStreak} day streak! Keep it up!`
-            : "Let's start building great habits today!"}
-        </p>
-      </div>
+    <Container size="4">
+      <Flex direction="column" gap="6">
+        {/* Welcome Section */}
+        <Card style={{ background: 'linear-gradient(to right, var(--teal-9), var(--teal-10))' }}>
+          <Box p="6">
+            <Heading size="8" style={{ color: 'white' }}>
+              Welcome back, {userProfile?.displayName || 'Habit Forger'}! 👋
+            </Heading>
+            <Text size="3" mt="2" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+              {currentStreak > 0 
+                ? `You're on a ${currentStreak} day streak! Keep it up!`
+                : "Let's start building great habits today!"}
+            </Text>
+          </Box>
+        </Card>
 
-      {/* Stats Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <StatsCard
-          title="Active Habits"
-          value={activeHabits}
-          icon={Target}
-          color="blue"
-          change={habits.length > 0 ? '+2 this week' : undefined}
-        />
-        <StatsCard
-          title="Current Streak"
-          value={`${currentStreak} days`}
-          icon={TrendingUp}
-          color="green"
-          change={currentStreak > 0 ? 'Personal best!' : undefined}
-        />
-        <StatsCard
-          title="Completed Today"
-          value={`${completedToday}/${activeHabits}`}
-          icon={Activity}
-          color="purple"
-        />
-        <StatsCard
-          title="Total Points"
-          value={totalPoints.toLocaleString()}
-          icon={Award}
-          color="yellow"
-          change="+120 today"
-        />
-      </div>
+        {/* Stats Grid */}
+        <Grid columns={{ initial: '1', sm: '2', lg: '4' }} gap="4">
+          <StatsCard
+            title="Active Habits"
+            value={activeHabits}
+            icon={Target}
+            color="blue"
+            change={habits.length > 0 ? '+2 this week' : undefined}
+          />
+          <StatsCard
+            title="Current Streak"
+            value={`${currentStreak} days`}
+            icon={TrendingUp}
+            color="green"
+            change={currentStreak > 0 ? 'Personal best!' : undefined}
+          />
+          <StatsCard
+            title="Completed Today"
+            value={`${completedToday}/${activeHabits}`}
+            icon={Activity}
+            color="purple"
+          />
+          <StatsCard
+            title="Total Points"
+            value={totalPoints.toLocaleString()}
+            icon={Award}
+            color="yellow"
+            change="+120 today"
+          />
+        </Grid>
 
-      {/* Main Content Grid */}
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Habits Section - 2 columns */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="card">
-            <div className="p-6">
-              <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Today's Habits
-                </h2>
-                <QuickActions />
-              </div>
-              {isLoading ? (
-                <div className="flex h-32 items-center justify-center">
-                  <div className="text-gray-500">Loading habits...</div>
-                </div>
-              ) : habits.length > 0 ? (
-                <HabitList habits={habits} />
-              ) : (
-                <div className="flex flex-col items-center justify-center py-8 text-center">
-                  <Target className="mb-4 h-16 w-16 text-gray-300 dark:text-gray-600" />
-                  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-                    No habits yet
-                  </h3>
-                  <p className="mb-6 max-w-sm text-sm text-gray-500 dark:text-gray-400">
-                    Start your journey to building better habits. Create your first habit and begin tracking your progress today!
-                  </p>
-                  <button
-                    onClick={() => navigate({ to: '/habits/new' })}
-                    className="inline-flex items-center rounded-lg bg-primary-600 px-6 py-3 text-sm font-medium text-white shadow-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-all transform hover:scale-105"
-                  >
-                    <Plus className="mr-2 h-5 w-5" />
-                    Create Your First Habit
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
+        {/* Main Content Grid */}
+        <Grid columns={{ initial: '1', lg: '3' }} gap="6">
+          {/* Habits Section - 2 columns */}
+          <Box gridColumn={{ lg: 'span 2' }}>
+            <Flex direction="column" gap="6">
+              <Card>
+                <Box p="6">
+                  <Flex justify="between" align="center" mb="4">
+                    <Heading size="6">
+                      Today's Habits
+                    </Heading>
+                    <QuickActions />
+                  </Flex>
+                  {isLoading ? (
+                    <Flex align="center" justify="center" minHeight="128px">
+                      <Text color="gray">Loading habits...</Text>
+                    </Flex>
+                  ) : habits.length > 0 ? (
+                    <HabitList habits={habits} />
+                  ) : (
+                    <Flex direction="column" align="center" justify="center" py="8">
+                      <Target size={64} style={{ color: 'var(--gray-6)', marginBottom: '16px' }} />
+                      <Heading size="5" mb="2">
+                        No habits yet
+                      </Heading>
+                      <Text size="2" color="gray" align="center" style={{ maxWidth: '24rem', marginBottom: '24px' }}>
+                        Start your journey to building better habits. Create your first habit and begin tracking your progress today!
+                      </Text>
+                      <Button
+                        size="3"
+                        onClick={() => navigate({ to: '/habits/new' })}
+                      >
+                        <Plus size={20} />
+                        Create Your First Habit
+                      </Button>
+                    </Flex>
+                  )}
+                </Box>
+              </Card>
 
-          {/* Progress Chart */}
-          <div className="card p-6">
-            <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
-              Weekly Progress
-            </h2>
-            <div className="h-64 flex items-center justify-center text-gray-400">
-              Progress chart coming soon...
-            </div>
-          </div>
-        </div>
+              {/* Progress Chart */}
+              <Card>
+                <Box p="6">
+                  <Heading size="6" mb="4">
+                    Weekly Progress
+                  </Heading>
+                  <Flex align="center" justify="center" minHeight="256px">
+                    <Text color="gray">Progress chart coming soon...</Text>
+                  </Flex>
+                </Box>
+              </Card>
+            </Flex>
+          </Box>
 
-        {/* Sidebar - 1 column */}
-        <div className="space-y-6">
-          {/* Streak Calendar */}
-          <div className="card p-6">
-            <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
-              Streak Calendar
-            </h2>
-            <StreakCalendar />
-          </div>
+          {/* Sidebar - 1 column */}
+          <Flex direction="column" gap="6">
+            {/* Streak Calendar */}
+            <Card>
+              <Box p="6">
+                <Heading size="6" mb="4">
+                  Streak Calendar
+                </Heading>
+                <StreakCalendar />
+              </Box>
+            </Card>
 
-          {/* Rope Status */}
-          <div className="card p-6">
-            <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
-              Your Rope
-            </h2>
-            <div className="flex items-center justify-center">
-              <div className="relative h-32 w-32">
-                <svg className="h-32 w-32 -rotate-90">
-                  <circle
-                    cx="64"
-                    cy="64"
-                    r="56"
-                    stroke="currentColor"
-                    strokeWidth="12"
-                    fill="none"
-                    className="text-gray-200 dark:text-gray-700"
-                  />
-                  <circle
-                    cx="64"
-                    cy="64"
-                    r="56"
-                    stroke="currentColor"
-                    strokeWidth="12"
-                    fill="none"
-                    strokeDasharray={`${2 * Math.PI * 56}`}
-                    strokeDashoffset={`${2 * Math.PI * 56 * (1 - (currentStreak / 30))}`}
-                    className="text-primary-500 transition-all duration-500"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                      {Math.round((currentStreak / 30) * 100)}%
-                    </div>
-                    <div className="text-xs text-gray-500">Strong</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-              Keep your streak alive to strengthen your rope!
-            </p>
-          </div>
+            {/* Rope Status */}
+            <Card>
+              <Box p="6">
+                <Heading size="6" mb="4">
+                  Your Rope
+                </Heading>
+                <Flex align="center" justify="center">
+                  <Box position="relative" width="128px" height="128px">
+                    <svg width="128" height="128" style={{ transform: 'rotate(-90deg)' }}>
+                      <circle
+                        cx="64"
+                        cy="64"
+                        r="56"
+                        stroke="var(--gray-6)"
+                        strokeWidth="12"
+                        fill="none"
+                      />
+                      <circle
+                        cx="64"
+                        cy="64"
+                        r="56"
+                        stroke="var(--teal-9)"
+                        strokeWidth="12"
+                        fill="none"
+                        strokeDasharray={`${2 * Math.PI * 56}`}
+                        strokeDashoffset={`${2 * Math.PI * 56 * (1 - (currentStreak / 30))}`}
+                        style={{ transition: 'all 0.5s' }}
+                      />
+                    </svg>
+                    <Flex
+                      position="absolute"
+                      inset="0"
+                      align="center"
+                      justify="center"
+                      direction="column"
+                    >
+                      <Text size="7" weight="bold">
+                        {Math.round((currentStreak / 30) * 100)}%
+                      </Text>
+                      <Text size="1" color="gray">Strong</Text>
+                    </Flex>
+                  </Box>
+                </Flex>
+                <Text size="2" color="gray" align="center" mt="4">
+                  Keep your streak alive to strengthen your rope!
+                </Text>
+              </Box>
+            </Card>
 
-          {/* Community */}
-          <div className="card p-6">
-            <h2 className="mb-4 flex items-center text-xl font-semibold text-gray-900 dark:text-white">
-              <Users className="mr-2 h-5 w-5" />
-              Community
-            </h2>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-600 dark:text-gray-400">Global Rank</span>
-                <span className="font-medium">#1,234</span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-600 dark:text-gray-400">Friends Active</span>
-                <span className="font-medium">12</span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-600 dark:text-gray-400">Challenges</span>
-                <span className="font-medium">3 active</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            {/* Community */}
+            <Card>
+              <Box p="6">
+                <Flex align="center" mb="4">
+                  <Users size={20} style={{ marginRight: '8px' }} />
+                  <Heading size="6">Community</Heading>
+                </Flex>
+                <Flex direction="column" gap="3">
+                  <Flex justify="between">
+                    <Text size="2" color="gray">Global Rank</Text>
+                    <Text size="2" weight="medium">#1,234</Text>
+                  </Flex>
+                  <Flex justify="between">
+                    <Text size="2" color="gray">Friends Active</Text>
+                    <Text size="2" weight="medium">12</Text>
+                  </Flex>
+                  <Flex justify="between">
+                    <Text size="2" color="gray">Challenges</Text>
+                    <Text size="2" weight="medium">3 active</Text>
+                  </Flex>
+                </Flex>
+              </Box>
+            </Card>
+          </Flex>
+        </Grid>
+      </Flex>
+    </Container>
   );
 }
