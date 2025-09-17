@@ -170,8 +170,8 @@ function EditHabitPage() {
           </div>
         </div>
         <Button
-          variant="destructive"
-          size="sm"
+          color="red"
+          size="2"
           onClick={() => setShowDeleteConfirm(true)}
         >
           <Trash2 className="mr-2 h-4 w-4" />
@@ -200,7 +200,7 @@ function EditHabitPage() {
                 Cancel
               </Button>
               <Button
-                variant="destructive"
+                color="red"
                 onClick={handleDelete}
                 disabled={isDeleting}
               >

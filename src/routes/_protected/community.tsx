@@ -156,7 +156,7 @@ function CommunityPage() {
                   rows={3}
                 />
                 <div className="mt-2 flex justify-end">
-                  <Button size="sm" onClick={handlePost}>
+                  <Button size="2" onClick={handlePost}>
                     Share
                   </Button>
                 </div>
@@ -288,7 +288,7 @@ function CommunityPage() {
                   )}
                 </div>
                 <Button
-                  size="sm"
+                  size="2"
                   variant={challenge.joined ? 'outline' : 'default'}
                   className="ml-4"
                 >
@@ -308,7 +308,7 @@ function CommunityPage() {
                 placeholder="Search friends by username..."
                 className="max-w-sm"
               />
-              <Button size="sm">
+              <Button size="2">
                 <UserPlus className="mr-2 h-4 w-4" />
                 Add Friend
               </Button>
@@ -334,7 +334,7 @@ function CommunityPage() {
                     <div className={`h-2 w-2 rounded-full ${
                       friend.status === 'active' ? 'bg-green-500' : 'bg-gray-400'
                     }`} />
-                    <Button size="sm" variant="ghost">
+                    <Button size="2" variant="ghost">
                       View Profile
                     </Button>
                   </div>

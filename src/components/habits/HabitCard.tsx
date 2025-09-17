@@ -1,7 +1,6 @@
 import type { Habit } from '@/types/habit.types';
 import { Check, Clock, Flame, MoreVertical } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import { Card, Flex, Box, Text, Badge, IconButton } from '@radix-ui/themes';
 import { useState } from 'react';
 import { completeHabit } from '@/services/firebase/habit.service';
 import { toast } from 'sonner';
@@ -33,89 +32,89 @@ export function HabitCard({ habit }: HabitCardProps) {
     }
   };
 
-  const getCategoryColor = (category: string) => {
-    const colors: Record<string, string> = {
-      health: 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400',
-      productivity: 'bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400',
-      mindfulness: 'bg-purple-100 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400',
-      fitness: 'bg-orange-100 text-orange-700 dark:bg-orange-900/20 dark:text-orange-400',
-      learning: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400',
-      social: 'bg-pink-100 text-pink-700 dark:bg-pink-900/20 dark:text-pink-400',
-      finance: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-400',
-      creativity: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/20 dark:text-cyan-400',
-      other: 'bg-gray-100 text-gray-700 dark:bg-gray-900/20 dark:text-gray-400',
-    };
-    return colors[category] || colors.other;
+  const getCategoryColor = (category: string): any => {
+    const colors = {
+      health: 'green',
+      productivity: 'blue',
+      mindfulness: 'purple',
+      fitness: 'orange',
+      learning: 'yellow',
+      social: 'pink',
+      finance: 'indigo',
+      creativity: 'cyan',
+      other: 'gray',
+    } as const;
+    return colors[category as keyof typeof colors] || 'gray';
   };
 
   return (
-    <div
-      className={cn(
-        'group relative rounded-lg border p-4 transition-all hover:shadow-md',
-        isCompletedToday
-          ? 'border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/10'
-          : 'border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800'
-      )}
+    <Card
+      style={{
+        backgroundColor: isCompletedToday ? 'var(--green-2)' : undefined,
+        borderColor: isCompletedToday ? 'var(--green-6)' : undefined,
+      }}
     >
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <div className="flex items-center space-x-2">
-            <h3 className="font-medium text-gray-900 dark:text-white">
+      <Flex justify="between" align="start" p="4">
+        <Box flexGrow="1">
+          <Flex align="center" gap="2">
+            <Text weight="medium" size="3">
               {habit.name}
-            </h3>
+            </Text>
             {(habit.streak || 0) > 0 && (
-              <div className="flex items-center space-x-1 text-orange-500">
-                <Flame className="h-4 w-4" />
-                <span className="text-sm font-medium">{(habit.streak || 0)}</span>
-              </div>
+              <Flex align="center" gap="1">
+                <Flame size={16} style={{ color: 'var(--orange-9)' }} />
+                <Text size="2" weight="medium" color="orange">
+                  {habit.streak || 0}
+                </Text>
+              </Flex>
             )}
-          </div>
+          </Flex>
           
           {habit.description && (
-            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            <Text size="2" color="gray" mt="1" style={{ display: 'block' }}>
               {habit.description}
-            </p>
+            </Text>
           )}
           
-          <div className="mt-2 flex items-center space-x-4 text-xs">
-            <span className={cn('rounded-full px-2 py-1', getCategoryColor(habit.category))}>
+          <Flex align="center" gap="3" mt="2">
+            <Badge color={getCategoryColor(habit.category)}>
               {habit.category}
-            </span>
+            </Badge>
             
-            <div className="flex items-center text-gray-500 dark:text-gray-400">
-              <Clock className="mr-1 h-3 w-3" />
-              {habit.timeOfDay || 'Anytime'}
-            </div>
+            <Flex align="center" gap="1">
+              <Clock size={12} style={{ color: 'var(--gray-9)' }} />
+              <Text size="1" color="gray">
+                {habit.timeOfDay || 'Anytime'}
+              </Text>
+            </Flex>
             
-            <span className="text-gray-500 dark:text-gray-400">
+            <Text size="1" color="gray">
               {habit.points} pts
-            </span>
-          </div>
-        </div>
+            </Text>
+          </Flex>
+        </Box>
         
-        <div className="flex items-center space-x-2">
-          <Button
-            size="icon"
-            variant={isCompletedToday ? 'default' : 'outline'}
+        <Flex gap="2">
+          <IconButton
+            size="3"
+            variant={isCompletedToday ? 'solid' : 'outline'}
             onClick={handleComplete}
             disabled={isCompleting || isCompletedToday}
-            className={cn(
-              'h-10 w-10',
-              isCompletedToday && 'bg-green-500 hover:bg-green-600'
-            )}
+            style={{
+              backgroundColor: isCompletedToday ? 'var(--green-9)' : undefined,
+            }}
           >
-            <Check className={cn('h-5 w-5', isCompletedToday && 'text-white')} />
-          </Button>
+            <Check size={20} style={{ color: isCompletedToday ? 'white' : undefined }} />
+          </IconButton>
           
-          <Button
-            size="icon"
+          <IconButton
+            size="2"
             variant="ghost"
-            className="opacity-0 group-hover:opacity-100"
           >
-            <MoreVertical className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
-    </div>
+            <MoreVertical size={16} />
+          </IconButton>
+        </Flex>
+      </Flex>
+    </Card>
   );
 }

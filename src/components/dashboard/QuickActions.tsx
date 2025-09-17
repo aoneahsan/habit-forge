@@ -1,34 +1,34 @@
 import { Plus, Calendar, TrendingUp } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button, Flex } from '@radix-ui/themes';
 import { useNavigate } from '@tanstack/react-router';
 
 export function QuickActions() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex space-x-2">
+    <Flex gap="2">
       <Button
-        size="sm"
+        size="2"
         variant="outline"
         onClick={() => navigate({ to: '/habits/new' })}
       >
-        <Plus className="mr-1 h-4 w-4" />
+        <Plus size={16} />
         Add Habit
       </Button>
       <Button
-        size="sm"
+        size="2"
         variant="ghost"
         onClick={() => navigate({ to: '/analytics' })}
       >
-        <TrendingUp className="h-4 w-4" />
+        <TrendingUp size={16} />
       </Button>
       <Button
-        size="sm"
+        size="2"
         variant="ghost"
         onClick={() => navigate({ to: '/habits' })}
       >
-        <Calendar className="h-4 w-4" />
+        <Calendar size={16} />
       </Button>
-    </div>
+    </Flex>
   );
 }

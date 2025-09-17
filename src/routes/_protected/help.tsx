@@ -132,7 +132,7 @@ function HelpPage() {
           <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
             Get up and running in 5 minutes
           </p>
-          <Button size="sm" className="mt-3">
+          <Button size="2" className="mt-3">
             Start Tour
           </Button>
         </div>
@@ -145,7 +145,7 @@ function HelpPage() {
           <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
             Detailed documentation
           </p>
-          <Button size="sm" variant="outline" className="mt-3">
+          <Button size="2" variant="outline" className="mt-3">
             Read Docs
           </Button>
         </div>
@@ -158,7 +158,7 @@ function HelpPage() {
           <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
             Your data is safe with us
           </p>
-          <Button size="sm" variant="outline" className="mt-3">
+          <Button size="2" variant="outline" className="mt-3">
             Learn More
           </Button>
         </div>
@@ -241,7 +241,7 @@ function HelpPage() {
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                   {option.description}
                 </p>
-                <Button size="sm" variant="outline" className="mt-3">
+                <Button size="2" variant="outline" className="mt-3">
                   {option.action}
                 </Button>
               </div>
@@ -258,7 +258,7 @@ function HelpPage() {
           Our support team is here to help you succeed with your habits
         </p>
         <div className="flex justify-center space-x-4">
-          <Button variant="secondary">
+          <Button variant="soft">
             Contact Support
           </Button>
           <Button variant="outline" className="border-white text-white hover:bg-white/10">

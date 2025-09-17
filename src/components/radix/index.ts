@@ -39,6 +39,11 @@ export {
   Strong,
   Section,
   DataList,
+  Spinner,
+  Inset,
+  AspectRatio,
+  Skeleton,
+  SegmentedControl,
 } from '@radix-ui/themes';
 
 // Re-export types
@@ -57,4 +62,12 @@ export type {
   LinkProps,
   BadgeProps,
   AvatarProps,
+  IconButtonProps,
+  ScrollAreaProps,
+  SeparatorProps,
+  TooltipProps,
+  SliderProps,
+  ProgressProps,
+  SpinnerProps,
+  SkeletonProps,
 } from '@radix-ui/themes';

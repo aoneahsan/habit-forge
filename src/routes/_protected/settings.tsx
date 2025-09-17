@@ -178,7 +178,7 @@ function ProfileSettings() {
           <Button variant="outline" className="w-full justify-start">
             Export My Data
           </Button>
-          <Button variant="destructive" className="w-full justify-start">
+          <Button color="red" className="w-full justify-start">
             Delete Account
           </Button>
         </div>
@@ -444,8 +444,8 @@ function MobileSettings() {
             Download the HabitForge mobile app to track your habits on the go!
           </p>
           <div className="mt-3 flex space-x-3">
-            <Button size="sm">Download for iOS</Button>
-            <Button size="sm" variant="outline">Download for Android</Button>
+            <Button size="2">Download for iOS</Button>
+            <Button size="2" variant="outline">Download for Android</Button>
           </div>
         </div>
 
@@ -560,7 +560,7 @@ function SubscriptionSettings() {
           <div className="mt-6 space-y-3">
             <Button variant="outline" className="w-full">Update Payment Method</Button>
             <Button variant="outline" className="w-full">View Billing History</Button>
-            <Button variant="destructive" className="w-full">Cancel Subscription</Button>
+            <Button color="red" className="w-full">Cancel Subscription</Button>
           </div>
         </div>
       )}
