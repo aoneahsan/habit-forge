@@ -5,8 +5,8 @@ import { z } from 'zod';
 import { toast } from 'sonner';
 import { useState, useEffect } from 'react';
 import { getHabit, updateHabit, deleteHabit } from '@/services/firebase/habit.service';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@radix-ui/themes';
+import { TextField } from '@radix-ui/themes';
 import { ArrowLeft, Save, Trash2, AlertTriangle } from 'lucide-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -221,7 +221,7 @@ function EditHabitPage() {
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Habit Name *
               </label>
-              <Input
+              <TextField.Root
                 {...register('name')}
                 placeholder="e.g., Morning meditation"
                 className="mt-1"
@@ -302,7 +302,7 @@ function EditHabitPage() {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Target Count *
                 </label>
-                <Input
+                <TextField.Root
                   {...register('targetCount', { valueAsNumber: true })}
                   type="number"
                   min="1"
@@ -315,7 +315,7 @@ function EditHabitPage() {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Unit *
                 </label>
-                <Input
+                <TextField.Root
                   {...register('targetUnit')}
                   placeholder="e.g., minutes, pages, reps"
                   className="mt-1"
@@ -342,7 +342,7 @@ function EditHabitPage() {
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Points *
               </label>
-              <Input
+              <TextField.Root
                 {...register('points', { valueAsNumber: true })}
                 type="number"
                 min="1"
@@ -374,7 +374,7 @@ function EditHabitPage() {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Reminder Time
                 </label>
-                <Input
+                <TextField.Root
                   {...register('reminderTime')}
                   type="time"
                   className="mt-1"

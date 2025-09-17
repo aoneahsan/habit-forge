@@ -104,10 +104,15 @@ export async function updateHabit(habitId: string, data: Partial<HabitFormData>)
 }
 
 // Complete a habit
-export async function completeHabit(habitId: string): Promise<void> {
+export async function completeHabit(habitId: string, userId: string): Promise<void> {
   try {
     const habit = await getHabit(habitId);
     if (!habit) throw new Error('Habit not found');
+
+    // Validate that the user owns this habit
+    if (habit.userId !== userId) {
+      throw new Error('Unauthorized: You can only complete your own habits');
+    }
 
     const now = new Date();
     const lastCompleted = habit.lastCompletedAt;
@@ -126,8 +131,9 @@ export async function completeHabit(habitId: string): Promise<void> {
       }
     }
 
-    // Update habit
+    // Update habit - ensure userId remains unchanged to satisfy security rules
     await updateDoc(doc(db, HABITS_COLLECTION, habitId), {
+      userId: habit.userId, // Explicitly include userId to satisfy security rules
       streak: newStreak,
       longestStreak: Math.max(newStreak, habit.longestStreak || 0),
       totalCompletions: increment(1),

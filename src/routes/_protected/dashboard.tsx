@@ -21,7 +21,10 @@ function DashboardPage() {
   
   const { data: habits = [], isLoading } = useQuery({
     queryKey: ['habits', user?.uid],
-    queryFn: () => getUserHabits(user?.uid!),
+    queryFn: () => {
+      if (!user?.uid) throw new Error('User not authenticated');
+      return getUserHabits(user.uid);
+    },
     enabled: !!user?.uid,
   });
 

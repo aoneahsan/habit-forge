@@ -6,13 +6,7 @@ import { toast } from 'sonner';
 import { useState } from 'react';
 import { createHabit } from '@/services/firebase/habit.service';
 import { useAuthStore } from '@/stores/auth.store';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button, TextField, Card, Box, Flex, Container, Text, Heading, Select, TextArea, Checkbox } from '@radix-ui/themes';
 import { ArrowLeft, Plus, Info } from 'lucide-react';
 import type { HabitFormData } from '@/types/habit.types';
 
@@ -110,301 +104,309 @@ function NewHabitPage() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <button
-            onClick={() => navigate({ to: '/habits' })}
-            className="rounded-lg p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </button>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Create New Habit</h1>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Build a new positive habit into your routine
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Basic Information */}
-        <div className="card p-6">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Basic Information</h2>
-          
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Habit Name *</Label>
-              <Input
-                id="name"
-                {...register('name')}
-                placeholder="e.g., Morning meditation"
-              />
-              {errors.name && (
-                <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.name.message}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                {...register('description')}
-                placeholder="Brief description of your habit"
-                rows={3}
-              />
-              {errors.description && (
-                <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.description.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Category *
-              </label>
-              <select
-                {...register('category')}
-                className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
-              >
-                <option value="health">Health</option>
-                <option value="productivity">Productivity</option>
-                <option value="mindfulness">Mindfulness</option>
-                <option value="fitness">Fitness</option>
-                <option value="learning">Learning</option>
-                <option value="social">Social</option>
-                <option value="finance">Finance</option>
-                <option value="creativity">Creativity</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* Frequency and Target */}
-        <div className="card p-6">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Frequency & Target</h2>
-          
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Frequency *
-              </label>
-              <select
-                {...register('frequency')}
-                className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
-              >
-                <option value="daily">Daily</option>
-                <option value="weekly">Weekly</option>
-                <option value="custom">Custom</option>
-              </select>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Target Count *
-                </label>
-                <Input
-                  {...register('targetCount', { valueAsNumber: true })}
-                  type="number"
-                  min="1"
-                  max="100"
-                  className="mt-1"
-                />
-                {errors.targetCount && (
-                  <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.targetCount.message}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Unit *
-                </label>
-                <Input
-                  {...register('targetUnit')}
-                  placeholder="e.g., minutes, pages, reps"
-                  className="mt-1"
-                />
-                {errors.targetUnit && (
-                  <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.targetUnit.message}</p>
-                )}
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Time of Day
-              </label>
-              <select
-                {...register('timeOfDay')}
-                className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
-              >
-                <option value="anytime">Anytime</option>
-                <option value="morning">Morning</option>
-                <option value="afternoon">Afternoon</option>
-                <option value="evening">Evening</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Points *
-              </label>
-              <Input
-                {...register('points', { valueAsNumber: true })}
-                type="number"
-                min="1"
-                max="100"
-                className="mt-1"
-              />
-              {errors.points && (
-                <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.points.message}</p>
-              )}
-              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Points earned for completing this habit</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Reminders */}
-        <div className="card p-6">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Reminders</h2>
-          
-          <div className="space-y-4">
-            <div className="flex items-center">
-              <input
-                {...register('reminder')}
-                type="checkbox"
-                className="rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-primary-500 dark:focus:ring-primary-400"
-              />
-              <label className="ml-2 text-sm text-gray-700 dark:text-gray-300">
-                Enable daily reminder
-              </label>
-            </div>
-
-            {reminder && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Reminder Time
-                </label>
-                <Input
-                  {...register('reminderTime')}
-                  type="time"
-                  className="mt-1"
-                />
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Five-Factor Model */}
-        <div className="card p-6">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Habit Loop Analysis</h2>
-            <button
-              type="button"
-              onClick={() => setShowFiveFactors(!showFiveFactors)}
-              className="flex items-center text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400"
-            >
-              <Info className="mr-1 h-4 w-4" />
-              {showFiveFactors ? 'Hide' : 'Show'} Details
-            </button>
-          </div>
-
-          {showFiveFactors && (
-            <div className="space-y-4">
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Understanding your habit loop helps build stronger habits. Based on "The Power of Habit" by Charles Duhigg.
-              </p>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Cue (Trigger) *
-                </label>
-                <Input
-                  {...register('cue')}
-                  placeholder="What triggers this habit? (e.g., After waking up)"
-                  className="mt-1"
-                />
-                {errors.cue && (
-                  <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.cue.message}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Craving (Motivation) *
-                </label>
-                <Input
-                  {...register('craving')}
-                  placeholder="What do you crave? (e.g., Mental clarity)"
-                  className="mt-1"
-                />
-                {errors.craving && (
-                  <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.craving.message}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Response (Action) *
-                </label>
-                <Input
-                  {...register('response')}
-                  placeholder="What's the actual habit? (e.g., Meditate for 10 minutes)"
-                  className="mt-1"
-                />
-                {errors.response && (
-                  <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.response.message}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Reward (Benefit) *
-                </label>
-                <Input
-                  {...register('reward')}
-                  placeholder="What's the immediate reward? (e.g., Feel calm and focused)"
-                  className="mt-1"
-                />
-                {errors.reward && (
-                  <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.reward.message}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Investment (Long-term) *
-                </label>
-                <Input
-                  {...register('investment')}
-                  placeholder="How does this help long-term? (e.g., Better mental health)"
-                  className="mt-1"
-                />
-                {errors.investment && (
-                  <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.investment.message}</p>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Actions */}
-        <div className="flex justify-end space-x-4 pb-6">
+    <Container size="2">
+      <Flex direction="column" gap="6">
+        {/* Header */}
+        <Flex align="center" gap="4">
           <Button
-            type="button"
-            variant="outline"
             onClick={() => navigate({ to: '/habits' })}
+            variant="ghost"
+            size="2"
           >
-            Cancel
+            <ArrowLeft size={20} />
           </Button>
-          <Button type="submit" disabled={isCreating}>
-            {isCreating ? 'Creating...' : 'Create Habit'}
-          </Button>
-        </div>
-      </form>
-    </div>
+          <Box>
+            <Heading size="6">Create New Habit</Heading>
+            <Text size="2" color="gray">
+              Build a new positive habit into your routine
+            </Text>
+          </Box>
+        </Flex>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Flex direction="column" gap="6">
+            {/* Basic Information */}
+            <Card size="3">
+              <Heading size="4" mb="4">Basic Information</Heading>
+              
+              <Flex direction="column" gap="4">
+                <Box>
+                  <Text as="label" size="2" weight="medium" htmlFor="name">
+                    Habit Name *
+                  </Text>
+                  <TextField.Root
+                    id="name"
+                    {...register('name')}
+                    placeholder="e.g., Morning meditation"
+                    mt="1"
+                  />
+                  {errors.name && (
+                    <Text size="1" color="red" mt="1">{errors.name.message}</Text>
+                  )}
+                </Box>
+
+                <Box>
+                  <Text as="label" size="2" weight="medium" htmlFor="description">
+                    Description
+                  </Text>
+                  <TextArea
+                    id="description"
+                    {...register('description')}
+                    placeholder="Brief description of your habit"
+                    rows={3}
+                    mt="1"
+                  />
+                  {errors.description && (
+                    <Text size="1" color="red" mt="1">{errors.description.message}</Text>
+                  )}
+                </Box>
+
+                <Box>
+                  <Text as="label" size="2" weight="medium">
+                    Category *
+                  </Text>
+                  <Select.Root defaultValue="other" onValueChange={(value) => register('category').onChange({ target: { value } })}>
+                    <Select.Trigger mt="1" />
+                    <Select.Content>
+                      <Select.Item value="health">Health</Select.Item>
+                      <Select.Item value="productivity">Productivity</Select.Item>
+                      <Select.Item value="mindfulness">Mindfulness</Select.Item>
+                      <Select.Item value="fitness">Fitness</Select.Item>
+                      <Select.Item value="learning">Learning</Select.Item>
+                      <Select.Item value="social">Social</Select.Item>
+                      <Select.Item value="finance">Finance</Select.Item>
+                      <Select.Item value="creativity">Creativity</Select.Item>
+                      <Select.Item value="other">Other</Select.Item>
+                    </Select.Content>
+                  </Select.Root>
+                </Box>
+              </Flex>
+            </Card>
+
+            {/* Frequency and Target */}
+            <Card size="3">
+              <Heading size="4" mb="4">Frequency & Target</Heading>
+              
+              <Flex direction="column" gap="4">
+                <Box>
+                  <Text as="label" size="2" weight="medium">
+                    Frequency *
+                  </Text>
+                  <Select.Root defaultValue="daily" onValueChange={(value) => register('frequency').onChange({ target: { value } })}>
+                    <Select.Trigger mt="1" />
+                    <Select.Content>
+                      <Select.Item value="daily">Daily</Select.Item>
+                      <Select.Item value="weekly">Weekly</Select.Item>
+                      <Select.Item value="custom">Custom</Select.Item>
+                    </Select.Content>
+                  </Select.Root>
+                </Box>
+
+                <Flex gap="4">
+                  <Box style={{ flex: 1 }}>
+                    <Text as="label" size="2" weight="medium">
+                      Target Count *
+                    </Text>
+                    <TextField.Root
+                      {...register('targetCount', { valueAsNumber: true })}
+                      type="number"
+                      min="1"
+                      max="100"
+                      mt="1"
+                    />
+                    {errors.targetCount && (
+                      <Text size="1" color="red" mt="1">{errors.targetCount.message}</Text>
+                    )}
+                  </Box>
+
+                  <Box style={{ flex: 1 }}>
+                    <Text as="label" size="2" weight="medium">
+                      Unit *
+                    </Text>
+                    <TextField.Root
+                      {...register('targetUnit')}
+                      placeholder="e.g., minutes, pages, reps"
+                      mt="1"
+                    />
+                    {errors.targetUnit && (
+                      <Text size="1" color="red" mt="1">{errors.targetUnit.message}</Text>
+                    )}
+                  </Box>
+                </Flex>
+
+                <Box>
+                  <Text as="label" size="2" weight="medium">
+                    Time of Day
+                  </Text>
+                  <Select.Root defaultValue="anytime" onValueChange={(value) => register('timeOfDay').onChange({ target: { value } })}>
+                    <Select.Trigger mt="1" />
+                    <Select.Content>
+                      <Select.Item value="anytime">Anytime</Select.Item>
+                      <Select.Item value="morning">Morning</Select.Item>
+                      <Select.Item value="afternoon">Afternoon</Select.Item>
+                      <Select.Item value="evening">Evening</Select.Item>
+                    </Select.Content>
+                  </Select.Root>
+                </Box>
+
+                <Box>
+                  <Text as="label" size="2" weight="medium">
+                    Points *
+                  </Text>
+                  <TextField.Root
+                    {...register('points', { valueAsNumber: true })}
+                    type="number"
+                    min="1"
+                    max="100"
+                    mt="1"
+                  />
+                  {errors.points && (
+                    <Text size="1" color="red" mt="1">{errors.points.message}</Text>
+                  )}
+                  <Text size="1" color="gray" mt="1">Points earned for completing this habit</Text>
+                </Box>
+              </Flex>
+            </Card>
+
+            {/* Reminders */}
+            <Card size="3">
+              <Heading size="4" mb="4">Reminders</Heading>
+              
+              <Flex direction="column" gap="4">
+                <Flex align="center" gap="2">
+                  <Checkbox
+                    {...register('reminder')}
+                  />
+                  <Text size="2">
+                    Enable daily reminder
+                  </Text>
+                </Flex>
+
+                {reminder && (
+                  <Box>
+                    <Text as="label" size="2" weight="medium">
+                      Reminder Time
+                    </Text>
+                    <TextField.Root
+                      {...register('reminderTime')}
+                      type="time"
+                      mt="1"
+                    />
+                  </Box>
+                )}
+              </Flex>
+            </Card>
+
+            {/* Five-Factor Model */}
+            <Card size="3">
+              <Flex justify="between" align="center" mb="4">
+                <Heading size="4">Habit Loop Analysis</Heading>
+                <Button
+                  type="button"
+                  onClick={() => setShowFiveFactors(!showFiveFactors)}
+                  variant="ghost"
+                  size="1"
+                >
+                  <Info size={16} style={{ marginRight: '4px' }} />
+                  {showFiveFactors ? 'Hide' : 'Show'} Details
+                </Button>
+              </Flex>
+
+              {showFiveFactors && (
+                <Flex direction="column" gap="4">
+                  <Text size="2" color="gray">
+                    Understanding your habit loop helps build stronger habits. Based on "The Power of Habit" by Charles Duhigg.
+                  </Text>
+
+                  <Box>
+                    <Text as="label" size="2" weight="medium">
+                      Cue (Trigger) *
+                    </Text>
+                    <TextField.Root
+                      {...register('cue')}
+                      placeholder="What triggers this habit? (e.g., After waking up)"
+                      mt="1"
+                    />
+                    {errors.cue && (
+                      <Text size="1" color="red" mt="1">{errors.cue.message}</Text>
+                    )}
+                  </Box>
+
+                  <Box>
+                    <Text as="label" size="2" weight="medium">
+                      Craving (Motivation) *
+                    </Text>
+                    <TextField.Root
+                      {...register('craving')}
+                      placeholder="What do you crave? (e.g., Mental clarity)"
+                      mt="1"
+                    />
+                    {errors.craving && (
+                      <Text size="1" color="red" mt="1">{errors.craving.message}</Text>
+                    )}
+                  </Box>
+
+                  <Box>
+                    <Text as="label" size="2" weight="medium">
+                      Response (Action) *
+                    </Text>
+                    <TextField.Root
+                      {...register('response')}
+                      placeholder="What's the actual habit? (e.g., Meditate for 10 minutes)"
+                      mt="1"
+                    />
+                    {errors.response && (
+                      <Text size="1" color="red" mt="1">{errors.response.message}</Text>
+                    )}
+                  </Box>
+
+                  <Box>
+                    <Text as="label" size="2" weight="medium">
+                      Reward (Benefit) *
+                    </Text>
+                    <TextField.Root
+                      {...register('reward')}
+                      placeholder="What's the immediate reward? (e.g., Feel calm and focused)"
+                      mt="1"
+                    />
+                    {errors.reward && (
+                      <Text size="1" color="red" mt="1">{errors.reward.message}</Text>
+                    )}
+                  </Box>
+
+                  <Box>
+                    <Text as="label" size="2" weight="medium">
+                      Investment (Long-term) *
+                    </Text>
+                    <TextField.Root
+                      {...register('investment')}
+                      placeholder="How does this help long-term? (e.g., Better mental health)"
+                      mt="1"
+                    />
+                    {errors.investment && (
+                      <Text size="1" color="red" mt="1">{errors.investment.message}</Text>
+                    )}
+                  </Box>
+                </Flex>
+              )}
+            </Card>
+
+            {/* Actions */}
+            <Flex justify="end" gap="4" pb="6">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => navigate({ to: '/habits' })}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isCreating}>
+                {isCreating ? 'Creating...' : 'Create Habit'}
+              </Button>
+            </Flex>
+          </Flex>
+        </form>
+      </Flex>
+    </Container>
   );
 }

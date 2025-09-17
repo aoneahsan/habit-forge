@@ -6,8 +6,8 @@ import { z } from 'zod';
 import { toast } from 'sonner';
 import { Loader2, Mail, ArrowLeft } from 'lucide-react';
 import { sendPasswordReset } from '@/services/firebase/auth.service';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@radix-ui/themes';
+import { TextField } from '@radix-ui/themes';
 import { Link } from '@tanstack/react-router';
 
 const forgotPasswordSchema = z.object({
@@ -100,7 +100,7 @@ function ForgotPasswordPage() {
               Email
             </label>
             <div className="relative mt-1">
-              <Input
+              <TextField.Root
                 {...register('email')}
                 type="email"
                 id="email"

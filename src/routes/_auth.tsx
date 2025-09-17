@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 import { requireGuest } from '@/lib/auth-guards';
+import { Container, Flex } from '@radix-ui/themes';
 
 export const Route = createFileRoute('/_auth')({
   beforeLoad: requireGuest,
@@ -8,10 +9,17 @@ export const Route = createFileRoute('/_auth')({
 
 function AuthLayout() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 dark:from-gray-900 dark:to-gray-800">
-      <div className="flex min-h-screen items-center justify-center p-4">
+    <Container size="4">
+      <Flex
+        minHeight="100vh"
+        align="center"
+        justify="center"
+        style={{
+          background: 'linear-gradient(to bottom right, var(--teal-2), var(--teal-3))',
+        }}
+      >
         <Outlet />
-      </div>
-    </div>
+      </Flex>
+    </Container>
   );
 }

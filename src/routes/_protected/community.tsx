@@ -2,8 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/stores/auth.store';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button, TextField, Box, Flex, Container, Card, Text, Heading, Grid, TextArea, Badge, Avatar, Tabs } from '@radix-ui/themes';
 import { Users, Trophy, TrendingUp, MessageCircle, Heart, Share2, UserPlus } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -108,242 +107,286 @@ function CommunityPage() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Community</h1>
-        <p className="mt-1 text-gray-600 dark:text-gray-400">
-          Connect with others on their habit journey
-        </p>
-      </div>
+    <Container size="3">
+      <Flex direction="column" gap="6">
+        {/* Header */}
+        <Box>
+          <Heading size="8">Community</Heading>
+          <Text color="gray" mt="1">
+            Connect with others on their habit journey
+          </Text>
+        </Box>
 
-      {/* Tabs */}
-      <div className="flex space-x-1 rounded-lg bg-gray-100 p-1 dark:bg-gray-800">
-        {[
-          { id: 'feed', label: 'Feed', icon: MessageCircle },
-          { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
-          { id: 'challenges', label: 'Challenges', icon: TrendingUp },
-          { id: 'friends', label: 'Friends', icon: Users },
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id as any)}
-            className={`flex flex-1 items-center justify-center space-x-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-              activeTab === tab.id
-                ? 'bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white'
-                : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
-            }`}
-          >
-            <tab.icon className="h-4 w-4" />
-            <span>{tab.label}</span>
-          </button>
-        ))}
-      </div>
+        {/* Tabs */}
+        <Tabs.Root value={activeTab} onValueChange={(value) => setActiveTab(value as any)}>
+          <Tabs.List size="2">
+            <Tabs.Trigger value="feed">
+              <MessageCircle size={16} style={{ marginRight: '8px' }} />
+              Feed
+            </Tabs.Trigger>
+            <Tabs.Trigger value="leaderboard">
+              <Trophy size={16} style={{ marginRight: '8px' }} />
+              Leaderboard
+            </Tabs.Trigger>
+            <Tabs.Trigger value="challenges">
+              <TrendingUp size={16} style={{ marginRight: '8px' }} />
+              Challenges
+            </Tabs.Trigger>
+            <Tabs.Trigger value="friends">
+              <Users size={16} style={{ marginRight: '8px' }} />
+              Friends
+            </Tabs.Trigger>
+          </Tabs.List>
 
-      {/* Content */}
-      {activeTab === 'feed' && (
-        <div className="space-y-6">
-          {/* Create Post */}
-          <div className="card p-4">
-            <div className="flex space-x-3">
-              <div className="h-10 w-10 flex-shrink-0 rounded-full bg-primary-100 dark:bg-primary-900/20" />
-              <div className="flex-1">
-                <textarea
-                  value={postContent}
-                  onChange={(e) => setPostContent(e.target.value)}
-                  placeholder="Share your progress..."
-                  className="w-full resize-none rounded-lg border border-gray-300 p-3 text-sm focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800"
-                  rows={3}
-                />
-                <div className="mt-2 flex justify-end">
-                  <Button size="2" onClick={handlePost}>
-                    Share
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* Content */}
+          {activeTab === 'feed' && (
+            <Tabs.Content value="feed">
+              <Flex direction="column" gap="6">
+                {/* Create Post */}
+                <Card>
+                  <Flex gap="3">
+                    <Avatar size="3" fallback="U" radius="full" />
+                    <Flex direction="column" flexGrow="1" gap="2">
+                      <TextArea
+                        value={postContent}
+                        onChange={(e) => setPostContent(e.target.value)}
+                        placeholder="Share your progress..."
+                        size="2"
+                        style={{ minHeight: '80px' }}
+                      />
+                      <Flex justify="end">
+                        <Button size="2" onClick={handlePost}>
+                          Share
+                        </Button>
+                      </Flex>
+                    </Flex>
+                  </Flex>
+                </Card>
 
-          {/* Posts */}
-          <div className="space-y-4">
-            {posts.map((post) => (
-              <div key={post.id} className="card p-4">
-                <div className="flex space-x-3">
-                  <div className="h-10 w-10 flex-shrink-0 rounded-full bg-gray-200 dark:bg-gray-700" />
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-gray-900 dark:text-white">
-                          {post.userName}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          {new Date(post.createdAt).toLocaleString()}
-                        </p>
-                      </div>
-                    </div>
-                    <p className="mt-2 text-gray-700 dark:text-gray-300">{post.content}</p>
-                    <div className="mt-3 flex items-center space-x-4">
-                      <button className={`flex items-center space-x-1 text-sm ${
-                        post.isLiked ? 'text-danger-600' : 'text-gray-500 hover:text-danger-600'
-                      }`}>
-                        <Heart className={`h-4 w-4 ${post.isLiked ? 'fill-current' : ''}`} />
-                        <span>{post.likes}</span>
-                      </button>
-                      <button className="flex items-center space-x-1 text-sm text-gray-500 hover:text-primary-600">
-                        <MessageCircle className="h-4 w-4" />
-                        <span>{post.comments}</span>
-                      </button>
-                      <button className="flex items-center space-x-1 text-sm text-gray-500 hover:text-primary-600">
-                        <Share2 className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+                {/* Posts */}
+                <Flex direction="column" gap="4">
+                  {posts.map((post) => (
+                    <Card key={post.id}>
+                      <Flex gap="3">
+                        <Avatar size="3" fallback={post.userName.substring(0, 2)} radius="full" />
+                        <Flex direction="column" flexGrow="1" gap="2">
+                          <Flex justify="between" align="start">
+                            <Box>
+                              <Text weight="medium">{post.userName}</Text>
+                              <Text size="1" color="gray">
+                                {new Date(post.createdAt).toLocaleString()}
+                              </Text>
+                            </Box>
+                          </Flex>
+                          <Text>{post.content}</Text>
+                          <Flex gap="4" mt="2">
+                            <Button
+                              variant="ghost"
+                              size="1"
+                              color={post.isLiked ? 'red' : 'gray'}
+                              style={{ padding: '4px 8px', cursor: 'pointer' }}
+                            >
+                              <Heart
+                                size={16}
+                                fill={post.isLiked ? 'currentColor' : 'none'}
+                                style={{ marginRight: '4px' }}
+                              />
+                              {post.likes}
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="1"
+                              color="gray"
+                              style={{ padding: '4px 8px', cursor: 'pointer' }}
+                            >
+                              <MessageCircle size={16} style={{ marginRight: '4px' }} />
+                              {post.comments}
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="1"
+                              color="gray"
+                              style={{ padding: '4px 8px', cursor: 'pointer' }}
+                            >
+                              <Share2 size={16} />
+                            </Button>
+                          </Flex>
+                        </Flex>
+                      </Flex>
+                    </Card>
+                  ))}
+                </Flex>
+              </Flex>
+            </Tabs.Content>
+          )}
 
-      {activeTab === 'leaderboard' && (
-        <div className="card overflow-hidden">
-          <div className="p-6">
-            <h2 className="text-xl font-semibold">Global Leaderboard</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Top performers this month</p>
-          </div>
-          <div className="divide-y divide-gray-200 dark:divide-gray-700">
-            {leaderboard.map((entry) => (
-              <div
-                key={entry.rank}
-                className={`flex items-center justify-between p-4 ${
-                  entry.isCurrentUser ? 'bg-primary-50 dark:bg-primary-900/20' : ''
-                }`}
-              >
-                <div className="flex items-center space-x-4">
-                  <div className={`flex h-8 w-8 items-center justify-center rounded-full font-bold ${
-                    entry.rank <= 3
-                      ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400'
-                      : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
-                  }`}>
-                    {entry.rank}
-                  </div>
-                  <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700" />
-                  <div>
-                    <p className="font-medium text-gray-900 dark:text-white">
-                      {entry.name}
-                      {entry.isCurrentUser && ' (You)'}
-                    </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {entry.streak} day streak
-                    </p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-lg font-bold text-gray-900 dark:text-white">
-                    {entry.points.toLocaleString()}
-                  </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">points</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+          {activeTab === 'leaderboard' && (
+            <Tabs.Content value="leaderboard">
+              <Card>
+                <Box p="6">
+                  <Heading size="5">Global Leaderboard</Heading>
+                  <Text size="2" color="gray">Top performers this month</Text>
+                </Box>
+                <Box>
+                  {leaderboard.map((entry, index) => (
+                    <Box
+                      key={entry.rank}
+                      p="4"
+                      style={{
+                        backgroundColor: entry.isCurrentUser ? 'var(--teal-2)' : 'transparent',
+                        borderTop: index > 0 ? '1px solid var(--gray-6)' : 'none',
+                      }}
+                    >
+                      <Flex justify="between" align="center">
+                        <Flex align="center" gap="4">
+                          <Badge
+                            size="2"
+                            color={entry.rank <= 3 ? 'yellow' : 'gray'}
+                            radius="full"
+                            style={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                          >
+                            {entry.rank}
+                          </Badge>
+                          <Avatar size="3" fallback={entry.name.substring(0, 2)} radius="full" />
+                          <Box>
+                            <Text weight="medium">
+                              {entry.name}
+                              {entry.isCurrentUser && ' (You)'}
+                            </Text>
+                            <Text size="2" color="gray">
+                              {entry.streak} day streak
+                            </Text>
+                          </Box>
+                        </Flex>
+                        <Box style={{ textAlign: 'right' }}>
+                          <Text size="5" weight="bold">
+                            {entry.points.toLocaleString()}
+                          </Text>
+                          <Text size="2" color="gray">points</Text>
+                        </Box>
+                      </Flex>
+                    </Box>
+                  ))}
+                </Box>
+              </Card>
+            </Tabs.Content>
+          )}
 
-      {activeTab === 'challenges' && (
-        <div className="space-y-4">
-          {challenges.map((challenge) => (
-            <div key={challenge.id} className="card p-6">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    {challenge.name}
-                  </h3>
-                  <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    {challenge.description}
-                  </p>
-                  <div className="mt-4 flex items-center space-x-4 text-sm">
-                    <div className="flex items-center text-gray-500">
-                      <Users className="mr-1 h-4 w-4" />
-                      {challenge.participants} participants
-                    </div>
-                    <div className="flex items-center text-gray-500">
-                      <Trophy className="mr-1 h-4 w-4" />
-                      {challenge.daysLeft} days left
-                    </div>
-                  </div>
-                  {challenge.joined && (
-                    <div className="mt-4">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-600 dark:text-gray-400">Progress</span>
-                        <span className="font-medium">{challenge.progress}%</span>
-                      </div>
-                      <div className="mt-1 h-2 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
-                        <div
-                          className="h-full bg-primary-500 transition-all duration-300"
-                          style={{ width: `${challenge.progress}%` }}
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <Button
-                  size="2"
-                  variant={challenge.joined ? 'outline' : 'solid'}
-                  className="ml-4"
-                >
-                  {challenge.joined ? 'View' : 'Join'}
-                </Button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+          {activeTab === 'challenges' && (
+            <Tabs.Content value="challenges">
+              <Flex direction="column" gap="4">
+                {challenges.map((challenge) => (
+                  <Card key={challenge.id} size="3">
+                    <Flex justify="between" align="start">
+                      <Flex direction="column" flexGrow="1" gap="3">
+                        <Heading size="4">{challenge.name}</Heading>
+                        <Text size="2" color="gray">{challenge.description}</Text>
+                        <Flex gap="4">
+                          <Flex align="center" gap="1">
+                            <Users size={16} color="var(--gray-10)" />
+                            <Text size="2" color="gray">
+                              {challenge.participants} participants
+                            </Text>
+                          </Flex>
+                          <Flex align="center" gap="1">
+                            <Trophy size={16} color="var(--gray-10)" />
+                            <Text size="2" color="gray">
+                              {challenge.daysLeft} days left
+                            </Text>
+                          </Flex>
+                        </Flex>
+                        {challenge.joined && (
+                          <Box>
+                            <Flex justify="between" align="center" mb="1">
+                              <Text size="2" color="gray">Progress</Text>
+                              <Text size="2" weight="medium">{challenge.progress}%</Text>
+                            </Flex>
+                            <Box
+                              style={{
+                                height: '8px',
+                                backgroundColor: 'var(--gray-6)',
+                                borderRadius: '9999px',
+                                overflow: 'hidden',
+                              }}
+                            >
+                              <Box
+                                style={{
+                                  height: '100%',
+                                  width: `${challenge.progress}%`,
+                                  backgroundColor: 'var(--teal-9)',
+                                  transition: 'width 0.3s',
+                                }}
+                              />
+                            </Box>
+                          </Box>
+                        )}
+                      </Flex>
+                      <Button
+                        size="2"
+                        variant={challenge.joined ? 'outline' : 'solid'}
+                        ml="4"
+                      >
+                        {challenge.joined ? 'View' : 'Join'}
+                      </Button>
+                    </Flex>
+                  </Card>
+                ))}
+              </Flex>
+            </Tabs.Content>
+          )}
 
-      {activeTab === 'friends' && (
-        <div className="space-y-4">
-          <div className="card p-4">
-            <div className="flex items-center justify-between">
-              <Input
-                placeholder="Search friends by username..."
-                className="max-w-sm"
-              />
-              <Button size="2">
-                <UserPlus className="mr-2 h-4 w-4" />
-                Add Friend
-              </Button>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            {friends.map((friend) => (
-              <div key={friend.id} className="card p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700" />
-                    <div>
-                      <p className="font-medium text-gray-900 dark:text-white">
-                        {friend.name}
-                      </p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {friend.mutualHabits} mutual habits • {friend.streak} day streak
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className={`h-2 w-2 rounded-full ${
-                      friend.status === 'active' ? 'bg-green-500' : 'bg-gray-400'
-                    }`} />
-                    <Button size="2" variant="ghost">
-                      View Profile
+          {activeTab === 'friends' && (
+            <Tabs.Content value="friends">
+              <Flex direction="column" gap="4">
+                <Card>
+                  <Flex justify="between" align="center">
+                    <TextField.Root
+                      placeholder="Search friends by username..."
+                      size="2"
+                      style={{ maxWidth: '400px' }}
+                    />
+                    <Button size="2">
+                      <UserPlus size={16} style={{ marginRight: '8px' }} />
+                      Add Friend
                     </Button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
+                  </Flex>
+                </Card>
+
+                <Flex direction="column" gap="2">
+                  {friends.map((friend) => (
+                    <Card key={friend.id}>
+                      <Flex justify="between" align="center">
+                        <Flex align="center" gap="3">
+                          <Avatar size="3" fallback={friend.name.substring(0, 2)} radius="full" />
+                          <Box>
+                            <Text weight="medium">{friend.name}</Text>
+                            <Text size="2" color="gray">
+                              {friend.mutualHabits} mutual habits • {friend.streak} day streak
+                            </Text>
+                          </Box>
+                        </Flex>
+                        <Flex align="center" gap="2">
+                          <Box
+                            style={{
+                              width: '8px',
+                              height: '8px',
+                              borderRadius: '50%',
+                              backgroundColor: friend.status === 'active' ? 'var(--green-9)' : 'var(--gray-9)',
+                            }}
+                          />
+                          <Button size="2" variant="ghost">
+                            View Profile
+                          </Button>
+                        </Flex>
+                      </Flex>
+                    </Card>
+                  ))}
+                </Flex>
+              </Flex>
+            </Tabs.Content>
+          )}
+        </Tabs.Root>
+      </Flex>
+    </Container>
   );
 }

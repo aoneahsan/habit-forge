@@ -1,5 +1,6 @@
 import type { Habit } from '@/types/habit.types';
 import { HabitCard } from './HabitCard';
+import { Flex } from '@radix-ui/themes';
 
 interface HabitListProps {
   habits: Habit[];
@@ -21,10 +22,10 @@ export function HabitList({ habits }: HabitListProps) {
   });
 
   return (
-    <div className="space-y-3">
+    <Flex direction="column" gap="3">
       {sortedHabits.map((habit) => (
         <HabitCard key={habit.id} habit={habit} />
       ))}
-    </div>
+    </Flex>
   );
 }

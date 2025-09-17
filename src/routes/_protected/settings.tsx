@@ -3,8 +3,7 @@ import { useState } from 'react';
 import { useAuthStore } from '@/stores/auth.store';
 import { updateUserEmail, updateUserPassword } from '@/services/firebase/auth.service';
 import { updateUserProfile } from '@/services/firebase/user.service';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button, TextField, Box, Flex, Container, Card, Text, Heading, Grid, Select, Switch, Tabs, TextArea } from '@radix-ui/themes';
 import { toast } from 'sonner';
 import { 
   User, 
@@ -41,49 +40,54 @@ function SettingsPage() {
   ];
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Settings</h1>
-        <p className="mt-1 text-gray-600 dark:text-gray-400">
-          Manage your account and preferences
-        </p>
-      </div>
+    <Container size="4">
+      <Flex direction="column" gap="6">
+        {/* Header */}
+        <Box>
+          <Heading size="8">Settings</Heading>
+          <Text color="gray" mt="1">
+            Manage your account and preferences
+          </Text>
+        </Box>
 
-      <div className="flex flex-col gap-6 lg:flex-row">
-        {/* Sidebar */}
-        <div className="w-full lg:w-64">
-          <nav className="space-y-1">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex w-full items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                  activeTab === tab.id
-                    ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400'
-                    : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
-                }`}
-              >
-                <tab.icon className="h-5 w-5" />
-                <span>{tab.label}</span>
-              </button>
-            ))}
-          </nav>
-        </div>
+        <Grid columns={{ initial: '1', lg: '260px 1fr' }} gap="6">
+          {/* Sidebar */}
+          <Box>
+            <Flex direction="column" gap="1">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <Button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    variant={activeTab === tab.id ? 'soft' : 'ghost'}
+                    style={{
+                      justifyContent: 'flex-start',
+                      width: '100%',
+                    }}
+                  >
+                    <Icon size={20} style={{ marginRight: '12px' }} />
+                    <Text>{tab.label}</Text>
+                  </Button>
+                );
+              })}
+            </Flex>
+          </Box>
 
-        {/* Content */}
-        <div className="flex-1">
-          {activeTab === 'profile' && <ProfileSettings />}
-          {activeTab === 'notifications' && <NotificationSettings />}
-          {activeTab === 'privacy' && <PrivacySettings />}
-          {activeTab === 'appearance' && <AppearanceSettings />}
-          {activeTab === 'language' && <LanguageSettings />}
-          {activeTab === 'mobile' && <MobileSettings />}
-          {activeTab === 'subscription' && <SubscriptionSettings />}
-          {activeTab === 'help' && <HelpSettings />}
-        </div>
-      </div>
-    </div>
+          {/* Content */}
+          <Box>
+            {activeTab === 'profile' && <ProfileSettings />}
+            {activeTab === 'notifications' && <NotificationSettings />}
+            {activeTab === 'privacy' && <PrivacySettings />}
+            {activeTab === 'appearance' && <AppearanceSettings />}
+            {activeTab === 'language' && <LanguageSettings />}
+            {activeTab === 'mobile' && <MobileSettings />}
+            {activeTab === 'subscription' && <SubscriptionSettings />}
+            {activeTab === 'help' && <HelpSettings />}
+          </Box>
+        </Grid>
+      </Flex>
+    </Container>
   );
 }
 
@@ -109,81 +113,82 @@ function ProfileSettings() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="card p-6">
-        <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Profile Information</h2>
+    <Flex direction="column" gap="6">
+      <Card size="3">
+        <Heading size="5" mb="4">Profile Information</Heading>
         
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        <Flex direction="column" gap="4">
+          <Box>
+            <Text as="label" size="2" weight="medium" color="gray">
               Display Name
-            </label>
-            <Input
+            </Text>
+            <TextField.Root
               value={displayName}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDisplayName(e.target.value)}
-              className="mt-1"
+              mt="1"
               placeholder="Your name"
             />
-          </div>
+          </Box>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <Box>
+            <Text as="label" size="2" weight="medium" color="gray">
               Email
-            </label>
-            <Input
+            </Text>
+            <TextField.Root
               value={user?.email || ''}
               disabled
-              className="mt-1"
+              mt="1"
             />
-            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Contact support to change your email</p>
-          </div>
+            <Text size="1" color="gray" mt="1">Contact support to change your email</Text>
+          </Box>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <Box>
+            <Text as="label" size="2" weight="medium" color="gray">
               Bio
-            </label>
-            <textarea
+            </Text>
+            <TextArea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
-              rows={3}
+              mt="1"
+              size="2"
+              style={{ minHeight: '80px' }}
               placeholder="Tell us about yourself"
             />
-          </div>
+          </Box>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <Box>
+            <Text as="label" size="2" weight="medium" color="gray">
               Member Since
-            </label>
-            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            </Text>
+            <Text size="2" color="gray" mt="1">
               {userProfile?.createdAt ? new Date(userProfile.createdAt).toLocaleDateString() : 'N/A'}
-            </p>
-          </div>
-        </div>
+            </Text>
+          </Box>
+        </Flex>
 
-        <div className="mt-6 flex justify-end">
+        <Flex justify="end" mt="6">
           <Button onClick={handleSave} disabled={isSaving}>
-            <Save className="mr-2 h-4 w-4" />
+            <Save size={16} style={{ marginRight: '8px' }} />
             {isSaving ? 'Saving...' : 'Save Changes'}
           </Button>
-        </div>
-      </div>
+        </Flex>
+      </Card>
 
-      <div className="card p-6">
-        <h2 className="mb-4 text-xl font-semibold text-danger-600 dark:text-danger-400">Danger Zone</h2>
-        <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+      <Card size="3">
+        <Heading size="5" color="red" mb="4">Danger Zone</Heading>
+        <Text size="2" color="gray" mb="4">
           These actions are irreversible. Please be certain.
-        </p>
-        <div className="space-y-3">
-          <Button variant="outline" className="w-full justify-start">
+        </Text>
+        <Flex direction="column" gap="3">
+          <Button variant="outline" style={{ width: '100%', justifyContent: 'flex-start' }}>
             Export My Data
           </Button>
-          <Button color="red" className="w-full justify-start">
+          <Button color="red" style={{ width: '100%', justifyContent: 'flex-start' }}>
             Delete Account
           </Button>
-        </div>
-      </div>
-    </div>
+        </Flex>
+      </Card>
+    </Flex>
   );
 }
 

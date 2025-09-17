@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { completeHabit } from '@/services/firebase/habit.service';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
+import { useAuthStore } from '@/stores/auth.store';
 
 interface HabitCardProps {
   habit: Habit;
@@ -13,20 +14,22 @@ interface HabitCardProps {
 export function HabitCard({ habit }: HabitCardProps) {
   const [isCompleting, setIsCompleting] = useState(false);
   const queryClient = useQueryClient();
+  const user = useAuthStore((state) => state.user);
   
   const isCompletedToday = habit.lastCompletedAt && 
     new Date(habit.lastCompletedAt).toDateString() === new Date().toDateString();
 
   const handleComplete = async () => {
-    if (isCompletedToday) return;
+    if (isCompletedToday || !user) return;
     
     setIsCompleting(true);
     try {
-      await completeHabit(habit.id);
+      await completeHabit(habit.id, user.uid);
       toast.success(`${habit.name} completed! +${habit.points} points`);
       queryClient.invalidateQueries({ queryKey: ['habits'] });
     } catch (error) {
-      toast.error('Failed to complete habit');
+      console.error('Error completing habit:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to complete habit');
     } finally {
       setIsCompleting(false);
     }

@@ -93,7 +93,7 @@ createHabit(userId, habitData)
 updateHabit(habitId, updates)
 deleteHabit(habitId)
 getHabits(userId)
-completeHabit(habitId)
+completeHabit(habitId, userId)
 ```
 
 ### User Profile

@@ -14,7 +14,6 @@ import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProtectedSettingsRouteImport } from './routes/_protected/settings'
 import { Route as ProtectedHelpRouteImport } from './routes/_protected/help'
-import { Route as ProtectedHabitsRouteImport } from './routes/_protected/habits'
 import { Route as ProtectedDashboardRouteImport } from './routes/_protected/dashboard'
 import { Route as ProtectedCommunityRouteImport } from './routes/_protected/community'
 import { Route as ProtectedAnalyticsRouteImport } from './routes/_protected/analytics'
@@ -22,6 +21,7 @@ import { Route as ProtectedAchievementsRouteImport } from './routes/_protected/a
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
 import { Route as AuthSigninRouteImport } from './routes/_auth/signin'
 import { Route as AuthForgotPasswordRouteImport } from './routes/_auth/forgot-password'
+import { Route as ProtectedHabitsIndexRouteImport } from './routes/_protected/habits.index'
 import { Route as ProtectedHabitsNewRouteImport } from './routes/_protected/habits/new'
 import { Route as ProtectedHabitsHabitIdEditRouteImport } from './routes/_protected/habits/$habitId.edit'
 
@@ -46,11 +46,6 @@ const ProtectedSettingsRoute = ProtectedSettingsRouteImport.update({
 const ProtectedHelpRoute = ProtectedHelpRouteImport.update({
   id: '/help',
   path: '/help',
-  getParentRoute: () => ProtectedRoute,
-} as any)
-const ProtectedHabitsRoute = ProtectedHabitsRouteImport.update({
-  id: '/habits',
-  path: '/habits',
   getParentRoute: () => ProtectedRoute,
 } as any)
 const ProtectedDashboardRoute = ProtectedDashboardRouteImport.update({
@@ -88,16 +83,21 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => AuthRoute,
 } as any)
+const ProtectedHabitsIndexRoute = ProtectedHabitsIndexRouteImport.update({
+  id: '/habits/',
+  path: '/habits/',
+  getParentRoute: () => ProtectedRoute,
+} as any)
 const ProtectedHabitsNewRoute = ProtectedHabitsNewRouteImport.update({
-  id: '/new',
-  path: '/new',
-  getParentRoute: () => ProtectedHabitsRoute,
+  id: '/habits/new',
+  path: '/habits/new',
+  getParentRoute: () => ProtectedRoute,
 } as any)
 const ProtectedHabitsHabitIdEditRoute =
   ProtectedHabitsHabitIdEditRouteImport.update({
-    id: '/$habitId/edit',
-    path: '/$habitId/edit',
-    getParentRoute: () => ProtectedHabitsRoute,
+    id: '/habits/$habitId/edit',
+    path: '/habits/$habitId/edit',
+    getParentRoute: () => ProtectedRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -109,10 +109,10 @@ export interface FileRoutesByFullPath {
   '/analytics': typeof ProtectedAnalyticsRoute
   '/community': typeof ProtectedCommunityRoute
   '/dashboard': typeof ProtectedDashboardRoute
-  '/habits': typeof ProtectedHabitsRouteWithChildren
   '/help': typeof ProtectedHelpRoute
   '/settings': typeof ProtectedSettingsRoute
   '/habits/new': typeof ProtectedHabitsNewRoute
+  '/habits': typeof ProtectedHabitsIndexRoute
   '/habits/$habitId/edit': typeof ProtectedHabitsHabitIdEditRoute
 }
 export interface FileRoutesByTo {
@@ -124,10 +124,10 @@ export interface FileRoutesByTo {
   '/analytics': typeof ProtectedAnalyticsRoute
   '/community': typeof ProtectedCommunityRoute
   '/dashboard': typeof ProtectedDashboardRoute
-  '/habits': typeof ProtectedHabitsRouteWithChildren
   '/help': typeof ProtectedHelpRoute
   '/settings': typeof ProtectedSettingsRoute
   '/habits/new': typeof ProtectedHabitsNewRoute
+  '/habits': typeof ProtectedHabitsIndexRoute
   '/habits/$habitId/edit': typeof ProtectedHabitsHabitIdEditRoute
 }
 export interface FileRoutesById {
@@ -142,10 +142,10 @@ export interface FileRoutesById {
   '/_protected/analytics': typeof ProtectedAnalyticsRoute
   '/_protected/community': typeof ProtectedCommunityRoute
   '/_protected/dashboard': typeof ProtectedDashboardRoute
-  '/_protected/habits': typeof ProtectedHabitsRouteWithChildren
   '/_protected/help': typeof ProtectedHelpRoute
   '/_protected/settings': typeof ProtectedSettingsRoute
   '/_protected/habits/new': typeof ProtectedHabitsNewRoute
+  '/_protected/habits/': typeof ProtectedHabitsIndexRoute
   '/_protected/habits/$habitId/edit': typeof ProtectedHabitsHabitIdEditRoute
 }
 export interface FileRouteTypes {
@@ -159,10 +159,10 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/community'
     | '/dashboard'
-    | '/habits'
     | '/help'
     | '/settings'
     | '/habits/new'
+    | '/habits'
     | '/habits/$habitId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -174,10 +174,10 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/community'
     | '/dashboard'
-    | '/habits'
     | '/help'
     | '/settings'
     | '/habits/new'
+    | '/habits'
     | '/habits/$habitId/edit'
   id:
     | '__root__'
@@ -191,10 +191,10 @@ export interface FileRouteTypes {
     | '/_protected/analytics'
     | '/_protected/community'
     | '/_protected/dashboard'
-    | '/_protected/habits'
     | '/_protected/help'
     | '/_protected/settings'
     | '/_protected/habits/new'
+    | '/_protected/habits/'
     | '/_protected/habits/$habitId/edit'
   fileRoutesById: FileRoutesById
 }
@@ -239,13 +239,6 @@ declare module '@tanstack/react-router' {
       path: '/help'
       fullPath: '/help'
       preLoaderRoute: typeof ProtectedHelpRouteImport
-      parentRoute: typeof ProtectedRoute
-    }
-    '/_protected/habits': {
-      id: '/_protected/habits'
-      path: '/habits'
-      fullPath: '/habits'
-      preLoaderRoute: typeof ProtectedHabitsRouteImport
       parentRoute: typeof ProtectedRoute
     }
     '/_protected/dashboard': {
@@ -297,19 +290,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthForgotPasswordRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_protected/habits/': {
+      id: '/_protected/habits/'
+      path: '/habits'
+      fullPath: '/habits'
+      preLoaderRoute: typeof ProtectedHabitsIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
     '/_protected/habits/new': {
       id: '/_protected/habits/new'
-      path: '/new'
+      path: '/habits/new'
       fullPath: '/habits/new'
       preLoaderRoute: typeof ProtectedHabitsNewRouteImport
-      parentRoute: typeof ProtectedHabitsRoute
+      parentRoute: typeof ProtectedRoute
     }
     '/_protected/habits/$habitId/edit': {
       id: '/_protected/habits/$habitId/edit'
-      path: '/$habitId/edit'
+      path: '/habits/$habitId/edit'
       fullPath: '/habits/$habitId/edit'
       preLoaderRoute: typeof ProtectedHabitsHabitIdEditRouteImport
-      parentRoute: typeof ProtectedHabitsRoute
+      parentRoute: typeof ProtectedRoute
     }
   }
 }
@@ -328,28 +328,16 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
-interface ProtectedHabitsRouteChildren {
-  ProtectedHabitsNewRoute: typeof ProtectedHabitsNewRoute
-  ProtectedHabitsHabitIdEditRoute: typeof ProtectedHabitsHabitIdEditRoute
-}
-
-const ProtectedHabitsRouteChildren: ProtectedHabitsRouteChildren = {
-  ProtectedHabitsNewRoute: ProtectedHabitsNewRoute,
-  ProtectedHabitsHabitIdEditRoute: ProtectedHabitsHabitIdEditRoute,
-}
-
-const ProtectedHabitsRouteWithChildren = ProtectedHabitsRoute._addFileChildren(
-  ProtectedHabitsRouteChildren,
-)
-
 interface ProtectedRouteChildren {
   ProtectedAchievementsRoute: typeof ProtectedAchievementsRoute
   ProtectedAnalyticsRoute: typeof ProtectedAnalyticsRoute
   ProtectedCommunityRoute: typeof ProtectedCommunityRoute
   ProtectedDashboardRoute: typeof ProtectedDashboardRoute
-  ProtectedHabitsRoute: typeof ProtectedHabitsRouteWithChildren
   ProtectedHelpRoute: typeof ProtectedHelpRoute
   ProtectedSettingsRoute: typeof ProtectedSettingsRoute
+  ProtectedHabitsNewRoute: typeof ProtectedHabitsNewRoute
+  ProtectedHabitsIndexRoute: typeof ProtectedHabitsIndexRoute
+  ProtectedHabitsHabitIdEditRoute: typeof ProtectedHabitsHabitIdEditRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
@@ -357,9 +345,11 @@ const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedAnalyticsRoute: ProtectedAnalyticsRoute,
   ProtectedCommunityRoute: ProtectedCommunityRoute,
   ProtectedDashboardRoute: ProtectedDashboardRoute,
-  ProtectedHabitsRoute: ProtectedHabitsRouteWithChildren,
   ProtectedHelpRoute: ProtectedHelpRoute,
   ProtectedSettingsRoute: ProtectedSettingsRoute,
+  ProtectedHabitsNewRoute: ProtectedHabitsNewRoute,
+  ProtectedHabitsIndexRoute: ProtectedHabitsIndexRoute,
+  ProtectedHabitsHabitIdEditRoute: ProtectedHabitsHabitIdEditRoute,
 }
 
 const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(

@@ -1,7 +1,7 @@
 import { Bell, CheckCircle, AlertCircle, Info, Calendar, Trophy, Users, X } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { formatDistanceToNow } from 'date-fns';
-import { Button } from '@/components/ui/button';
+import { Button } from '@radix-ui/themes';
 
 interface Notification {
   id: string;

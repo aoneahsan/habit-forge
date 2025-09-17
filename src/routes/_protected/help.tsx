@@ -11,7 +11,7 @@ import {
   Zap,
   ChevronRight
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button, Box, Flex, Container, Card, Text, Heading, Grid } from '@radix-ui/themes';
 import { useState } from 'react';
 
 export const Route = createFileRoute('/_protected/help')({
@@ -113,159 +113,254 @@ function HelpPage() {
   ];
 
   return (
-    <div className="mx-auto max-w-4xl space-y-8">
-      {/* Header */}
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Help Center</h1>
-        <p className="mt-2 text-gray-600 dark:text-gray-400">
-          Everything you need to know about HabitForge
-        </p>
-      </div>
+    <Container size="3">
+      <Flex direction="column" gap="8">
+        {/* Header */}
+        <Box style={{ textAlign: 'center' }}>
+          <Heading size="8" mb="2">Help Center</Heading>
+          <Text color="gray">
+            Everything you need to know about HabitForge
+          </Text>
+        </Box>
 
-      {/* Quick Actions */}
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="card p-6 text-center">
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-primary-100 dark:bg-primary-900/20">
-            <Zap className="h-6 w-6 text-primary-600 dark:text-primary-400" />
-          </div>
-          <h3 className="font-semibold">Quick Start</h3>
-          <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            Get up and running in 5 minutes
-          </p>
-          <Button size="2" className="mt-3">
-            Start Tour
-          </Button>
-        </div>
-
-        <div className="card p-6 text-center">
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/20">
-            <Book className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-          </div>
-          <h3 className="font-semibold">User Guide</h3>
-          <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            Detailed documentation
-          </p>
-          <Button size="2" variant="outline" className="mt-3">
-            Read Docs
-          </Button>
-        </div>
-
-        <div className="card p-6 text-center">
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/20">
-            <Shield className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-          </div>
-          <h3 className="font-semibold">Privacy</h3>
-          <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            Your data is safe with us
-          </p>
-          <Button size="2" variant="outline" className="mt-3">
-            Learn More
-          </Button>
-        </div>
-      </div>
-
-      {/* FAQs */}
-      <div className="card">
-        <div className="border-b border-gray-200 p-6 dark:border-gray-700">
-          <h2 className="text-xl font-semibold">Frequently Asked Questions</h2>
-        </div>
-        <div className="divide-y divide-gray-200 dark:divide-gray-700">
-          {faqs.map((faq) => (
-            <div key={faq.id} className="p-6">
-              <button
-                onClick={() => setExpandedFaq(expandedFaq === faq.id ? null : faq.id)}
-                className="flex w-full items-center justify-between text-left"
+        {/* Quick Actions */}
+        <Grid columns={{ initial: '1', md: '3' }} gap="4">
+          <Card size="3">
+            <Flex direction="column" align="center" gap="3">
+              <Flex
+                width="48px"
+                height="48px"
+                align="center"
+                justify="center"
+                style={{
+                  borderRadius: '8px',
+                  backgroundColor: 'var(--teal-3)',
+                }}
               >
-                <h3 className="font-medium text-gray-900 dark:text-white">
-                  {faq.question}
-                </h3>
-                <ChevronRight
-                  className={`h-5 w-5 text-gray-400 transition-transform ${
-                    expandedFaq === faq.id ? 'rotate-90' : ''
-                  }`}
-                />
-              </button>
-              {expandedFaq === faq.id && (
-                <p className="mt-3 text-gray-600 dark:text-gray-400">
-                  {faq.answer}
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
+                <Zap size={24} color="var(--teal-11)" />
+              </Flex>
+              <Heading size="4">Quick Start</Heading>
+              <Text size="2" color="gray" align="center">
+                Get up and running in 5 minutes
+              </Text>
+              <Button size="2">
+                Start Tour
+              </Button>
+            </Flex>
+          </Card>
 
-      {/* Resources */}
-      <div>
-        <h2 className="mb-4 text-xl font-semibold">Resources</h2>
-        <div className="grid gap-4 md:grid-cols-2">
-          {resources.map((resource) => {
-            const Icon = resource.icon;
-            return (
-              <a
-                key={resource.title}
-                href={resource.link}
-                className="card flex items-center space-x-4 p-4 transition-shadow hover:shadow-md"
+          <Card size="3">
+            <Flex direction="column" align="center" gap="3">
+              <Flex
+                width="48px"
+                height="48px"
+                align="center"
+                justify="center"
+                style={{
+                  borderRadius: '8px',
+                  backgroundColor: 'var(--blue-3)',
+                }}
               >
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
-                  <Icon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
-                </div>
-                <div>
-                  <h3 className="font-medium text-gray-900 dark:text-white">
-                    {resource.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {resource.description}
-                  </p>
-                </div>
-              </a>
-            );
-          })}
-        </div>
-      </div>
+                <Book size={24} color="var(--blue-11)" />
+              </Flex>
+              <Heading size="4">User Guide</Heading>
+              <Text size="2" color="gray" align="center">
+                Detailed documentation
+              </Text>
+              <Button size="2" variant="outline">
+                Read Docs
+              </Button>
+            </Flex>
+          </Card>
 
-      {/* Contact Support */}
-      <div className="card p-6">
-        <h2 className="mb-6 text-xl font-semibold">Contact Support</h2>
-        <div className="grid gap-4 md:grid-cols-3">
-          {contactOptions.map((option) => {
-            const Icon = option.icon;
-            return (
-              <div key={option.title} className="text-center">
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
-                  <Icon className="h-6 w-6 text-gray-600 dark:text-gray-400" />
-                </div>
-                <h3 className="font-medium text-gray-900 dark:text-white">
-                  {option.title}
-                </h3>
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                  {option.description}
-                </p>
-                <Button size="2" variant="outline" className="mt-3">
-                  {option.action}
-                </Button>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+          <Card size="3">
+            <Flex direction="column" align="center" gap="3">
+              <Flex
+                width="48px"
+                height="48px"
+                align="center"
+                justify="center"
+                style={{
+                  borderRadius: '8px',
+                  backgroundColor: 'var(--purple-3)',
+                }}
+              >
+                <Shield size={24} color="var(--purple-11)" />
+              </Flex>
+              <Heading size="4">Privacy</Heading>
+              <Text size="2" color="gray" align="center">
+                Your data is safe with us
+              </Text>
+              <Button size="2" variant="outline">
+                Learn More
+              </Button>
+            </Flex>
+          </Card>
+        </Grid>
 
-      {/* Feedback */}
-      <div className="rounded-lg bg-gradient-to-r from-primary-500 to-primary-600 p-8 text-center text-white">
-        <HelpCircle className="mx-auto mb-4 h-12 w-12" />
-        <h2 className="mb-2 text-2xl font-bold">Still need help?</h2>
-        <p className="mb-6 opacity-90">
-          Our support team is here to help you succeed with your habits
-        </p>
-        <div className="flex justify-center space-x-4">
-          <Button variant="soft">
-            Contact Support
-          </Button>
-          <Button variant="outline" className="border-white text-white hover:bg-white/10">
-            Send Feedback
-          </Button>
-        </div>
-      </div>
-    </div>
+        {/* FAQs */}
+        <Card>
+          <Box p="6" style={{ borderBottom: '1px solid var(--gray-6)' }}>
+            <Heading size="5">Frequently Asked Questions</Heading>
+          </Box>
+          <Box>
+            {faqs.map((faq, index) => (
+              <Box
+                key={faq.id}
+                p="6"
+                style={{
+                  borderBottom: index < faqs.length - 1 ? '1px solid var(--gray-6)' : 'none',
+                }}
+              >
+                <button
+                  onClick={() => setExpandedFaq(expandedFaq === faq.id ? null : faq.id)}
+                  style={{
+                    width: '100%',
+                    border: 'none',
+                    background: 'none',
+                    padding: 0,
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                  }}
+                >
+                  <Flex justify="between" align="center">
+                    <Text size="3" weight="medium">
+                      {faq.question}
+                    </Text>
+                    <ChevronRight
+                      size={20}
+                      style={{
+                        color: 'var(--gray-10)',
+                        transform: expandedFaq === faq.id ? 'rotate(90deg)' : 'none',
+                        transition: 'transform 0.2s',
+                      }}
+                    />
+                  </Flex>
+                </button>
+                {expandedFaq === faq.id && (
+                  <Box mt="3">
+                    <Text color="gray">
+                      {faq.answer}
+                    </Text>
+                  </Box>
+                )}
+              </Box>
+            ))}
+          </Box>
+        </Card>
+
+        {/* Resources */}
+        <Box>
+          <Heading size="5" mb="4">Resources</Heading>
+          <Grid columns={{ initial: '1', md: '2' }} gap="4">
+            {resources.map((resource) => {
+              const Icon = resource.icon;
+              return (
+                <a
+                  key={resource.title}
+                  href={resource.link}
+                  style={{ textDecoration: 'none' }}
+                >
+                  <Card size="2" style={{ cursor: 'pointer' }}>
+                    <Flex gap="4" align="center">
+                      <Flex
+                        width="40px"
+                        height="40px"
+                        align="center"
+                        justify="center"
+                        flexShrink="0"
+                        style={{
+                          borderRadius: '8px',
+                          backgroundColor: 'var(--gray-3)',
+                        }}
+                      >
+                        <Icon size={20} color="var(--gray-11)" />
+                      </Flex>
+                      <Box>
+                        <Text weight="medium">
+                          {resource.title}
+                        </Text>
+                        <Text size="2" color="gray">
+                          {resource.description}
+                        </Text>
+                      </Box>
+                    </Flex>
+                  </Card>
+                </a>
+              );
+            })}
+          </Grid>
+        </Box>
+
+        {/* Contact Support */}
+        <Card size="3">
+          <Heading size="5" mb="6">Contact Support</Heading>
+          <Grid columns={{ initial: '1', md: '3' }} gap="4">
+            {contactOptions.map((option) => {
+              const Icon = option.icon;
+              return (
+                <Flex key={option.title} direction="column" align="center" gap="3">
+                  <Flex
+                    width="48px"
+                    height="48px"
+                    align="center"
+                    justify="center"
+                    style={{
+                      borderRadius: '8px',
+                      backgroundColor: 'var(--gray-3)',
+                    }}
+                  >
+                    <Icon size={24} color="var(--gray-11)" />
+                  </Flex>
+                  <Text weight="medium">
+                    {option.title}
+                  </Text>
+                  <Text size="2" color="gray" align="center">
+                    {option.description}
+                  </Text>
+                  <Button size="2" variant="outline">
+                    {option.action}
+                  </Button>
+                </Flex>
+              );
+            })}
+          </Grid>
+        </Card>
+
+        {/* Feedback */}
+        <Box
+          p="8"
+          style={{
+            borderRadius: '8px',
+            background: 'linear-gradient(to right, var(--teal-9), var(--teal-10))',
+            textAlign: 'center',
+          }}
+        >
+          <Flex direction="column" align="center" gap="4">
+            <HelpCircle size={48} color="white" />
+            <Heading size="6" style={{ color: 'white' }}>
+              Still need help?
+            </Heading>
+            <Text size="3" style={{ color: 'white', opacity: 0.9 }}>
+              Our support team is here to help you succeed with your habits
+            </Text>
+            <Flex gap="4" justify="center">
+              <Button variant="soft">
+                Contact Support
+              </Button>
+              <Button
+                variant="outline"
+                style={{
+                  borderColor: 'white',
+                  color: 'white',
+                }}
+              >
+                Send Feedback
+              </Button>
+            </Flex>
+          </Flex>
+        </Box>
+      </Flex>
+    </Container>
   );
 }

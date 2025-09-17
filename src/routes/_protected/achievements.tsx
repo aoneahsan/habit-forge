@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { Trophy, Star, Target, Zap, Award, TrendingUp, Users, Calendar, Lock } from 'lucide-react';
 import { useAuthStore } from '@/stores/auth.store';
-import { cn } from '@/lib/utils';
 
 export const Route = createFileRoute('/_protected/achievements')({
   component: AchievementsPage,
@@ -300,27 +299,25 @@ function AchievementsPage() {
           return (
             <div
               key={achievement.id}
-              className={cn(
-                'card relative overflow-hidden p-6 transition-all',
+              className={`card relative overflow-hidden p-6 transition-all ${
                 achievement.unlocked
                   ? 'ring-2 ring-primary-500 ring-offset-2 dark:ring-offset-gray-900'
                   : 'opacity-75'
-              )}
+              }`}
             >
               {/* Rarity Badge */}
               <div className="absolute right-2 top-2">
-                <span className={cn('text-xs font-medium uppercase', getRarityColor(achievement.rarity))}>
+                <span className={`text-xs font-medium uppercase ${getRarityColor(achievement.rarity)}`}>
                   {achievement.rarity}
                 </span>
               </div>
 
               {/* Icon */}
-              <div className={cn(
-                'mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg',
+              <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg ${
                 getRarityBg(achievement.rarity)
-              )}>
+              }`}>
                 {achievement.unlocked ? (
-                  <Icon className={cn('h-6 w-6', getRarityColor(achievement.rarity))} />
+                  <Icon className={`h-6 w-6 ${getRarityColor(achievement.rarity)}`} />
                 ) : (
                   <Lock className="h-6 w-6 text-gray-400" />
                 )}
@@ -389,11 +386,10 @@ function AchievementsPage() {
 
               return (
                 <div key={achievement.id} className="flex items-center space-x-4">
-                  <div className={cn(
-                    'flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg',
+                  <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg ${
                     getRarityBg(achievement.rarity)
-                  )}>
-                    <Icon className={cn('h-5 w-5', getRarityColor(achievement.rarity))} />
+                  }`}>
+                    <Icon className={`h-5 w-5 ${getRarityColor(achievement.rarity)}`} />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between">

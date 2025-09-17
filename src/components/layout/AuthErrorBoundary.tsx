@@ -1,5 +1,5 @@
 import { Component, type ReactNode } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@radix-ui/themes';
 import { AlertTriangle } from 'lucide-react';
 
 interface Props {
