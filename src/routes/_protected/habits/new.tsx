@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { createHabit } from '@/services/firebase/habit.service';
 import { useAuthStore } from '@/stores/auth.store';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/Input';
+import { Input } from '@/components/ui/input';
 import { ArrowLeft, Plus, Info } from 'lucide-react';
 import type { HabitFormData } from '@/types/habit.types';
 

@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getUserHabits } from '@/services/firebase/habit.service';
 import { useAuthStore } from '@/stores/auth.store';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/Input';
+import { Input } from '@/components/ui/input';
 import { HabitList } from '@/components/habits/HabitList';
 import { Plus, Search, Filter, Grid, List } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
@@ -75,7 +75,7 @@ function HabitsPage() {
               type="text"
               placeholder="Search habits..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
               className="pl-10"
             />
           </div>

@@ -8,7 +8,7 @@ import { Loader2, Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
 import { signUpWithEmail, signInWithGoogle } from '@/services/firebase/auth.service';
 import { createUserProfile } from '@/services/firebase/user.service';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/Input';
+import { Input } from '@/components/ui/input';
 import { Link } from '@tanstack/react-router';
 
 const signUpSchema = z.object({

@@ -4,7 +4,7 @@ import { useAuthStore } from '@/stores/auth.store';
 import { updateUserEmail, updateUserPassword } from '@/services/firebase/auth.service';
 import { updateUserProfile } from '@/services/firebase/user.service';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/Input';
+import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { 
   User, 
@@ -120,7 +120,7 @@ function ProfileSettings() {
             </label>
             <Input
               value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDisplayName(e.target.value)}
               className="mt-1"
               placeholder="Your name"
             />

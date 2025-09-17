@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { Loader2, Mail, ArrowLeft } from 'lucide-react';
 import { sendPasswordReset } from '@/services/firebase/auth.service';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/Input';
+import { Input } from '@/components/ui/input';
 import { Link } from '@tanstack/react-router';
 
 const forgotPasswordSchema = z.object({
