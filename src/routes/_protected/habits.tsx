@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getUserHabits } from '@/services/firebase/habit.service';
 import { useAuthStore } from '@/stores/auth.store';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/Input';
 import { HabitList } from '@/components/habits/HabitList';
 import { Plus, Search, Filter, Grid, List } from 'lucide-react';

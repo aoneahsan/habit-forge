@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { Loader2, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { signInWithEmail, signInWithGoogle } from '@/services/firebase/auth.service';
 import { createUserProfile } from '@/services/firebase/user.service';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/Input';
 import { Link } from '@tanstack/react-router';
 

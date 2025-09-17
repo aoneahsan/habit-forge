@@ -1,5 +1,5 @@
 import { Plus, Calendar, TrendingUp } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { useNavigate } from '@tanstack/react-router';
 
 export function QuickActions() {

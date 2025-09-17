@@ -11,7 +11,7 @@ import {
   Zap,
   ChevronRight
 } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 
 export const Route = createFileRoute('/_protected/help')({

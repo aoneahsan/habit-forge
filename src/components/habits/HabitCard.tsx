@@ -1,7 +1,7 @@
 import type { Habit } from '@/types/habit.types';
 import { Check, Clock, Flame, MoreVertical } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { completeHabit } from '@/services/firebase/habit.service';
 import { toast } from 'sonner';

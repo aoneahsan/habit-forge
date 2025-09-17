@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { signOutUser } from '@/services/firebase/auth.service';
 import { toast } from 'sonner';
 import { APP_CONFIG } from '@/constants/app.constants';

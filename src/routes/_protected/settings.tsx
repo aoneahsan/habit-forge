@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useAuthStore } from '@/stores/auth.store';
 import { updateUserEmail, updateUserPassword } from '@/services/firebase/auth.service';
 import { updateUserProfile } from '@/services/firebase/user.service';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/Input';
 import { toast } from 'sonner';
 import { 

@@ -1,7 +1,7 @@
 import { Search, Moon, Sun, User, LogOut, Settings, ChevronDown } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { useAuthStore } from '@/stores/auth.store';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { getInitials } from '@/lib/utils';
 import { signOutUser } from '@/services/firebase/auth.service';
 import { useNavigate, Link } from '@tanstack/react-router';
