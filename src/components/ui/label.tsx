@@ -5,8 +5,8 @@ import * as React from 'react';
 export const Label = React.forwardRef<
   HTMLLabelElement,
   React.LabelHTMLAttributes<HTMLLabelElement>
->(({ children, className, ...props }, ref) => (
-  <Text as="label" size="2" weight="medium" {...props}>
+>(({ children, ...props }, ref) => (
+  <Text as="label" size="2" weight="medium">
     {children}
   </Text>
 ));

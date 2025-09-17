@@ -289,7 +289,7 @@ function CommunityPage() {
                 </div>
                 <Button
                   size="2"
-                  variant={challenge.joined ? 'outline' : 'default'}
+                  variant={challenge.joined ? 'outline' : 'solid'}
                   className="ml-4"
                 >
                   {challenge.joined ? 'View' : 'Join'}

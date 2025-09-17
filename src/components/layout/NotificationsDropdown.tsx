@@ -106,7 +106,7 @@ export function NotificationsDropdown() {
     <div className="relative" ref={dropdownRef}>
       <Button 
         variant="ghost" 
-        size="icon" 
+        size="2" 
         className="relative"
         onClick={() => setShowDropdown(!showDropdown)}
       >

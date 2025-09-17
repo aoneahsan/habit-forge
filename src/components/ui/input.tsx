@@ -8,9 +8,12 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, placeholder, value, onChange, disabled, ...props }, ref) => {
+    // Convert value to string or number for TextField compatibility
+    const textFieldValue = typeof value === 'string' || typeof value === 'number' ? value : undefined;
+    
     return <TextField.Root 
       placeholder={placeholder}
-      value={value}
+      value={textFieldValue}
       onChange={onChange}
       disabled={disabled}
     />;
