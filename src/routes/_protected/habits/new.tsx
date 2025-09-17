@@ -8,6 +8,11 @@ import { createHabit } from '@/services/firebase/habit.service';
 import { useAuthStore } from '@/stores/auth.store';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, Plus, Info } from 'lucide-react';
 import type { HabitFormData } from '@/types/habit.types';
 
@@ -130,28 +135,24 @@ function NewHabitPage() {
           <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Basic Information</h2>
           
           <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Habit Name *
-              </label>
+            <div className="space-y-2">
+              <Label htmlFor="name">Habit Name *</Label>
               <Input
+                id="name"
                 {...register('name')}
                 placeholder="e.g., Morning meditation"
-                className="mt-1"
               />
               {errors.name && (
                 <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">{errors.name.message}</p>
               )}
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Description
-              </label>
-              <textarea
+            <div className="space-y-2">
+              <Label htmlFor="description">Description</Label>
+              <Textarea
+                id="description"
                 {...register('description')}
                 placeholder="Brief description of your habit"
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-500 focus:border-primary-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400"
                 rows={3}
               />
               {errors.description && (

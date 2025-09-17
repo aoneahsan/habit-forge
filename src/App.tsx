@@ -9,6 +9,8 @@ import { auth } from '@/config/firebase.config';
 import { useAuthStore } from '@/stores/auth.store';
 import { getUserProfile } from '@/services/firebase/user.service';
 import { routeTree } from './routeTree.gen';
+import { Theme } from '@radix-ui/themes';
+import '@radix-ui/themes/styles.css';
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient({
@@ -96,21 +98,29 @@ function App() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} context={{ queryClient, auth: authState }} />
-      <Toaster 
-        position="top-right"
-        richColors
-        closeButton
-        duration={4000}
-      />
-      {import.meta.env.DEV && (
-        <>
-          <ReactQueryDevtools initialIsOpen={false} />
-          <TanStackRouterDevtools router={router} initialIsOpen={false} />
-        </>
-      )}
-    </QueryClientProvider>
+    <Theme 
+      accentColor="teal" 
+      grayColor="slate" 
+      radius="medium" 
+      scaling="100%"
+      appearance={localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'}
+    >
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} context={{ queryClient, auth: authState }} />
+        <Toaster 
+          position="top-right"
+          richColors
+          closeButton
+          duration={4000}
+        />
+        {import.meta.env.DEV && (
+          <>
+            <ReactQueryDevtools initialIsOpen={false} />
+            <TanStackRouterDevtools router={router} initialIsOpen={false} />
+          </>
+        )}
+      </QueryClientProvider>
+    </Theme>
   );
 }
 
