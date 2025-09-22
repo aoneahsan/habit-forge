@@ -151,3 +151,5 @@ pnpm-lock.yaml
 
 functions/node_modules
 functions/lib
+
+!.env.x
