@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
+import { 
+  Box, Button, Card, Container, Flex, Grid, Heading, Text, 
+  TextField, Select, Table, Badge, IconButton
+} from '@radix-ui/themes';
 import { AdminService } from '@/services/admin.service';
 import { 
   Search, 
   Filter, 
-  MoreVertical, 
   Shield, 
   Ban,
   Edit,
-  Trash2,
-  Mail
+  Trash2
 } from 'lucide-react';
 import type { User } from '@/types';
 
@@ -68,136 +67,138 @@ export function UserManagement() {
   );
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">User Management</h1>
-        <p className="text-gray-600 mt-2">Manage user accounts and permissions</p>
-      </div>
+    <Container size="4" py="6">
+      <Box mb="8">
+        <Heading size="8">User Management</Heading>
+        <Text color="gray" size="3">Manage user accounts and permissions</Text>
+      </Box>
 
       {/* Filters */}
-      <Card className="p-4 mb-6">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-            <Input
+      <Card mb="6">
+        <Flex gap="4" direction={{ initial: 'column', sm: 'row' }}>
+          <Box flexGrow="1">
+            <TextField.Root
               type="text"
               placeholder="Search users..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          <div className="flex gap-2">
-            <select
-              value={filterType}
-              onChange={(e) => setFilterType(e.target.value)}
-              className="px-4 py-2 border rounded-lg"
             >
-              <option value="all">All Users</option>
-              <option value="active">Active</option>
-              <option value="suspended">Suspended</option>
-              <option value="premium">Premium</option>
-              <option value="free">Free</option>
-            </select>
+              <TextField.Slot>
+                <Search className="h-4 w-4" />
+              </TextField.Slot>
+            </TextField.Root>
+          </Box>
+          <Flex gap="2">
+            <Select.Root
+              value={filterType}
+              onValueChange={(value) => setFilterType(value)}
+            >
+              <Select.Trigger />
+              <Select.Content>
+                <Select.Item value="all">All Users</Select.Item>
+                <Select.Item value="active">Active</Select.Item>
+                <Select.Item value="suspended">Suspended</Select.Item>
+                <Select.Item value="premium">Premium</Select.Item>
+                <Select.Item value="free">Free</Select.Item>
+              </Select.Content>
+            </Select.Root>
             <Button variant="outline">
               <Filter className="h-4 w-4 mr-2" />
               More Filters
             </Button>
-          </div>
-        </div>
+          </Flex>
+        </Flex>
       </Card>
 
       {/* Users Table */}
-      <Card className="overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b">
-              <tr>
-                <th className="text-left p-4">User</th>
-                <th className="text-left p-4">Status</th>
-                <th className="text-left p-4">Plan</th>
-                <th className="text-left p-4">Joined</th>
-                <th className="text-left p-4">Last Active</th>
-                <th className="text-left p-4">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan={6} className="text-center p-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                  </td>
-                </tr>
-              ) : filteredUsers.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="text-center p-8 text-gray-500">
-                    No users found
-                  </td>
-                </tr>
-              ) : (
-                filteredUsers.map((user) => (
-                  <tr key={user.id} className="border-b hover:bg-gray-50">
-                    <td className="p-4">
-                      <div>
-                        <p className="font-medium">{user.displayName || 'Unknown'}</p>
-                        <p className="text-sm text-gray-500">{user.email}</p>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        user.status === 'active' ? 'bg-green-100 text-green-800' :
-                        user.status === 'suspended' ? 'bg-red-100 text-red-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
-                        {user.status || 'active'}
-                      </span>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex items-center gap-1">
-                        {user.subscriptionTier === 'premium' && (
-                          <Shield className="h-4 w-4 text-yellow-500" />
-                        )}
-                        <span className="text-sm">{user.subscriptionTier || 'free'}</span>
-                      </div>
-                    </td>
-                    <td className="p-4 text-sm text-gray-600">
+      <Card>
+        {loading ? (
+          <Flex align="center" justify="center" py="9">
+            <Box className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></Box>
+          </Flex>
+        ) : filteredUsers.length === 0 ? (
+          <Flex align="center" justify="center" py="9">
+            <Text color="gray">No users found</Text>
+          </Flex>
+        ) : (
+          <Table.Root>
+            <Table.Header>
+              <Table.Row>
+                <Table.ColumnHeaderCell>User</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Status</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Plan</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Joined</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Last Active</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Actions</Table.ColumnHeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {filteredUsers.map((user) => (
+                <Table.Row key={user.id}>
+                  <Table.Cell>
+                    <Box>
+                      <Text weight="medium">{user.displayName || 'Unknown'}</Text>
+                      <Text size="1" color="gray">{user.email}</Text>
+                    </Box>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Badge 
+                      color={user.status === 'active' ? 'green' : 'red'}
+                      variant="soft"
+                    >
+                      {user.status || 'active'}
+                    </Badge>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Flex align="center" gap="1">
+                      {user.subscriptionTier === 'premium' && (
+                        <Shield className="h-4 w-4 text-yellow-500" />
+                      )}
+                      <Text size="2">{user.subscriptionTier || 'free'}</Text>
+                    </Flex>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Text size="2" color="gray">
                       {new Date(user.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="p-4 text-sm text-gray-600">
+                    </Text>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Text size="2" color="gray">
                       {user.lastActive ? new Date(user.lastActive).toLocaleDateString() : 'Never'}
-                    </td>
-                    <td className="p-4">
-                      <div className="flex items-center gap-2">
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => handleUserAction(user.id, 'edit')}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => handleUserAction(user.id, user.status === 'suspended' ? 'activate' : 'suspend')}
-                        >
-                          <Ban className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => handleUserAction(user.id, 'delete')}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                    </Text>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Flex gap="2">
+                      <IconButton
+                        size="1"
+                        variant="ghost"
+                        onClick={() => handleUserAction(user.id, 'edit')}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </IconButton>
+                      <IconButton
+                        size="1"
+                        variant="ghost"
+                        onClick={() => handleUserAction(user.id, user.status === 'suspended' ? 'activate' : 'suspend')}
+                      >
+                        <Ban className="h-4 w-4" />
+                      </IconButton>
+                      <IconButton
+                        size="1"
+                        variant="ghost"
+                        color="red"
+                        onClick={() => handleUserAction(user.id, 'delete')}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </IconButton>
+                    </Flex>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table.Root>
+        )}
       </Card>
-    </div>
+    </Container>
   );
 }

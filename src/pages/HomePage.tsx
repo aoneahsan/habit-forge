@@ -26,7 +26,7 @@ export function HomePage() {
           
           <Flex gap="4" justify="center" mb="9">
             <Button size="4" onClick={() => navigate({ to: '/signup' })}>
-              Start Free Trial
+              Get Started
             </Button>
             <Button size="4" variant="outline" onClick={() => navigate({ to: '/login' })}>
               Sign In

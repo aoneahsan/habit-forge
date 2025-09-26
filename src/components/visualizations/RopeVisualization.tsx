@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
-import { RopeState } from '@/types';
+import { Box } from '@radix-ui/themes';
+import type { RopeState } from '@/types';
 
 interface RopeVisualizationProps {
   ropeState: RopeState;
@@ -112,13 +113,12 @@ export function RopeVisualization({
   }, [ropeState, width, height, animate]);
 
   return (
-    <div className="rope-container">
+    <Box>
       <svg 
         ref={svgRef} 
         width={width} 
         height={height}
-        className="rope-visualization"
       />
-    </div>
+    </Box>
   );
 }
