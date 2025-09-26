@@ -3,7 +3,7 @@ import {
   doc, collection, getDocs, setDoc, updateDoc, deleteDoc,
   query, where, orderBy, limit, Timestamp, onSnapshot
 } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db } from '@/config/firebase';
 import toast from 'react-hot-toast';
 
 export type NotificationType = 'reminder' | 'achievement' | 'social' | 'system' | 'challenge';

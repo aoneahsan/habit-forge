@@ -75,6 +75,7 @@ export function DashboardPage() {
                 <Button variant="ghost" size="2" onClick={() => navigate({ to: '/habits' })}>Habits</Button>
                 <Button variant="ghost" size="2" onClick={() => navigate({ to: '/community' })}>Community</Button>
                 <Button variant="ghost" size="2" onClick={() => navigate({ to: '/insights' })}>Insights</Button>
+                <Button variant="ghost" size="2" onClick={() => navigate({ to: '/achievements' })}>Achievements</Button>
               </Flex>
             </Flex>
             <Flex align="center" gap="3">
