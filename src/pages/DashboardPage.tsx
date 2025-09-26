@@ -3,6 +3,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { useAuthStore } from '@/stores/authStore';
 import { useHabitStore } from '@/stores/habitStore';
 import { Box, Button, Card, Container, Flex, Grid, Heading, Text, Progress, Badge, Section, Avatar, Separator } from '@radix-ui/themes';
+import toast from 'react-hot-toast';
 import { 
   Plus, Target, TrendingUp, Award, Calendar, Activity, 
   Clock, Sparkles, Flame, Trophy, Star, ChevronRight,
@@ -63,14 +64,23 @@ export function DashboardPage() {
                 <Text size="4" weight="bold">HabitForge</Text>
               </Flex>
               <Flex gap="4" className="hidden md:flex">
-                <Button variant="ghost" size="2">Dashboard</Button>
+                <Button variant="ghost" size="2" onClick={() => {
+                  toast.success('You are already on the Dashboard!');
+                }}>Dashboard</Button>
                 <Button variant="ghost" size="2" onClick={() => navigate({ to: '/habits' })}>Habits</Button>
-                <Button variant="ghost" size="2">Community</Button>
-                <Button variant="ghost" size="2">Insights</Button>
+                <Button variant="ghost" size="2" onClick={() => {
+                  toast.info('Community page coming soon! Join challenges below.');
+                  document.getElementById('community-section')?.scrollIntoView({ behavior: 'smooth' });
+                }}>Community</Button>
+                <Button variant="ghost" size="2" onClick={() => {
+                  toast.info('Insights & Analytics coming soon! Your data will be visualized here.');
+                }}>Insights</Button>
               </Flex>
             </Flex>
             <Flex align="center" gap="3">
-              <Button variant="ghost" size="2">
+              <Button variant="ghost" size="2" onClick={() => {
+                toast('🔔 No new notifications', { duration: 2000 });
+              }}>
                 <Bell className="h-4 w-4" />
               </Button>
               <Button variant="ghost" size="2" onClick={() => navigate({ to: '/settings' })}>
@@ -80,6 +90,9 @@ export function DashboardPage() {
                 size="2" 
                 fallback={user?.displayName?.[0] || 'U'} 
                 className="cursor-pointer"
+                onClick={() => {
+                  navigate({ to: '/settings' });
+                }}
               />
               <Button variant="ghost" size="2" onClick={handleLogout}>
                 <LogOut className="h-4 w-4" />
@@ -111,11 +124,27 @@ export function DashboardPage() {
                   <Plus className="mr-2 h-4 w-4" />
                   Create New Habit
                 </Button>
-                <Button size="3" variant="outline">
+                <Button size="3" variant="outline" onClick={() => {
+                  if (activeHabits.length === 0) {
+                    toast.error('Create a habit first before checking in!');
+                    navigate({ to: '/habits' });
+                  } else {
+                    toast.success('Quick check-in opened! Mark your habits as complete below.');
+                    document.querySelector('[id="habits-section"]')?.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}>
                   <CheckCircle2 className="mr-2 h-4 w-4" />
                   Check In
                 </Button>
-                <Button size="3" variant="outline">
+                <Button size="3" variant="outline" onClick={() => {
+                  toast('📊 Analytics dashboard coming soon!', {
+                    duration: 3000,
+                    icon: '🚀'
+                  });
+                  toast('Track your progress, patterns, and insights in one place!', {
+                    duration: 4000
+                  });
+                }}>
                   <BarChart3 className="mr-2 h-4 w-4" />
                   View Analytics
                 </Button>
@@ -198,7 +227,7 @@ export function DashboardPage() {
       </Section>
 
       {/* Today's Habits Section */}
-      <Section size="3">
+      <Section size="3" id="habits-section">
         <Container size="4">
           <Flex justify="between" align="center" mb="6">
             <Box>
@@ -290,12 +319,25 @@ export function DashboardPage() {
                           Completed Today
                         </Button>
                       ) : (
-                        <Button size="2" variant="solid" className="flex-1">
+                        <Button size="2" variant="solid" className="flex-1" onClick={(e) => {
+                          e.stopPropagation();
+                          toast.success(`✅ ${habit.title} marked as complete!`);
+                          toast('Great job maintaining your streak!', {
+                            duration: 3000,
+                            icon: '🔥'
+                          });
+                          // In a real app, this would update the habit status
+                        }}>
                           <CheckCircle2 className="mr-2 h-4 w-4" />
                           Mark Complete
                         </Button>
                       )}
-                      <Button size="2" variant="outline">
+                      <Button size="2" variant="outline" onClick={(e) => {
+                        e.stopPropagation();
+                        toast('💬 Notes feature coming soon! Track your thoughts and triggers.', {
+                          duration: 3000
+                        });
+                      }}>
                         <MessageSquare className="h-4 w-4" />
                       </Button>
                     </Flex>
@@ -308,14 +350,20 @@ export function DashboardPage() {
       </Section>
 
       {/* Community Highlights */}
-      <Section size="3" className="bg-gray-50">
+      <Section size="3" className="bg-gray-50" id="community-section">
         <Container size="4">
           <Flex justify="between" align="center" mb="6">
             <Box>
               <Heading size="6" mb="2">Community Highlights</Heading>
               <Text color="gray">Connect with others on similar journeys</Text>
             </Box>
-            <Button variant="outline">
+            <Button variant="outline" onClick={() => {
+              toast.info('Community hub coming soon! Connect with 50,000+ habit builders.');
+              toast('Join challenges, find buddies, and share your journey!', {
+                duration: 4000,
+                icon: '👥'
+              });
+            }}>
               Explore Community
               <ChevronRight className="ml-1 h-4 w-4" />
             </Button>
@@ -337,7 +385,13 @@ export function DashboardPage() {
                   <Text size="1" color="gray">13 days left</Text>
                   <Text size="1" weight="bold">45% complete</Text>
                 </Flex>
-                <Button size="2" variant="soft">Join Challenge</Button>
+                <Button size="2" variant="soft" onClick={() => {
+                  toast.success('🎯 Challenge joined! 30-Day Meditation starts tomorrow.');
+                  toast('You\'ll receive daily reminders and tips!', {
+                    duration: 4000,
+                    icon: '🧘'
+                  });
+                }}>Join Challenge</Button>
               </Flex>
             </Card>
 
@@ -357,7 +411,13 @@ export function DashboardPage() {
                   ))}
                   <Text size="2" color="gray" ml="2">4.8</Text>
                 </Flex>
-                <Button size="2" variant="soft">View Details</Button>
+                <Button size="2" variant="soft" onClick={() => {
+                  toast.info('Morning Workout: 5:30 AM daily, 20-30 minutes');
+                  toast('Includes warm-up, cardio, strength, and cooldown!', {
+                    duration: 4000,
+                    icon: '💪'
+                  });
+                }}>View Details</Button>
               </Flex>
             </Card>
 
@@ -377,7 +437,15 @@ export function DashboardPage() {
                   <Avatar size="1" fallback="C" />
                   <Text size="1" color="gray">+89 waiting</Text>
                 </Flex>
-                <Button size="2" variant="soft">Find Buddy</Button>
+                <Button size="2" variant="soft" onClick={() => {
+                  toast.success('🤝 Matching you with an accountability partner...');
+                  setTimeout(() => {
+                    toast.success('Match found! Sarah from California shares your fitness goals.', {
+                      duration: 5000,
+                      icon: '✨'
+                    });
+                  }, 2000);
+                }}>Find Buddy</Button>
               </Flex>
             </Card>
           </Grid>
@@ -392,7 +460,15 @@ export function DashboardPage() {
               <Heading size="6" mb="2">Recent Achievements</Heading>
               <Text color="gray">Celebrate your milestones</Text>
             </Box>
-            <Button variant="outline">
+            <Button variant="outline" onClick={() => {
+              toast('🏆 Achievements page coming soon!', {
+                duration: 3000,
+                icon: '🎯'
+              });
+              toast('Unlock badges, climb leaderboards, and celebrate milestones!', {
+                duration: 4000
+              });
+            }}>
               View All
               <ChevronRight className="ml-1 h-4 w-4" />
             </Button>

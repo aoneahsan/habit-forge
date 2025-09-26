@@ -5,8 +5,10 @@ import { LoginPage } from '@/pages/LoginPage';
 import { SignUpPage } from '@/pages/SignUpPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { HabitsPage } from '@/pages/HabitsPage';
+import { SettingsPage } from '@/pages/SettingsPage';
 import { AdminDashboard } from '@/pages/admin/Dashboard';
 import { UserManagement } from '@/pages/admin/UserManagement';
+import { SystemAnalytics } from '@/pages/admin/SystemAnalytics';
 
 const rootRoute = createRootRoute({
   component: Layout,
@@ -42,6 +44,12 @@ const habitsRoute = createRoute({
   component: HabitsPage,
 });
 
+const settingsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/settings',
+  component: SettingsPage,
+});
+
 const adminDashboardRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/admin/dashboard',
@@ -54,14 +62,22 @@ const adminUsersRoute = createRoute({
   component: UserManagement,
 });
 
+const adminAnalyticsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/admin/analytics',
+  component: SystemAnalytics,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
   signUpRoute,
   dashboardRoute,
   habitsRoute,
+  settingsRoute,
   adminDashboardRoute,
   adminUsersRoute,
+  adminAnalyticsRoute,
 ]);
 
 export const router = createRouter({ routeTree });

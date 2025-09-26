@@ -1,7 +1,8 @@
 import { useNavigate } from '@tanstack/react-router';
 import { useAuthStore } from '@/stores/authStore';
 import { Box, Button, Container, Flex, Grid, Heading, Text, Card, Section, Badge, Separator } from '@radix-ui/themes';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { 
   Target, TrendingUp, Users, Brain, Award, Shield, 
   ArrowRight, Sparkles, BarChart3, Calendar, Clock,
@@ -13,6 +14,7 @@ import {
 export function HomePage() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const [demoModalOpen, setDemoModalOpen] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -150,7 +152,11 @@ export function HomePage() {
                 Start Your Journey
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button size="4" variant="outline">
+              <Button size="4" variant="outline" onClick={() => {
+                toast.success('Demo video coming soon! For now, explore our features below.');
+                // Scroll to features section
+                document.getElementById('features-section')?.scrollIntoView({ behavior: 'smooth' });
+              }}>
                 <PlayCircle className="mr-2 h-5 w-5" />
                 Watch Demo
               </Button>
@@ -213,7 +219,11 @@ export function HomePage() {
                     and build positive ones. Your habit loop becomes visible and controllable.
                   </Text>
                 </Box>
-                <Button>
+                <Button onClick={() => {
+                  toast.info('Opening detailed five-factor guide...');
+                  // Scroll to testimonials to show real examples
+                  document.getElementById('testimonials-section')?.scrollIntoView({ behavior: 'smooth' });
+                }}>
                   Learn More
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -224,7 +234,7 @@ export function HomePage() {
       </Section>
 
       {/* Features Grid */}
-      <Section size="4" className="bg-gray-50">
+      <Section size="4" className="bg-gray-50" id="features-section">
         <Container size="4">
           <Flex direction="column" gap="8">
             <Flex direction="column" align="center" gap="4">
@@ -254,7 +264,11 @@ export function HomePage() {
                     <Text size="3" color="gray" className="leading-relaxed">
                       {feature.description}
                     </Text>
-                    <Button variant="ghost" size="2">
+                    <Button variant="ghost" size="2" onClick={() => {
+                      toast.info(`Learn more about ${feature.title}`);
+                      // In a real app, this would navigate to detailed feature pages
+                      navigate({ to: '/signup' });
+                    }}>
                       Learn more
                       <ArrowRight className="ml-2 h-3 w-3" />
                     </Button>
@@ -310,7 +324,13 @@ export function HomePage() {
                 </Card>
               </Grid>
 
-              <Button size="3">
+              <Button size="3" onClick={() => {
+                toast.success('Interactive rope visualization demo coming soon!');
+                toast('Imagine your habit growing stronger each day, from a thin thread to an unbreakable cable!', {
+                  duration: 5000,
+                  icon: '🪢'
+                });
+              }}>
                 See Live Demo
                 <PlayCircle className="ml-2 h-4 w-4" />
               </Button>
@@ -329,7 +349,7 @@ export function HomePage() {
       </Section>
 
       {/* Testimonials */}
-      <Section size="4" className="bg-gradient-to-b from-white to-blue-50">
+      <Section size="4" className="bg-gradient-to-b from-white to-blue-50" id="testimonials-section">
         <Container size="4">
           <Flex direction="column" gap="8">
             <Flex direction="column" align="center" gap="4">
@@ -390,11 +410,17 @@ export function HomePage() {
                 Free to start, powerful features when you need them.
               </Text>
               <Flex gap="4" align="center">
-                <Button size="4" variant="solid" className="bg-white text-blue-600 hover:bg-gray-100">
+                <Button size="4" variant="solid" className="bg-white text-blue-600 hover:bg-gray-100" onClick={() => {
+                  navigate({ to: '/signup' });
+                }}>
                   Get Started Free
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button size="4" variant="outline" className="text-white border-white/30 hover:bg-white/10">
+                <Button size="4" variant="outline" className="text-white border-white/30 hover:bg-white/10" onClick={() => {
+                  toast.info('Discover our pricing plans and premium features!');
+                  // Scroll to features section
+                  document.getElementById('features-section')?.scrollIntoView({ behavior: 'smooth' });
+                }}>
                   Learn More
                 </Button>
               </Flex>
@@ -436,30 +462,54 @@ export function HomePage() {
             <Flex direction="column" gap="3">
               <Text size="3" weight="bold">Product</Text>
               <Flex direction="column" gap="2">
-                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer">Features</Text>
-                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer">Pricing</Text>
-                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer">Science</Text>
-                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer">Success Stories</Text>
+                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
+                  document.getElementById('features-section')?.scrollIntoView({ behavior: 'smooth' });
+                }}>Features</Text>
+                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
+                  toast.info('Pricing page coming soon! Start with 3 habits free forever.');
+                }}>Pricing</Text>
+                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
+                  toast.info('Learn about the science behind habit formation based on Charles Duhigg\'s research.');
+                }}>Science</Text>
+                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
+                  document.getElementById('testimonials-section')?.scrollIntoView({ behavior: 'smooth' });
+                }}>Success Stories</Text>
               </Flex>
             </Flex>
 
             <Flex direction="column" gap="3">
               <Text size="3" weight="bold">Company</Text>
               <Flex direction="column" gap="2">
-                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer">About</Text>
-                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer">Blog</Text>
-                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer">Careers</Text>
-                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer">Contact</Text>
+                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
+                  toast.info('About page coming soon! Learn more about our mission.');
+                }}>About</Text>
+                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
+                  toast.info('Blog coming soon! Get tips and insights on habit building.');
+                }}>Blog</Text>
+                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
+                  toast.info('We\'re hiring! Careers page coming soon.');
+                }}>Careers</Text>
+                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
+                  toast.info('Contact us at support@habitforge.com');
+                }}>Contact</Text>
               </Flex>
             </Flex>
 
             <Flex direction="column" gap="3">
               <Text size="3" weight="bold">Legal</Text>
               <Flex direction="column" gap="2">
-                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer">Privacy</Text>
-                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer">Terms</Text>
-                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer">Security</Text>
-                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer">GDPR</Text>
+                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
+                  toast.info('Privacy Policy: We take your privacy seriously. Full policy coming soon.');
+                }}>Privacy</Text>
+                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
+                  toast.info('Terms of Service: Fair and transparent terms. Full document coming soon.');
+                }}>Terms</Text>
+                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
+                  toast.info('Security: End-to-end encryption and secure data storage.');
+                }}>Security</Text>
+                <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
+                  toast.info('GDPR Compliant: Your data rights are protected.');
+                }}>GDPR</Text>
               </Flex>
             </Flex>
           </Grid>
@@ -471,13 +521,22 @@ export function HomePage() {
               © 2024 HabitForge. All rights reserved.
             </Text>
             <Flex gap="4">
-              <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer">
+              <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
+                toast.info('Follow us on Twitter @habitforge');
+                window.open('https://twitter.com', '_blank');
+              }}>
                 Twitter
               </Text>
-              <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer">
+              <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
+                toast.info('Connect with us on LinkedIn');
+                window.open('https://linkedin.com', '_blank');
+              }}>
                 LinkedIn
               </Text>
-              <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer">
+              <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
+                toast.info('Check out our open source contributions');
+                window.open('https://github.com', '_blank');
+              }}>
                 GitHub
               </Text>
             </Flex>

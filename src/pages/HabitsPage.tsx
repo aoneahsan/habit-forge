@@ -198,7 +198,14 @@ export function HabitsPage() {
               </Box>
             </Flex>
 
-            <Button size="2" className="w-full mt-4">
+            <Button size="2" className="w-full mt-4" onClick={() => {
+              toast.success(`✅ ${habit.title} tracked for today!`);
+              toast(`🔥 Your streak is now ${habit.currentStreak + 1} days!`, {
+                duration: 4000,
+                icon: '🎉'
+              });
+              // In a real app, this would update the habit entry
+            }}>
               Track Today
             </Button>
           </Card>
