@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { useAuthStore } from '@/stores/authStore';
 import { useHabitStore } from '@/stores/habitStore';
+import { useNotificationStore } from '@/stores/notificationStore';
+import { NotificationCenter } from '@/components/NotificationCenter';
 import { Box, Button, Card, Container, Flex, Grid, Heading, Text, Progress, Badge, Section, Avatar, Separator } from '@radix-ui/themes';
 import toast from 'react-hot-toast';
 import { 
@@ -15,6 +17,7 @@ export function DashboardPage() {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
   const { habits, fetchHabits, completeHabitToday } = useHabitStore();
+  const { fetchNotifications, fetchPreferences } = useNotificationStore();
   const [timeOfDay, setTimeOfDay] = useState('');
 
   useEffect(() => {
@@ -23,13 +26,15 @@ export function DashboardPage() {
       return;
     }
     fetchHabits(user.uid);
+    fetchNotifications(user.uid);
+    fetchPreferences(user.uid);
     
     // Set greeting based on time
     const hour = new Date().getHours();
     if (hour < 12) setTimeOfDay('morning');
     else if (hour < 17) setTimeOfDay('afternoon');
     else setTimeOfDay('evening');
-  }, [user, navigate, fetchHabits]);
+  }, [user, navigate, fetchHabits, fetchNotifications, fetchPreferences]);
 
   const activeHabits = habits.filter(h => h.status === 'active');
   const totalStreak = habits.reduce((acc, h) => acc + h.currentStreak, 0);
@@ -69,17 +74,11 @@ export function DashboardPage() {
                 }}>Dashboard</Button>
                 <Button variant="ghost" size="2" onClick={() => navigate({ to: '/habits' })}>Habits</Button>
                 <Button variant="ghost" size="2" onClick={() => navigate({ to: '/community' })}>Community</Button>
-                <Button variant="ghost" size="2" onClick={() => {
-                  toast.info('Insights & Analytics coming soon! Your data will be visualized here.');
-                }}>Insights</Button>
+                <Button variant="ghost" size="2" onClick={() => navigate({ to: '/insights' })}>Insights</Button>
               </Flex>
             </Flex>
             <Flex align="center" gap="3">
-              <Button variant="ghost" size="2" onClick={() => {
-                toast('🔔 No new notifications', { duration: 2000 });
-              }}>
-                <Bell className="h-4 w-4" />
-              </Button>
+              <NotificationCenter />
               <Button variant="ghost" size="2" onClick={() => navigate({ to: '/settings' })}>
                 <Settings className="h-4 w-4" />
               </Button>
@@ -133,15 +132,7 @@ export function DashboardPage() {
                   <CheckCircle2 className="mr-2 h-4 w-4" />
                   Check In
                 </Button>
-                <Button size="3" variant="outline" onClick={() => {
-                  toast('📊 Analytics dashboard coming soon!', {
-                    duration: 3000,
-                    icon: '🚀'
-                  });
-                  toast('Track your progress, patterns, and insights in one place!', {
-                    duration: 4000
-                  });
-                }}>
+                <Button size="3" variant="outline" onClick={() => navigate({ to: '/insights' })}>
                   <BarChart3 className="mr-2 h-4 w-4" />
                   View Analytics
                 </Button>
@@ -349,13 +340,7 @@ export function DashboardPage() {
               <Heading size="6" mb="2">Community Highlights</Heading>
               <Text color="gray">Connect with others on similar journeys</Text>
             </Box>
-            <Button variant="outline" onClick={() => {
-              toast.info('Community hub coming soon! Connect with 50,000+ habit builders.');
-              toast('Join challenges, find buddies, and share your journey!', {
-                duration: 4000,
-                icon: '👥'
-              });
-            }}>
+            <Button variant="outline" onClick={() => navigate({ to: '/community' })}>
               Explore Community
               <ChevronRight className="ml-1 h-4 w-4" />
             </Button>
@@ -452,15 +437,7 @@ export function DashboardPage() {
               <Heading size="6" mb="2">Recent Achievements</Heading>
               <Text color="gray">Celebrate your milestones</Text>
             </Box>
-            <Button variant="outline" onClick={() => {
-              toast('🏆 Achievements page coming soon!', {
-                duration: 3000,
-                icon: '🎯'
-              });
-              toast('Unlock badges, climb leaderboards, and celebrate milestones!', {
-                duration: 4000
-              });
-            }}>
+            <Button variant="outline" onClick={() => navigate({ to: '/achievements' })}>
               View All
               <ChevronRight className="ml-1 h-4 w-4" />
             </Button>

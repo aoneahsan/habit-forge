@@ -5,17 +5,26 @@ import {
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword,
   signOut as firebaseSignOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  confirmPasswordReset,
+  verifyPasswordResetCode,
+  updateProfile
 } from 'firebase/auth';
+import toast from 'react-hot-toast';
 
 interface AuthState {
   user: User | null;
   loading: boolean;
   error: string | null;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string, displayName?: string) => Promise<void>;
   signOut: () => Promise<void>;
   clearError: () => void;
+  sendResetEmail: (email: string) => Promise<void>;
+  confirmReset: (code: string, newPassword: string) => Promise<void>;
+  verifyResetCode: (code: string) => Promise<string>;
+  updateUserProfile: (displayName?: string, photoURL?: string) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -33,12 +42,17 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
   
-  signUp: async (email, password) => {
+  signUp: async (email, password, displayName) => {
     set({ loading: true, error: null });
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      if (displayName && auth.currentUser) {
+        await updateProfile(auth.currentUser, { displayName });
+      }
+      toast.success('Account created successfully!');
     } catch (error: any) {
       set({ error: error.message, loading: false });
+      toast.error(error.message);
       throw error;
     }
   },
@@ -46,9 +60,68 @@ export const useAuthStore = create<AuthState>((set) => ({
   signOut: async () => {
     await firebaseSignOut(auth);
     set({ user: null });
+    toast.success('Signed out successfully');
   },
   
-  clearError: () => set({ error: null })
+  clearError: () => set({ error: null }),
+  
+  sendResetEmail: async (email: string) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      toast.success('Password reset email sent! Check your inbox.');
+    } catch (error: any) {
+      toast.error(error.message);
+      throw error;
+    }
+  },
+  
+  confirmReset: async (code: string, newPassword: string) => {
+    try {
+      await confirmPasswordReset(auth, code, newPassword);
+      toast.success('Password reset successfully! You can now sign in with your new password.');
+    } catch (error: any) {
+      toast.error(error.message);
+      throw error;
+    }
+  },
+  
+  verifyResetCode: async (code: string) => {
+    try {
+      const email = await verifyPasswordResetCode(auth, code);
+      return email;
+    } catch (error: any) {
+      toast.error('Invalid or expired reset code');
+      throw error;
+    }
+  },
+  
+  updateUserProfile: async (displayName?: string, photoURL?: string) => {
+    if (!auth.currentUser) {
+      throw new Error('No authenticated user');
+    }
+    
+    try {
+      const updates: any = {};
+      if (displayName !== undefined) updates.displayName = displayName;
+      if (photoURL !== undefined) updates.photoURL = photoURL;
+      
+      await updateProfile(auth.currentUser, updates);
+      
+      // Update local state
+      set(state => ({
+        user: state.user ? {
+          ...state.user,
+          displayName: displayName || state.user.displayName,
+          photoURL: photoURL || state.user.photoURL
+        } : null
+      }));
+      
+      toast.success('Profile updated successfully!');
+    } catch (error: any) {
+      toast.error(error.message);
+      throw error;
+    }
+  }
 }));
 
 // Auth listener

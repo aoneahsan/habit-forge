@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from '@tanstack/react-router';
 import { useAuthStore } from '@/stores/authStore';
-import { Box, Button, Card, Container, Flex, Heading, Text, TextField, Separator, Badge, Section } from '@radix-ui/themes';
+import { Box, Button, Card, Container, Flex, Heading, Text, TextField, Separator, Badge, Section, Dialog } from '@radix-ui/themes';
 import { 
   LogIn, Mail, Lock, ArrowRight, Sparkles, Activity, 
   Target, TrendingUp, Users, Brain, Shield, CheckCircle,
@@ -11,12 +11,14 @@ import toast from 'react-hot-toast';
 
 export function LoginPage() {
   const navigate = useNavigate();
-  const { signIn } = useAuthStore();
+  const { signIn, sendResetEmail } = useAuthStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [showResetDialog, setShowResetDialog] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -61,13 +63,23 @@ export function LoginPage() {
     toast.error(`${provider} login coming soon!`);
   };
 
-  const handleForgotPassword = () => {
-    if (!email) {
-      toast.error('Please enter your email first');
+  const handleForgotPassword = async () => {
+    const emailToReset = resetEmail || email;
+    if (!emailToReset) {
+      toast.error('Please enter your email address');
       return;
     }
-    // TODO: Implement password reset
-    toast.success('Password reset email sent! Check your inbox.');
+    
+    try {
+      setLoading(true);
+      await sendResetEmail(emailToReset);
+      setShowResetDialog(false);
+      setResetEmail('');
+    } catch (error) {
+      console.error('Failed to send reset email:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const features = [
@@ -198,7 +210,10 @@ export function LoginPage() {
                           size="2" 
                           color="blue" 
                           className="cursor-pointer hover:underline"
-                          onClick={handleForgotPassword}
+                          onClick={() => {
+                            setResetEmail(email);
+                            setShowResetDialog(true);
+                          }}
                         >
                           Forgot password?
                         </Text>
@@ -356,6 +371,49 @@ export function LoginPage() {
           </Box>
         </Flex>
       </Container>
+
+      {/* Password Reset Dialog */}
+      <Dialog.Root open={showResetDialog} onOpenChange={setShowResetDialog}>
+        <Dialog.Content maxWidth="400px">
+          <Dialog.Title>Reset Your Password</Dialog.Title>
+          <Dialog.Description>
+            Enter your email address and we'll send you a link to reset your password.
+          </Dialog.Description>
+          
+          <Flex direction="column" gap="4" mt="4">
+            <Box>
+              <Text as="label" size="2" weight="medium" mb="2">
+                Email Address
+              </Text>
+              <TextField.Root
+                size="3"
+                type="email"
+                placeholder="Enter your email"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+              >
+                <TextField.Slot>
+                  <Mail className="h-4 w-4" />
+                </TextField.Slot>
+              </TextField.Root>
+            </Box>
+          </Flex>
+          
+          <Flex gap="3" mt="5" justify="end">
+            <Dialog.Close>
+              <Button variant="soft" disabled={loading}>
+                Cancel
+              </Button>
+            </Dialog.Close>
+            <Button 
+              onClick={handleForgotPassword}
+              disabled={loading || !resetEmail}
+            >
+              {loading ? 'Sending...' : 'Send Reset Link'}
+            </Button>
+          </Flex>
+        </Dialog.Content>
+      </Dialog.Root>
     </Box>
   );
 }

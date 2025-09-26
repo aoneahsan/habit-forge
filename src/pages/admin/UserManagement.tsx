@@ -1,61 +1,86 @@
 import { useState, useEffect } from 'react';
 import { 
   Box, Button, Card, Container, Flex, Grid, Heading, Text, 
-  TextField, Select, Table, Badge, IconButton
+  TextField, Select, Table, Badge, IconButton, Dialog
 } from '@radix-ui/themes';
-import { AdminService } from '@/services/admin.service';
+import { useAdminStore } from '@/stores/adminStore';
 import { 
   Search, 
   Filter, 
   Shield, 
   Ban,
   Edit,
-  Trash2
+  Trash2,
+  Download,
+  Eye,
+  UserCheck,
+  AlertTriangle
 } from 'lucide-react';
-import type { User } from '@/types';
+import toast from 'react-hot-toast';
 
 export function UserManagement() {
-  const [users, setUsers] = useState<User[]>([]);
+  const { 
+    users, 
+    loading, 
+    fetchUsers, 
+    updateUserStatus, 
+    deleteUser, 
+    upgradeUser,
+    exportUserData,
+    flagUser
+  } = useAdminStore();
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
-  const [loading, setLoading] = useState(true);
-  const adminService = AdminService.getInstance();
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [showUserDialog, setShowUserDialog] = useState(false);
 
   useEffect(() => {
     loadUsers();
   }, [filterType]);
 
   const loadUsers = async () => {
-    try {
-      setLoading(true);
-      const data = await adminService.getUsers(filterType);
-      setUsers(data);
-    } catch (error) {
-      console.error('Failed to load users:', error);
-    } finally {
-      setLoading(false);
-    }
+    const filters = filterType !== 'all' ? { status: filterType } : {};
+    await fetchUsers(filters);
   };
 
   const handleUserAction = async (userId: string, action: string) => {
+    const user = users.find(u => u.uid === userId);
+    if (!user) return;
+
     try {
       switch (action) {
         case 'suspend':
-          await adminService.suspendUser(userId);
+          await updateUserStatus(userId, 'suspended');
           break;
         case 'activate':
-          await adminService.activateUser(userId);
+          await updateUserStatus(userId, 'active');
+          break;
+        case 'ban':
+          await updateUserStatus(userId, 'banned');
           break;
         case 'delete':
-          if (confirm('Are you sure you want to delete this user?')) {
-            await adminService.deleteUser(userId);
+          if (window.confirm(`Are you sure you want to permanently delete ${user.displayName || user.email}? This action cannot be undone.`)) {
+            await deleteUser(userId);
           }
           break;
         case 'upgrade':
-          await adminService.upgradeUser(userId);
+          await upgradeUser(userId, 'premium');
+          break;
+        case 'export':
+          await exportUserData(userId);
+          break;
+        case 'view':
+          setSelectedUser(user);
+          setShowUserDialog(true);
+          break;
+        case 'flag':
+          const reason = window.prompt('Reason for flagging this user:');
+          if (reason) {
+            await flagUser(userId, reason);
+          }
           break;
       }
-      loadUsers();
     } catch (error) {
       console.error(`Failed to ${action} user:`, error);
     }
@@ -143,18 +168,19 @@ export function UserManagement() {
                   </Table.Cell>
                   <Table.Cell>
                     <Badge 
-                      color={user.status === 'active' ? 'green' : 'red'}
+                      color={user.accountStatus === 'active' ? 'green' : 
+                             user.accountStatus === 'suspended' ? 'yellow' : 'red'}
                       variant="soft"
                     >
-                      {user.status || 'active'}
+                      {user.accountStatus || 'active'}
                     </Badge>
                   </Table.Cell>
                   <Table.Cell>
                     <Flex align="center" gap="1">
-                      {user.subscriptionTier === 'premium' && (
+                      {user.accountType === 'premium' && (
                         <Shield className="h-4 w-4 text-yellow-500" />
                       )}
-                      <Text size="2">{user.subscriptionTier || 'free'}</Text>
+                      <Text size="2">{user.accountType || 'free'}</Text>
                     </Flex>
                   </Table.Cell>
                   <Table.Cell>
@@ -168,28 +194,51 @@ export function UserManagement() {
                     </Text>
                   </Table.Cell>
                   <Table.Cell>
-                    <Flex gap="2">
+                    <Flex gap="1" wrap="wrap">
                       <IconButton
                         size="1"
                         variant="ghost"
-                        onClick={() => handleUserAction(user.id, 'edit')}
+                        onClick={() => handleUserAction(user.uid, 'view')}
+                        title="View Details"
                       >
-                        <Edit className="h-4 w-4" />
+                        <Eye className="h-3 w-3" />
                       </IconButton>
                       <IconButton
                         size="1"
                         variant="ghost"
-                        onClick={() => handleUserAction(user.id, user.status === 'suspended' ? 'activate' : 'suspend')}
+                        onClick={() => handleUserAction(user.uid, 'export')}
+                        title="Export Data"
                       >
-                        <Ban className="h-4 w-4" />
+                        <Download className="h-3 w-3" />
+                      </IconButton>
+                      <IconButton
+                        size="1"
+                        variant="ghost"
+                        onClick={() => handleUserAction(user.uid, user.accountStatus === 'suspended' ? 'activate' : 'suspend')}
+                        title={user.accountStatus === 'suspended' ? 'Activate' : 'Suspend'}
+                      >
+                        {user.accountStatus === 'suspended' ? (
+                          <UserCheck className="h-3 w-3 text-green-600" />
+                        ) : (
+                          <Ban className="h-3 w-3 text-yellow-600" />
+                        )}
+                      </IconButton>
+                      <IconButton
+                        size="1"
+                        variant="ghost"
+                        onClick={() => handleUserAction(user.uid, 'flag')}
+                        title="Flag User"
+                      >
+                        <AlertTriangle className="h-3 w-3 text-orange-600" />
                       </IconButton>
                       <IconButton
                         size="1"
                         variant="ghost"
                         color="red"
-                        onClick={() => handleUserAction(user.id, 'delete')}
+                        onClick={() => handleUserAction(user.uid, 'delete')}
+                        title="Delete User"
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <Trash2 className="h-3 w-3" />
                       </IconButton>
                     </Flex>
                   </Table.Cell>

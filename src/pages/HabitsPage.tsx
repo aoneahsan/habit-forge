@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/stores/authStore';
 import { useHabitStore } from '@/stores/habitStore';
+import { useAchievementStore } from '@/stores/achievementStore';
 import { 
   Box, Button, Card, Container, Flex, Grid, Heading, Text, 
   TextField, TextArea, Select, Progress, Badge 
@@ -10,7 +11,8 @@ import toast from 'react-hot-toast';
 
 export function HabitsPage() {
   const { user } = useAuthStore();
-  const { habits, createHabit, fetchHabits } = useHabitStore();
+  const { habits, createHabit, fetchHabits, completeHabitToday } = useHabitStore();
+  const { checkAndUnlockAchievements } = useAchievementStore();
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -198,13 +200,16 @@ export function HabitsPage() {
               </Box>
             </Flex>
 
-            <Button size="2" className="w-full mt-4" onClick={() => {
-              toast.success(`✅ ${habit.title} tracked for today!`);
-              toast(`🔥 Your streak is now ${habit.currentStreak + 1} days!`, {
-                duration: 4000,
-                icon: '🎉'
-              });
-              // In a real app, this would update the habit entry
+            <Button size="2" className="w-full mt-4" onClick={async () => {
+              if (!user) return;
+              await completeHabitToday(habit.id);
+              // Check for achievements
+              const habitStats = {
+                maxStreak: habit.currentStreak + 1,
+                totalHabits: habits.length,
+                todayCompletionRate: 100
+              };
+              await checkAndUnlockAchievements(user.uid, habitStats);
             }}>
               Track Today
             </Button>

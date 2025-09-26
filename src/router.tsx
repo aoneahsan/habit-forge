@@ -7,6 +7,8 @@ import { DashboardPage } from '@/pages/DashboardPage';
 import { HabitsPage } from '@/pages/HabitsPage';
 import { HabitDetailPage } from '@/pages/HabitDetailPage';
 import { CommunityPage } from '@/pages/CommunityPage';
+import { InsightsPage } from '@/pages/InsightsPage';
+import { AchievementsPage } from '@/pages/AchievementsPage';
 import { SettingsPage } from '@/pages/SettingsPage';
 import { AdminDashboard } from '@/pages/admin/Dashboard';
 import { UserManagement } from '@/pages/admin/UserManagement';
@@ -58,6 +60,18 @@ const communityRoute = createRoute({
   component: CommunityPage,
 });
 
+const insightsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/insights',
+  component: InsightsPage,
+});
+
+const achievementsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/achievements',
+  component: AchievementsPage,
+});
+
 const settingsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/settings',
@@ -90,6 +104,8 @@ const routeTree = rootRoute.addChildren([
   habitsRoute,
   habitDetailRoute,
   communityRoute,
+  insightsRoute,
+  achievementsRoute,
   settingsRoute,
   adminDashboardRoute,
   adminUsersRoute,
