@@ -5,6 +5,8 @@ import { LoginPage } from '@/pages/LoginPage';
 import { SignUpPage } from '@/pages/SignUpPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { HabitsPage } from '@/pages/HabitsPage';
+import { AdminDashboard } from '@/pages/admin/Dashboard';
+import { UserManagement } from '@/pages/admin/UserManagement';
 
 const rootRoute = createRootRoute({
   component: Layout,
@@ -40,12 +42,26 @@ const habitsRoute = createRoute({
   component: HabitsPage,
 });
 
+const adminDashboardRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/admin/dashboard',
+  component: AdminDashboard,
+});
+
+const adminUsersRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/admin/users',
+  component: UserManagement,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
   signUpRoute,
   dashboardRoute,
   habitsRoute,
+  adminDashboardRoute,
+  adminUsersRoute,
 ]);
 
 export const router = createRouter({ routeTree });

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Habit, TrackingEntry } from '@/types';
+import type { Habit, TrackingEntry } from '@/types';
 import { db, PROJECT_PREFIX } from '@/config/firebase';
 import { 
   collection, 

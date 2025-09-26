@@ -1,12 +1,17 @@
 // User Types
 export interface User {
+  id: string;
   uid: string;
   email: string;
   displayName: string | null;
   photoURL: string | null;
   accountType: 'free' | 'premium';
+  subscriptionTier?: 'free' | 'premium';
+  status?: 'active' | 'suspended';
+  isAdmin?: boolean;
   createdAt: Date;
   lastLoginAt: Date;
+  lastActive?: Date;
   subscription?: SubscriptionDetails;
   preferences: UserPreferences;
   stats: UserStats;

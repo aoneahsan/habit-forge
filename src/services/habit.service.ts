@@ -13,7 +13,7 @@ import {
   Timestamp
 } from 'firebase/firestore';
 import { db, PROJECT_PREFIX } from '@/config/firebase';
-import { Habit, TrackingEntry } from '@/types';
+import type { Habit, TrackingEntry } from '@/types';
 import { generateId } from '@/lib/utils';
 
 // Repository pattern for data access

@@ -1,4 +1,5 @@
 import { Outlet } from '@tanstack/react-router';
+import { Box, Flex } from '@radix-ui/themes';
 import { useAuthStore } from '@/stores/authStore';
 import { Navbar } from './Navbar';
 
@@ -6,11 +7,11 @@ export function Layout() {
   const { user } = useAuthStore();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <Flex direction="column" minHeight="100vh">
       {user && <Navbar />}
-      <main className={user ? 'pt-16' : ''}>
+      <Box flexGrow="1" pt={user ? '4' : '0'}>
         <Outlet />
-      </main>
-    </div>
+      </Box>
+    </Flex>
   );
 }

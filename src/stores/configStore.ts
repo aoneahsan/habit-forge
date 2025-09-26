@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { SystemConfig, TierConfig } from '@/types';
+import type { SystemConfig, TierConfig } from '@/types';
 import { db, PROJECT_PREFIX } from '@/config/firebase';
 import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 
