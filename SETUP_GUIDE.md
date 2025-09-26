@@ -118,7 +118,7 @@ VITE_USE_FIREBASE_EMULATOR=true
 yarn dev
 ```
 
-The app will be available at http://localhost:5173
+The app will be available at http://localhost:6351
 
 ### Build for production
 ```bash

@@ -81,7 +81,7 @@ VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
 yarn dev
 ```
 
-Visit `http://localhost:5173` to see the application.
+Visit `http://localhost:6351` to see the application.
 
 ## 📦 Building for Production
 
