@@ -7,18 +7,131 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+.pnp
+.pnp.js
+
+# Production build
 dist
 dist-ssr
+build
 *.local
 
-# Editor directories and files
+# Environment variables - CRITICAL for security
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+*.env*
+
+# Firebase
+.firebase
+.firebaserc
+firebase-debug.log
+firestore-debug.log
+pubsub-debug.log
+ui-debug.log
+database-debug.log
+firebase-export-*
+firestore.rules
+firestore.indexes.json
+storage.rules
+
+# IDE and Editor directories
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
 .idea
+*.sublime-project
+*.sublime-workspace
+.vs/
+*.code-workspace
+
+# OS files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Testing
+coverage
+*.lcov
+.nyc_output
+
+# TypeScript
+*.tsbuildinfo
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+.cache
+tmp/
+temp/
+
+# Private/Sensitive files
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+private/
+secrets/
+credentials/
+
+# Backup files
+*.backup
+*.bak
+*.swp
+*.swo
+*~
+
+# Capacitor
+android/
+ios/
+.capacitor/
+
+# PWA
+workbox-*.js
+sw.js
+
+# User-specific files
 *.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore files matching pattern from personal rule
+*.ignore.*
+
+# Sentry
+.sentryclirc
+
+# Documentation build
+docs-build/
+storybook-static/
+
+# Misc
+.npmrc
+.yarnrc
+.eslintcache
+.stylelintcache
+.terserrc
+report*.json
+
+*.ignore.*

@@ -1,0 +1,68 @@
+okay, read all the documentations about what the project is that we need to develop and everything from @docs/ folder fully and properly, plan the project as best as possible, please use v4 version 4 of tailwindcss and not version 3, please MAKE SURE TO USE VERSION 4 OF TAILWINDCSS from the start, and make sure to use latest version of all the packages that you use in project, run yarn upgrade or whatever to confirm that all packages are at their most latest level before you start working on the project itself
+
+do not create any nested folder in this root folder for project, instead use this as the root fo the project and create files here
+
+please make sure that all documentation related files are properly places in nested folders in @docs folder
+
+again read all files in @docs folder to understand the project fully and properly and then develop it whole from first feature to last feature
+
+i have already created the firebase project for it, and added the firebase details in .env file already created in root here in this folder, do not override that, use that properly
+
+here's what in that file right now 
+
+# Firebase Configuration (Get from Firebase Console)
+VITE_FIREBASE_API_KEY=AIzaSyBwzGMeSmBdve0v7WRn3L1eEqe1GHBr4qU
+VITE_FIREBASE_AUTH_DOMAIN=habitforge-a1.firebaseapp.com
+VITE_FIREBASE_DATABASE_URL=https://habitforge-a1-default-rtdb.asia-southeast1.firebasedatabase.app
+VITE_FIREBASE_PROJECT_ID=habitforge-a1
+VITE_FIREBASE_STORAGE_BUCKET=habitforge-a1.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=899334710286
+VITE_FIREBASE_APP_ID=1:899334710286:web:0d07c5e3ccb0cc4063c85f
+VITE_FIREBASE_MEASUREMENT_ID=G-4W10MPEFMW
+
+# Firebase Emulator (Development) - Set to false to use production Firebase
+VITE_USE_FIREBASE_EMULATOR=false
+
+# Feature Flags
+VITE_ENABLE_PWA=true
+VITE_ENABLE_ANALYTICS=true
+VITE_ENABLE_ERROR_TRACKING=true
+
+# App Configuration
+VITE_APP_NAME=HabitForge
+VITE_APP_VERSION=0.0.1
+VITE_APP_ENV=development
+
+
+here are the files in @docs folder that explain the project, features,. admin panel and everything else needed in this project
+
+- HabitForge - Admin Panel & Dynamic Configuration System
+- HabitForge - Comprehensive Features Document
+- HabitForge - Comprehensive Project Documentation
+- HabitForge - Detailed Features Specification
+- HabitForge - Development Plan & User Stories
+- HabitForge - Monetization, Account Management & Admin System
+- HabitForge - Technical Stack & Implementation Guide
+- HabitForge - User Stories & Implementation Guide
+
+once you create all the required files for the project make sure to properly commit everything in git (git is already initialized in this project), so properly commit timely in git after you complete every feature, for a great git record with great messages and all
+
+once you start working on the project make sure to run "/init" to create a fully detailed claude.md file about the project for the best experience
+
+make sure to run "/compact" command each time when we left with anything less than 40% in context, so we will never run over our context
+
+again, make sure to fully and properly complete the project, use latest versions of all packages, search npmjs.com to confirm the latest version of package before starting working on the project
+
+use firebase sunscriptions for all queries so we will have a fully realtime app
+
+use radix ui components, design system, varialbles, theme, and everything so we will have the best UI
+
+use tailwindcss v4 as css utility
+
+and d3 as charts library
+
+and create all the features fully and properly
+
+create a fully and detailed end-user app usage guide/documentation in MD format with great detail and add https://mermaid.js.org/ charts in it for better understanding
+
+use all the best coding and programming principles, and please follow them in every file for consistant code and best app development
