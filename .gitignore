@@ -30,17 +30,12 @@ build
 *.env*
 
 # Firebase
-.firebase
-.firebaserc
 firebase-debug.log
 firestore-debug.log
 pubsub-debug.log
 ui-debug.log
 database-debug.log
 firebase-export-*
-firestore.rules
-firestore.indexes.json
-storage.rules
 
 # IDE and Editor directories
 .vscode/*
@@ -72,7 +67,6 @@ coverage
 
 # Package manager files
 package-lock.json
-yarn.lock
 pnpm-lock.yaml
 
 # Temporary files
@@ -135,3 +129,5 @@ storybook-static/
 report*.json
 
 *.ignore.*
+
+functions/lib

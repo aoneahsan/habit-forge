@@ -1,0 +1,136 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isValidHabit() {
+      return request.resource.data.keys().hasAll(['title', 'category', 'userId']) &&
+             request.resource.data.title is string &&
+             request.resource.data.title.size() > 0 &&
+             request.resource.data.title.size() <= 100 &&
+             request.resource.data.category in ['health', 'productivity', 'mindfulness', 'fitness', 'learning', 'social', 'finance', 'creativity', 'other'];
+    }
+    
+    // Users collection - users can only read/write their own profile
+    match /hf2024_users/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && 
+                       request.resource.data.keys().hasAll(['email', 'createdAt']);
+      allow update: if isOwner(userId) &&
+                       request.resource.data.email == resource.data.email && // Can't change email
+                       request.resource.data.userId == resource.data.userId; // Can't change userId
+      allow delete: if isOwner(userId);
+    }
+    
+    // Habits collection - users can only manage their own habits
+    match /hf2024_habits/{habitId} {
+      allow read: if isAuthenticated() && 
+                     (resource.data.userId == request.auth.uid || 
+                      resource.data.isPublic == true);
+      allow create: if isAuthenticated() && 
+                       request.resource.data.userId == request.auth.uid &&
+                       isValidHabit();
+      allow update: if isOwner(resource.data.userId) &&
+                       request.resource.data.userId == resource.data.userId; // Can't change owner
+      allow delete: if isOwner(resource.data.userId);
+    }
+    
+    // Completions collection - track habit completions
+    match /hf2024_completions/{completionId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && 
+                       request.resource.data.userId == request.auth.uid &&
+                       request.resource.data.keys().hasAll(['habitId', 'userId', 'completedAt']);
+      allow update: if false; // Completions are immutable
+      allow delete: if isOwner(resource.data.userId);
+    }
+    
+    // Achievements collection - read-only for users
+    match /hf2024_achievements/{achievementId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Only admins through Admin SDK
+    }
+    
+    // User achievements - track which achievements users have earned
+    match /hf2024_user_achievements/{userId}/achievements/{achievementId} {
+      allow read: if isOwner(userId);
+      allow create: if false; // Created by Cloud Functions
+      allow update: if false; // Updated by Cloud Functions
+      allow delete: if false; // No deletion allowed
+    }
+    
+    // Community posts
+    match /hf2024_posts/{postId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && 
+                       request.resource.data.userId == request.auth.uid &&
+                       request.resource.data.keys().hasAll(['content', 'userId', 'createdAt']) &&
+                       request.resource.data.content.size() > 0 &&
+                       request.resource.data.content.size() <= 500;
+      allow update: if isOwner(resource.data.userId) &&
+                       request.resource.data.userId == resource.data.userId;
+      allow delete: if isOwner(resource.data.userId);
+    }
+    
+    // Comments on posts
+    match /hf2024_posts/{postId}/comments/{commentId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && 
+                       request.resource.data.userId == request.auth.uid &&
+                       request.resource.data.content.size() > 0 &&
+                       request.resource.data.content.size() <= 200;
+      allow update: if isOwner(resource.data.userId);
+      allow delete: if isOwner(resource.data.userId);
+    }
+    
+    // Friend requests and relationships
+    match /hf2024_relationships/{relationshipId} {
+      allow read: if isAuthenticated() && 
+                     (resource.data.senderId == request.auth.uid || 
+                      resource.data.receiverId == request.auth.uid);
+      allow create: if isAuthenticated() && 
+                       request.resource.data.senderId == request.auth.uid;
+      allow update: if isAuthenticated() && 
+                       resource.data.receiverId == request.auth.uid && // Only receiver can accept
+                       request.resource.data.status in ['accepted', 'rejected'];
+      allow delete: if isAuthenticated() && 
+                       (resource.data.senderId == request.auth.uid || 
+                        resource.data.receiverId == request.auth.uid);
+    }
+    
+    // Challenges
+    match /hf2024_challenges/{challengeId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && 
+                       request.resource.data.createdBy == request.auth.uid &&
+                       request.resource.data.keys().hasAll(['name', 'description', 'startDate', 'endDate']);
+      allow update: if isOwner(resource.data.createdBy);
+      allow delete: if isOwner(resource.data.createdBy);
+    }
+    
+    // Challenge participants
+    match /hf2024_challenges/{challengeId}/participants/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId);
+      allow delete: if isOwner(userId);
+    }
+    
+    // Notifications
+    match /hf2024_notifications/{userId}/notifications/{notificationId} {
+      allow read: if isOwner(userId);
+      allow create: if false; // Created by Cloud Functions
+      allow update: if isOwner(userId) && 
+                       request.resource.data.keys().hasAll(['read']) &&
+                       request.resource.data.diff(resource.data).keys().hasOnly(['read', 'readAt']);
+      allow delete: if isOwner(userId);
+    }
+  }
+}
