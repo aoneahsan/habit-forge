@@ -131,3 +131,6 @@ report*.json
 *.ignore.*
 
 functions/lib
+
+cypress/screenshots
+cypress/downloads
