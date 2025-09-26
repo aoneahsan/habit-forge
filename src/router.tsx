@@ -5,6 +5,8 @@ import { LoginPage } from '@/pages/LoginPage';
 import { SignUpPage } from '@/pages/SignUpPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { HabitsPage } from '@/pages/HabitsPage';
+import { HabitDetailPage } from '@/pages/HabitDetailPage';
+import { CommunityPage } from '@/pages/CommunityPage';
 import { SettingsPage } from '@/pages/SettingsPage';
 import { AdminDashboard } from '@/pages/admin/Dashboard';
 import { UserManagement } from '@/pages/admin/UserManagement';
@@ -44,6 +46,18 @@ const habitsRoute = createRoute({
   component: HabitsPage,
 });
 
+const habitDetailRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/habits/$habitId',
+  component: HabitDetailPage,
+});
+
+const communityRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/community',
+  component: CommunityPage,
+});
+
 const settingsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/settings',
@@ -74,6 +88,8 @@ const routeTree = rootRoute.addChildren([
   signUpRoute,
   dashboardRoute,
   habitsRoute,
+  habitDetailRoute,
+  communityRoute,
   settingsRoute,
   adminDashboardRoute,
   adminUsersRoute,

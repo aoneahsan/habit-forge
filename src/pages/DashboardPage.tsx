@@ -14,7 +14,7 @@ import {
 export function DashboardPage() {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
-  const { habits, fetchHabits } = useHabitStore();
+  const { habits, fetchHabits, completeHabitToday } = useHabitStore();
   const [timeOfDay, setTimeOfDay] = useState('');
 
   useEffect(() => {
@@ -68,10 +68,7 @@ export function DashboardPage() {
                   toast.success('You are already on the Dashboard!');
                 }}>Dashboard</Button>
                 <Button variant="ghost" size="2" onClick={() => navigate({ to: '/habits' })}>Habits</Button>
-                <Button variant="ghost" size="2" onClick={() => {
-                  toast.info('Community page coming soon! Join challenges below.');
-                  document.getElementById('community-section')?.scrollIntoView({ behavior: 'smooth' });
-                }}>Community</Button>
+                <Button variant="ghost" size="2" onClick={() => navigate({ to: '/community' })}>Community</Button>
                 <Button variant="ghost" size="2" onClick={() => {
                   toast.info('Insights & Analytics coming soon! Your data will be visualized here.');
                 }}>Insights</Button>
@@ -319,14 +316,9 @@ export function DashboardPage() {
                           Completed Today
                         </Button>
                       ) : (
-                        <Button size="2" variant="solid" className="flex-1" onClick={(e) => {
+                        <Button size="2" variant="solid" className="flex-1" onClick={async (e) => {
                           e.stopPropagation();
-                          toast.success(`✅ ${habit.title} marked as complete!`);
-                          toast('Great job maintaining your streak!', {
-                            duration: 3000,
-                            icon: '🔥'
-                          });
-                          // In a real app, this would update the habit status
+                          await completeHabitToday(habit.id);
                         }}>
                           <CheckCircle2 className="mr-2 h-4 w-4" />
                           Mark Complete
