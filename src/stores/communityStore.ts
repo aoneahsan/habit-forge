@@ -189,7 +189,7 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
         )
       }));
       
-      toast.info('Left the challenge');
+      toast('Left the challenge', { icon: 'ℹ️' });
     } catch (error: any) {
       toast.error('Failed to leave challenge');
       throw error;
@@ -359,7 +359,7 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
         )
       }));
       
-      toast.info('Buddy match ended');
+      toast('Buddy match ended', { icon: 'ℹ️' });
     } catch (error: any) {
       toast.error('Failed to end buddy match');
       throw error;

@@ -128,6 +128,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 onAuthStateChanged(auth, (firebaseUser) => {
   if (firebaseUser) {
     const user: User = {
+      id: firebaseUser.uid,
       uid: firebaseUser.uid,
       email: firebaseUser.email!,
       displayName: firebaseUser.displayName,

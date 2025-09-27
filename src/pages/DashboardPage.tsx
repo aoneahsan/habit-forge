@@ -4,18 +4,18 @@ import { useAuthStore } from '@/stores/authStore';
 import { useHabitStore } from '@/stores/habitStore';
 import { useNotificationStore } from '@/stores/notificationStore';
 import { NotificationCenter } from '@/components/NotificationCenter';
-import { Box, Button, Card, Container, Flex, Grid, Heading, Text, Progress, Badge, Section, Avatar, Separator } from '@radix-ui/themes';
+import { Box, Button, Card, Container, Flex, Grid, Heading, Text, Progress, Badge, Section, Avatar } from '@radix-ui/themes';
 import toast from 'react-hot-toast';
 import { 
-  Plus, Target, TrendingUp, Award, Calendar, Activity, 
+  Plus, Target, Activity, 
   Clock, Sparkles, Flame, Trophy, Star, ChevronRight,
   CheckCircle2, Users, Zap, BarChart3, MessageSquare,
-  Heart, MapPin, Users2, Bell, Settings, LogOut
+  Heart, MapPin, Users2, Settings, LogOut
 } from 'lucide-react';
 
 export function DashboardPage() {
   const navigate = useNavigate();
-  const { user, logout } = useAuthStore();
+  const { user, signOut } = useAuthStore();
   const { habits, fetchHabits, completeHabitToday } = useHabitStore();
   const { fetchNotifications, fetchPreferences } = useNotificationStore();
   const [timeOfDay, setTimeOfDay] = useState('');
@@ -51,7 +51,7 @@ export function DashboardPage() {
   };
 
   const handleLogout = async () => {
-    await logout();
+    await signOut();
     navigate({ to: '/' });
   };
 
@@ -259,7 +259,7 @@ export function DashboardPage() {
                       <Box>
                         <Heading size="4" mb="1">{habit.title}</Heading>
                         <Text size="2" color="gray" className="capitalize">
-                          {habit.category} • {habit.frequency}
+                          {habit.category} • {habit.frequency.type}
                         </Text>
                       </Box>
                       <Badge 
@@ -277,7 +277,7 @@ export function DashboardPage() {
                         <>
                           <Badge size="1" variant="soft" color="blue">
                             <MapPin className="h-3 w-3 mr-1" />
-                            {habit.lastEntry.location || 'Home'}
+                            {habit.lastEntry.location?.name || habit.lastEntry.location?.type || 'Home'}
                           </Badge>
                           <Badge size="1" variant="soft" color="green">
                             <Heart className="h-3 w-3 mr-1" />
@@ -285,7 +285,7 @@ export function DashboardPage() {
                           </Badge>
                           <Badge size="1" variant="soft" color="purple">
                             <Clock className="h-3 w-3 mr-1" />
-                            {habit.lastEntry.timeOfDay || 'Morning'}
+                            {new Date(habit.lastEntry.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || 'Morning'}
                           </Badge>
                         </>
                       )}
@@ -390,7 +390,7 @@ export function DashboardPage() {
                   <Text size="2" color="gray" ml="2">4.8</Text>
                 </Flex>
                 <Button size="2" variant="soft" onClick={() => {
-                  toast.info('Morning Workout: 5:30 AM daily, 20-30 minutes');
+                  toast('Morning Workout: 5:30 AM daily, 20-30 minutes');
                   toast('Includes warm-up, cardio, strength, and cooldown!', {
                     duration: 4000,
                     icon: '💪'

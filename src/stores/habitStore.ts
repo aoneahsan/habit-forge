@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Habit, TrackingEntry, FiveFactor, RopeVisualization } from '@/types';
+import type { Habit, TrackingEntry, FiveFactors, RopeVisualization } from '@/types';
 import { db, PROJECT_PREFIX } from '@/config/firebase';
 import { 
   collection, 
@@ -26,7 +26,7 @@ interface HabitState {
   createHabit: (habit: Partial<Habit>) => Promise<string>;
   updateHabit: (id: string, updates: Partial<Habit>) => Promise<void>;
   deleteHabit: (id: string) => Promise<void>;
-  trackHabit: (habitId: string, fiveFactor: FiveFactor) => Promise<void>;
+  trackHabit: (habitId: string, fiveFactors: FiveFactors) => Promise<void>;
   completeHabitToday: (habitId: string) => Promise<void>;
   fetchHabits: (userId: string) => Promise<void>;
   fetchEntries: (habitId: string) => Promise<void>;
@@ -162,6 +162,7 @@ export const useHabitStore = create<HabitState>((set, get) => ({
       status: 'active',
       completedToday: false,
       ropeVisualization: calculateRopeProperties(0),
+      startDate: new Date(),
       createdAt: new Date(),
       updatedAt: new Date(),
       lastCompletedDate: undefined,
@@ -218,18 +219,18 @@ export const useHabitStore = create<HabitState>((set, get) => ({
     }
   },
   
-  trackHabit: async (habitId, fiveFactor) => {
+  trackHabit: async (habitId, fiveFactors) => {
     const id = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
     const entry: TrackingEntry = {
       id,
       habitId,
-      userId: fiveFactor.userId || '',
+      userId: fiveFactors.userId || '',
       timestamp: new Date(),
-      completed: true,
-      fiveFactor,
-      notes: fiveFactor.notes,
-      mood: fiveFactor.emotion,
-      duration: fiveFactor.duration
+      fiveFactors,
+      additionalData: {},
+      completionStatus: 'full',
+      automated: false,
+      modified: false
     };
     
     try {
@@ -244,8 +245,7 @@ export const useHabitStore = create<HabitState>((set, get) => ({
       const habit = get().habits.find(h => h.id === habitId);
       if (habit) {
         await get().updateHabit(habitId, { 
-          lastEntry: fiveFactor,
-          lastCompletedDate: new Date()
+          updatedAt: new Date()
         });
       }
       
@@ -263,7 +263,7 @@ export const useHabitStore = create<HabitState>((set, get) => ({
       
       // Check if already completed today
       if (habit.completedToday) {
-        toast.info('Already completed today!');
+        toast('Already completed today!', { icon: 'ℹ️' });
         return;
       }
       

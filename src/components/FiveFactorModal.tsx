@@ -20,13 +20,25 @@ import {
   Sun, Sunrise, Sunset, Moon,
   Brain, Calendar, Bell, Activity, Target, Coffee as CoffeeIcon
 } from 'lucide-react';
-import type { FiveFactor } from '@/types';
+import type { FiveFactors } from '@/types';
 import toast from 'react-hot-toast';
+
+// Simple interface for the modal
+interface SimpleFiveFactors {
+  location: string;
+  emotion: string;
+  people: string;
+  timeOfDay: string;
+  trigger: string;
+  userId: string;
+  notes?: string;
+  duration?: number;
+}
 
 interface FiveFactorModalProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (factors: FiveFactor) => Promise<void>;
+  onSubmit: (factors: SimpleFiveFactors) => Promise<void>;
   habitTitle: string;
   userId: string;
 }
@@ -87,7 +99,7 @@ export function FiveFactorModal({
   habitTitle,
   userId
 }: FiveFactorModalProps) {
-  const [factors, setFactors] = useState<FiveFactor>({
+  const [factors, setFactors] = useState<SimpleFiveFactors>({
     location: 'home',
     emotion: 'neutral',
     people: 'alone',

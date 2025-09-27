@@ -32,7 +32,7 @@ export function SettingsPage() {
   };
 
   const handleUploadPhoto = () => {
-    toast.info('📸 Photo upload dialog opening...');
+    toast('📸 Photo upload dialog opening...');
     // In a real app, this would open a file picker
     toast('Select an image from your device', {
       duration: 3000,
@@ -41,7 +41,7 @@ export function SettingsPage() {
   };
 
   const handleChangePassword = () => {
-    toast.info('🔐 Password change email sent!');
+    toast('🔐 Password change email sent!');
     toast('Check your email for the password reset link.', {
       duration: 5000,
       icon: '📧'

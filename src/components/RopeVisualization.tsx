@@ -9,10 +9,10 @@ interface RopeVisualizationProps {
   habitTitle: string;
 }
 
-export function RopeVisualization({ streak, ropeData, habitTitle }: RopeVisualizationProps) {
+export function RopeVisualization({ streak, ropeData }: RopeVisualizationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isAnimating, setIsAnimating] = useState(true);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number>(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -32,7 +32,6 @@ export function RopeVisualization({ streak, ropeData, habitTitle }: RopeVisualiz
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      const centerX = canvas.width / 4;
       const centerY = canvas.height / 4;
 
       // Draw rope strands
@@ -250,13 +249,6 @@ export function RopeVisualization({ streak, ropeData, habitTitle }: RopeVisualiz
       </Flex>
     </Card>
   );
-}
-
-// Grid utility - Add this type since we're using it
-declare module '@radix-ui/themes' {
-  interface BoxProps {
-    columns?: string;
-  }
 }
 
 const Grid = ({ children, columns, gap }: { children: React.ReactNode; columns: string; gap: string }) => (

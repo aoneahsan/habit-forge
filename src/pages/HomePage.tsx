@@ -220,7 +220,7 @@ export function HomePage() {
                   </Text>
                 </Box>
                 <Button onClick={() => {
-                  toast.info('Opening detailed five-factor guide...');
+                  toast('Opening detailed five-factor guide...');
                   // Scroll to testimonials to show real examples
                   document.getElementById('testimonials-section')?.scrollIntoView({ behavior: 'smooth' });
                 }}>
@@ -265,7 +265,7 @@ export function HomePage() {
                       {feature.description}
                     </Text>
                     <Button variant="ghost" size="2" onClick={() => {
-                      toast.info(`Learn more about ${feature.title}`);
+                      toast(`Learn more about ${feature.title}`);
                       // In a real app, this would navigate to detailed feature pages
                       navigate({ to: '/signup' });
                     }}>
@@ -417,7 +417,7 @@ export function HomePage() {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button size="4" variant="outline" className="text-white border-white/30 hover:bg-white/10" onClick={() => {
-                  toast.info('Discover our pricing plans and premium features!');
+                  toast('Discover our pricing plans and premium features!');
                   // Scroll to features section
                   document.getElementById('features-section')?.scrollIntoView({ behavior: 'smooth' });
                 }}>
@@ -466,10 +466,10 @@ export function HomePage() {
                   document.getElementById('features-section')?.scrollIntoView({ behavior: 'smooth' });
                 }}>Features</Text>
                 <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
-                  toast.info('Pricing page coming soon! Start with 3 habits free forever.');
+                  toast('Pricing page coming soon! Start with 3 habits free forever.');
                 }}>Pricing</Text>
                 <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
-                  toast.info('Learn about the science behind habit formation based on Charles Duhigg\'s research.');
+                  toast('Learn about the science behind habit formation based on Charles Duhigg\'s research.');
                 }}>Science</Text>
                 <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
                   document.getElementById('testimonials-section')?.scrollIntoView({ behavior: 'smooth' });
@@ -481,16 +481,16 @@ export function HomePage() {
               <Text size="3" weight="bold">Company</Text>
               <Flex direction="column" gap="2">
                 <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
-                  toast.info('About page coming soon! Learn more about our mission.');
+                  toast('About page coming soon! Learn more about our mission.');
                 }}>About</Text>
                 <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
-                  toast.info('Blog coming soon! Get tips and insights on habit building.');
+                  toast('Blog coming soon! Get tips and insights on habit building.');
                 }}>Blog</Text>
                 <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
-                  toast.info('We\'re hiring! Careers page coming soon.');
+                  toast('We\'re hiring! Careers page coming soon.');
                 }}>Careers</Text>
                 <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
-                  toast.info('Contact us at support@habitforge.com');
+                  toast('Contact us at support@habitforge.com');
                 }}>Contact</Text>
               </Flex>
             </Flex>
@@ -499,16 +499,16 @@ export function HomePage() {
               <Text size="3" weight="bold">Legal</Text>
               <Flex direction="column" gap="2">
                 <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
-                  toast.info('Privacy Policy: We take your privacy seriously. Full policy coming soon.');
+                  toast('Privacy Policy: We take your privacy seriously. Full policy coming soon.');
                 }}>Privacy</Text>
                 <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
-                  toast.info('Terms of Service: Fair and transparent terms. Full document coming soon.');
+                  toast('Terms of Service: Fair and transparent terms. Full document coming soon.');
                 }}>Terms</Text>
                 <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
-                  toast.info('Security: End-to-end encryption and secure data storage.');
+                  toast('Security: End-to-end encryption and secure data storage.');
                 }}>Security</Text>
                 <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
-                  toast.info('GDPR Compliant: Your data rights are protected.');
+                  toast('GDPR Compliant: Your data rights are protected.');
                 }}>GDPR</Text>
               </Flex>
             </Flex>
@@ -522,19 +522,19 @@ export function HomePage() {
             </Text>
             <Flex gap="4">
               <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
-                toast.info('Follow us on Twitter @habitforge');
+                toast('Follow us on Twitter @habitforge');
                 window.open('https://twitter.com', '_blank');
               }}>
                 Twitter
               </Text>
               <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
-                toast.info('Connect with us on LinkedIn');
+                toast('Connect with us on LinkedIn');
                 window.open('https://linkedin.com', '_blank');
               }}>
                 LinkedIn
               </Text>
               <Text size="2" color="gray" className="hover:text-blue-600 cursor-pointer" onClick={() => {
-                toast.info('Check out our open source contributions');
+                toast('Check out our open source contributions');
                 window.open('https://github.com', '_blank');
               }}>
                 GitHub

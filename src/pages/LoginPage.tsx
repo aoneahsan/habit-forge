@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from '@tanstack/react-router';
 import { useAuthStore } from '@/stores/authStore';
-import { Box, Button, Card, Container, Flex, Heading, Text, TextField, Separator, Badge, Section, Dialog } from '@radix-ui/themes';
+import { Box, Button, Card, Container, Flex, Heading, Text, TextField, Badge, Section, Dialog } from '@radix-ui/themes';
 import { 
   LogIn, Mail, Lock, ArrowRight, Sparkles, Activity, 
   Target, TrendingUp, Users, Brain, Shield, CheckCircle,

@@ -33,7 +33,11 @@ export function CommunityPage() {
   const [showBuddyFinder, setShowBuddyFinder] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [buddyPreferences, setBuddyPreferences] = useState({
+  const [buddyPreferences, setBuddyPreferences] = useState<{
+    categories: string[];
+    preferredTime: string;
+    timezone: string;
+  }>({
     categories: [],
     preferredTime: 'morning',
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -245,7 +249,7 @@ export function CommunityPage() {
                           {isJoined ? 'Leave' : 'Join Challenge'}
                         </Button>
                         <Button size="2" variant="outline" onClick={() => {
-                          toast.info('Challenge details coming soon!');
+                          toast('Challenge details coming soon!');
                         }}>
                           <ChevronRight className="h-4 w-4" />
                         </Button>
@@ -327,7 +331,7 @@ export function CommunityPage() {
                             Connect
                           </Button>
                           <Button size="2" variant="outline" onClick={() => {
-                            toast.info('Profile view coming soon!');
+                            toast('Profile view coming soon!');
                           }}>
                             <MessageCircle className="h-3 w-3" />
                           </Button>

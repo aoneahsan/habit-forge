@@ -130,7 +130,7 @@ export function SystemAnalytics() {
           <Flex justify="between" align="center" mb="4">
             <Heading size="4">Popular Categories</Heading>
             <Button variant="ghost" size="1" onClick={() => {
-              toast.info('Category details view coming soon!');
+              toast('Category details view coming soon!');
             }}>
               View All
               <ChevronRight className="h-3 w-3 ml-1" />
@@ -183,7 +183,7 @@ export function SystemAnalytics() {
                   </td>
                   <td className="text-right py-3">
                     <Button variant="ghost" size="1" onClick={() => {
-                      toast.info(`Viewing details for ${habit.name}`);
+                      toast(`Viewing details for ${habit.name}`);
                     }}>
                       Details
                     </Button>

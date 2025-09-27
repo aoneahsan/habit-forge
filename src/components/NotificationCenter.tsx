@@ -7,11 +7,10 @@ import {
   Badge, IconButton, Separator, Switch, ScrollArea
 } from '@radix-ui/themes';
 import { 
-  Bell, BellOff, Check, CheckCheck, Trash2, Clock, 
+  Bell, BellOff, CheckCheck, Trash2, Clock, 
   Trophy, Users, AlertCircle, Settings, X, Volume2,
-  VolumeX, Mail, Smartphone, Calendar, ChevronRight
+  Mail, Calendar, ChevronRight
 } from 'lucide-react';
-import toast from 'react-hot-toast';
 
 export function NotificationCenter() {
   const navigate = useNavigate();

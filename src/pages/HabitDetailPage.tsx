@@ -100,12 +100,12 @@ export function HabitDetailPage() {
         
         <Flex gap="2">
           <Button variant="outline" size="2" onClick={() => {
-            toast.info('Sharing coming soon!');
+            toast('Sharing coming soon!');
           }}>
             <Share2 className="h-4 w-4" />
           </Button>
           <Button variant="outline" size="2" onClick={() => {
-            toast.info('Edit functionality coming soon!');
+            toast('Edit functionality coming soon!');
           }}>
             <Edit className="h-4 w-4" />
           </Button>
@@ -142,7 +142,7 @@ export function HabitDetailPage() {
             </>
           )}
           <Button size="3" variant="outline" onClick={() => {
-            toast.info('Reminder settings coming soon!');
+            toast('Reminder settings coming soon!');
           }}>
             <Bell className="mr-2 h-4 w-4" />
             Set Reminder

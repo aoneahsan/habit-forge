@@ -4,7 +4,7 @@ import {
   query, where, orderBy, limit, Timestamp,
   arrayUnion
 } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db } from '@/config/firebase';
 import toast from 'react-hot-toast';
 
 export type AchievementCategory = 'streak' | 'completion' | 'social' | 'special' | 'milestone';

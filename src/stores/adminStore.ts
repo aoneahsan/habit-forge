@@ -291,7 +291,7 @@ export const useAdminStore = create<AdminStore>((set, get) => ({
         'Admin impersonated user account'
       );
       
-      toast.info('Impersonation mode activated. This is a simulated feature.');
+      toast('Impersonation mode activated. This is a simulated feature.', { icon: 'ℹ️' });
       // In a real implementation, this would set up temporary auth
     } catch (error) {
       console.error('Error impersonating user:', error);
@@ -476,7 +476,7 @@ export const useAdminStore = create<AdminStore>((set, get) => ({
   exportSystemData: async (startDate: Date, endDate: Date) => {
     try {
       // This would implement a comprehensive system data export
-      toast.info('System data export initiated. This is a demo feature.');
+      toast('System data export initiated. This is a demo feature.', { icon: 'ℹ️' });
       
       await get().logActivity(
         'System Export',
@@ -498,7 +498,7 @@ export const useAdminStore = create<AdminStore>((set, get) => ({
       const cutoffDate = new Date();
       cutoffDate.setDate(cutoffDate.getDate() - olderThanDays);
       
-      toast.info(`Data purge initiated for data older than ${olderThanDays} days. This is a demo feature.`);
+      toast(`Data purge initiated for data older than ${olderThanDays} days. This is a demo feature.`, { icon: 'ℹ️' });
       
       await get().logActivity(
         'Data Purge',

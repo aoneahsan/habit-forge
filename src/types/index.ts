@@ -75,6 +75,12 @@ export interface Habit {
   accountability: 'private' | 'friends' | 'public';
   createdAt: Date;
   updatedAt: Date;
+  
+  // Additional tracking properties
+  completedToday?: boolean;
+  totalCompletions?: number;
+  lastCompletedDate?: Date;
+  lastEntry?: FiveFactors;
 }
 
 export type HabitCategory = 
@@ -144,6 +150,10 @@ export interface FiveFactors {
   otherPeople: PersonData[];
   time: Date;
   precedingAction: string;
+  userId?: string; // Optional for backwards compatibility
+  notes?: string;
+  emotion?: string;
+  duration?: number;
 }
 
 export interface LocationData {
@@ -420,4 +430,16 @@ export interface ContentConfig {
     monthlyEnabled: boolean;
     userCreatedAllowed: boolean;
   };
+}
+
+// Additional types that were missing
+export type FiveFactor = keyof FiveFactors;
+
+export interface RopeVisualization {
+  thickness: number;
+  material: string;
+  color: string;
+  glowIntensity: number;
+  strands: number;
+  effects: string[];
 }

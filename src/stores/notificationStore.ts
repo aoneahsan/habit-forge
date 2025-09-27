@@ -196,14 +196,15 @@ export const useNotificationStore = create<NotificationStore>((set, get) => ({
 
   createNotification: async (notification: Omit<Notification, 'id' | 'createdAt'>) => {
     try {
+      const id = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
       const newNotification = {
         ...notification,
         createdAt: Timestamp.now(),
         read: false
       };
       
-      const docRef = await setDoc(
-        doc(collection(db, 'notifications')),
+      await setDoc(
+        doc(db, 'notifications', id),
         newNotification
       );
       
@@ -219,7 +220,7 @@ export const useNotificationStore = create<NotificationStore>((set, get) => ({
       set(state => ({
         notifications: [
           {
-            id: docRef.id,
+            id,
             ...notification,
             createdAt: new Date(),
             read: false
