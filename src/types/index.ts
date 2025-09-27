@@ -5,7 +5,7 @@ export interface User {
   email: string;
   displayName: string | null;
   photoURL: string | null;
-  accountType: 'free' | 'premium';
+  accountType: 'free' | 'premium' | 'enterprise';
   subscriptionTier?: 'free' | 'premium';
   status?: 'active' | 'suspended';
   isAdmin?: boolean;
@@ -120,14 +120,8 @@ export interface Milestone {
   reward?: string;
 }
 
-export interface RopeState {
-  thickness: number; // 0-100
-  material: 'thread' | 'string' | 'cord' | 'rope' | 'cable';
-  color: string;
-  glowIntensity: number; // 0-100
-  strands: number;
-  effects: string[];
-}
+// RopeState is aliased to RopeVisualization for backward compatibility
+export type RopeState = RopeVisualization;
 
 // Tracking Entry Types
 export interface TrackingEntry {
@@ -437,7 +431,7 @@ export type FiveFactor = keyof FiveFactors;
 
 export interface RopeVisualization {
   thickness: number;
-  material: string;
+  material: 'thread' | 'string' | 'cord' | 'rope' | 'cable';
   color: string;
   glowIntensity: number;
   strands: number;

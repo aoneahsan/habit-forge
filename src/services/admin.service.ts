@@ -82,21 +82,25 @@ export class AdminService {
 
   async getUsers(filter: string = 'all'): Promise<User[]> {
     try {
-      let q = collection(db, 'users');
+      const usersRef = collection(db, 'users');
+      let q: any = usersRef;
       
       if (filter !== 'all') {
         if (filter === 'premium' || filter === 'free') {
-          q = query(q as any, where('subscriptionTier', '==', filter));
+          q = query(usersRef, where('subscriptionTier', '==', filter));
         } else if (filter === 'suspended' || filter === 'active') {
-          q = query(q as any, where('status', '==', filter));
+          q = query(usersRef, where('status', '==', filter));
         }
       }
       
-      const snapshot = await getDocs(q as any);
-      return snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      } as User));
+      const snapshot = await getDocs(q);
+      return snapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data
+        } as User;
+      });
     } catch (error) {
       console.error('Error getting users:', error);
       throw error;

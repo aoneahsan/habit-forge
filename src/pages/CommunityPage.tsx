@@ -5,13 +5,13 @@ import { useCommunityStore } from '@/stores/communityStore';
 import { 
   Box, Button, Card, Container, Flex, Grid, Heading, Text, 
   Badge, Progress, Tabs, Avatar, Dialog, TextField, TextArea,
-  Select, Separator
+  Select
 } from '@radix-ui/themes';
 import { 
-  Users, Trophy, Target, Calendar, TrendingUp, Award, 
-  Plus, Search, Filter, Clock, MapPin, Heart, Zap,
-  UserPlus, MessageCircle, Star, Flame, Shield, Crown,
-  ChevronRight, Sparkles, Activity
+  Users, Trophy, Calendar, TrendingUp, Award, 
+  Plus, Search, Filter, Clock,
+  UserPlus, MessageCircle, Flame, Shield, Crown,
+  ChevronRight
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -24,7 +24,7 @@ export function CommunityPage() {
     fetchChallenges,
     joinChallenge,
     leaveChallenge,
-    createChallenge,
+    // createChallenge,
     findBuddies,
     requestBuddy
   } = useCommunityStore();

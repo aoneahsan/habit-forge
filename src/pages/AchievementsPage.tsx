@@ -4,12 +4,12 @@ import { useAuthStore } from '@/stores/authStore';
 import { useAchievementStore } from '@/stores/achievementStore';
 import { 
   Box, Button, Card, Container, Flex, Grid, Heading, Text, 
-  Badge, Progress, Tabs, Avatar, Separator
+  Badge, Progress, Tabs, Avatar
 } from '@radix-ui/themes';
 import { 
   Trophy, Award, Crown, Star, Flame, Target, 
-  TrendingUp, Zap, Shield, Medal, Gift, Sparkles,
-  Lock, CheckCircle2, Clock, Users, ChevronUp
+  TrendingUp, Zap, Medal, Gift, Sparkles,
+  Lock, CheckCircle2
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 

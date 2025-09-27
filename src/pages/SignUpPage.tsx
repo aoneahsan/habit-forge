@@ -3,10 +3,9 @@ import { useNavigate, Link } from '@tanstack/react-router';
 import { useAuthStore } from '@/stores/authStore';
 import { Box, Button, Card, Container, Flex, Heading, Text, TextField, Badge, Progress, Checkbox, Separator } from '@radix-ui/themes';
 import { 
-  UserPlus, Mail, Lock, ArrowRight, Sparkles, Activity, 
-  Target, TrendingUp, Users, Brain, Shield, CheckCircle,
+  UserPlus, Mail, Lock, ArrowRight, Shield, CheckCircle,
   Layers, Eye, EyeOff, Chrome, Github, Twitter, User,
-  Info, AlertCircle, Check, X, Rocket
+  Check, X, Rocket
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 

@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate, Link } from '@tanstack/react-router';
 import { useAuthStore } from '@/stores/authStore';
-import { Box, Button, Card, Container, Flex, Heading, Text, TextField, Badge, Section, Dialog } from '@radix-ui/themes';
+import { Box, Button, Card, Container, Flex, Heading, Text, TextField, Badge, Dialog, Separator } from '@radix-ui/themes';
 import { 
-  LogIn, Mail, Lock, ArrowRight, Sparkles, Activity, 
-  Target, TrendingUp, Users, Brain, Shield, CheckCircle,
+  Mail, Lock, ArrowRight, Sparkles, Activity, 
+  Target, TrendingUp, Users, Brain, Shield,
   Layers, Eye, EyeOff, Chrome, Github, Twitter
 } from 'lucide-react';
 import toast from 'react-hot-toast';

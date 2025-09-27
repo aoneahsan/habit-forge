@@ -1,11 +1,11 @@
 import { useNavigate } from '@tanstack/react-router';
 import { useAuthStore } from '@/stores/authStore';
 import { Box, Button, Container, Flex, Grid, Heading, Text, Card, Section, Badge, Separator } from '@radix-ui/themes';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { 
-  Target, TrendingUp, Users, Brain, Award, Shield, 
-  ArrowRight, Sparkles, BarChart3, Calendar, Clock,
+  Target, Users, Brain, Shield, 
+  ArrowRight, Sparkles, Clock,
   MapPin, Heart, Users2, Zap, Trophy, Rocket,
   CheckCircle, Star, Activity, Layers, BookOpen,
   MessageSquare, ChevronRight, PlayCircle
@@ -14,7 +14,6 @@ import {
 export function HomePage() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const [demoModalOpen, setDemoModalOpen] = useState(false);
 
   useEffect(() => {
     if (user) {

@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import { 
   collection, getDocs, query, where, orderBy, limit, 
-  updateDoc, deleteDoc, doc, getDoc, Timestamp,
-  startAfter, endBefore, writeBatch
+  updateDoc, doc, getDoc, Timestamp,
+  writeBatch
 } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 import type { User } from '@/types';

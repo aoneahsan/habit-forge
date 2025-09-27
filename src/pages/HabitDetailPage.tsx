@@ -8,8 +8,8 @@ import {
 } from '@radix-ui/themes';
 import { 
   ArrowLeft, Target, Calendar, TrendingUp, Award, 
-  CheckCircle2, Clock, MapPin, Heart, Users, Zap,
-  BarChart3, Edit, Trash2, Share2, Bell, History
+  CheckCircle2, Clock, MapPin, Heart, Zap,
+  BarChart3, Edit, Trash2, Share2, Bell, History, Flame, Brain
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { RopeVisualization } from '@/components/RopeVisualization';
@@ -70,10 +70,10 @@ export function HabitDetailPage() {
   };
 
   const recentEntries = entries.slice(0, 7);
-  const todayEntry = entries.find(e => {
-    const today = new Date().toDateString();
-    return new Date(e.timestamp).toDateString() === today;
-  });
+  // const todayEntry = entries.find(e => {
+  //   const today = new Date().toDateString();
+  //   return new Date(e.timestamp).toDateString() === today;
+  // });
 
   return (
     <Container size="4" py="6">
@@ -238,19 +238,19 @@ export function HabitDetailPage() {
                           {new Date(entry.timestamp).toLocaleDateString()}
                         </Text>
                         <Flex gap="2" mt="1">
-                          {entry.fiveFactor && (
+                          {entry.fiveFactors && (
                             <>
                               <Badge size="1" variant="soft">
                                 <MapPin className="h-3 w-3 mr-1" />
-                                {entry.fiveFactor.location}
+                                {typeof entry.fiveFactors.location === 'object' ? (entry.fiveFactors.location as any).name : (entry.fiveFactors.location || 'Unknown')}
                               </Badge>
                               <Badge size="1" variant="soft">
                                 <Heart className="h-3 w-3 mr-1" />
-                                {entry.fiveFactor.emotion}
+                                {typeof entry.fiveFactors.emotionalState === 'object' ? (entry.fiveFactors.emotionalState as any).label : (entry.fiveFactors.emotionalState || 'Neutral')}
                               </Badge>
                               <Badge size="1" variant="soft">
                                 <Clock className="h-3 w-3 mr-1" />
-                                {entry.fiveFactor.timeOfDay}
+                                {entry.fiveFactors.time instanceof Date ? entry.fiveFactors.time.toLocaleTimeString() : (entry.fiveFactors.time || 'Morning')}
                               </Badge>
                             </>
                           )}
@@ -277,7 +277,7 @@ export function HabitDetailPage() {
                 <Text weight="medium" mb="2">Most Common Location</Text>
                 <Badge size="2" color="blue">
                   <MapPin className="h-3 w-3 mr-1" />
-                  {habit.lastEntry?.location || 'Not tracked yet'}
+                  {habit.lastEntry?.location ? (typeof habit.lastEntry.location === 'object' ? (habit.lastEntry.location as any).name : habit.lastEntry.location) : 'Not tracked yet'}
                 </Badge>
               </Card>
               
@@ -293,7 +293,7 @@ export function HabitDetailPage() {
                 <Text weight="medium" mb="2">Best Time</Text>
                 <Badge size="2" color="purple">
                   <Clock className="h-3 w-3 mr-1" />
-                  {habit.lastEntry?.timeOfDay || 'Not tracked yet'}
+                  {habit.lastEntry?.time ? (habit.lastEntry.time instanceof Date ? habit.lastEntry.time.toLocaleTimeString() : habit.lastEntry.time) : 'Not tracked yet'}
                 </Badge>
               </Card>
               
@@ -301,7 +301,7 @@ export function HabitDetailPage() {
                 <Text weight="medium" mb="2">Common Trigger</Text>
                 <Badge size="2" color="orange">
                   <Zap className="h-3 w-3 mr-1" />
-                  {habit.lastEntry?.trigger || 'Not tracked yet'}
+                  {habit.lastEntry?.precedingAction || 'Not tracked yet'}
                 </Badge>
               </Card>
             </Grid>
@@ -331,9 +331,9 @@ export function HabitDetailPage() {
                       )}
                       <Box>
                         <Text weight="medium">{milestone.days} Day Milestone</Text>
-                        {milestone.achievedDate && (
+                        {milestone.achieved && milestone.achievedAt && (
                           <Text size="2" color="gray">
-                            Achieved on {new Date(milestone.achievedDate).toLocaleDateString()}
+                            Achieved on {new Date(milestone.achievedAt).toLocaleDateString()}
                           </Text>
                         )}
                       </Box>
@@ -362,7 +362,7 @@ export function HabitDetailPage() {
               <Card variant="surface" className="bg-gradient-to-r from-blue-50 to-purple-50">
                 <Text weight="medium" mb="2">🎯 Success Pattern Detected</Text>
                 <Text size="2">
-                  You're most successful with this habit in the {habit.lastEntry?.timeOfDay || 'morning'} 
+                  You're most successful with this habit in the {habit.lastEntry?.time ? (habit.lastEntry.time instanceof Date ? habit.lastEntry.time.toLocaleTimeString() : habit.lastEntry.time) : 'morning'} 
                   when you're feeling {habit.lastEntry?.emotion || 'motivated'}. 
                   Keep scheduling it at this time!
                 </Text>
@@ -405,5 +405,3 @@ export function HabitDetailPage() {
   );
 }
 
-// Add Brain import since we're using it
-import { Brain } from 'lucide-react';

@@ -8,6 +8,7 @@ import {
 } from '@radix-ui/themes';
 import { Plus, Target } from 'lucide-react';
 import toast from 'react-hot-toast';
+import type { HabitCategory } from '@/types';
 
 export function HabitsPage() {
   const { user } = useAuthStore();
@@ -39,6 +40,7 @@ export function HabitsPage() {
       await createHabit({
         ...formData,
         userId: user.uid,
+        category: formData.category as HabitCategory,
         frequency: { type: 'daily' },
         reminders: [],
         milestones: [

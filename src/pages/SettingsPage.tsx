@@ -6,9 +6,8 @@ import {
   TextField, Switch, Section, Separator, Badge, Avatar, Select
 } from '@radix-ui/themes';
 import { 
-  ArrowLeft, User, Bell, Shield, Palette, Globe, 
-  Upload, Key, Download, Trash2, Mail, Phone, 
-  Calendar, MapPin, Camera, Lock, Eye, EyeOff
+  ArrowLeft, Bell, Shield, Palette, 
+  Upload, Key, Download, Trash2, Lock
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 

@@ -8,8 +8,8 @@ import {
 } from '@radix-ui/themes';
 import { 
   BarChart3, TrendingUp, Calendar, Clock, Target, 
-  Activity, Brain, Award, Zap, MapPin, Heart, Users,
-  Download, Filter, ChevronRight, Sparkles
+  Activity, Brain, Award, Zap, MapPin, Heart,
+  Download, Sparkles
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -33,8 +33,9 @@ export function InsightsPage() {
   
   // Calculate best time for habits
   const timeDistribution = entries.reduce((acc, entry) => {
-    if (entry.fiveFactor?.timeOfDay) {
-      acc[entry.fiveFactor.timeOfDay] = (acc[entry.fiveFactor.timeOfDay] || 0) + 1;
+    if (entry.fiveFactors?.time) {
+      const timeStr = entry.fiveFactors.time instanceof Date ? entry.fiveFactors.time.toLocaleTimeString() : entry.fiveFactors.time;
+      acc[timeStr] = (acc[timeStr] || 0) + 1;
     }
     return acc;
   }, {} as Record<string, number>);
@@ -43,16 +44,18 @@ export function InsightsPage() {
   
   // Calculate location patterns
   const locationDistribution = entries.reduce((acc, entry) => {
-    if (entry.fiveFactor?.location) {
-      acc[entry.fiveFactor.location] = (acc[entry.fiveFactor.location] || 0) + 1;
+    if (entry.fiveFactors?.location) {
+      const locStr = typeof entry.fiveFactors.location === 'object' ? (entry.fiveFactors.location as any).name : entry.fiveFactors.location;
+      acc[locStr] = (acc[locStr] || 0) + 1;
     }
     return acc;
   }, {} as Record<string, number>);
   
   // Calculate emotion patterns
   const emotionDistribution = entries.reduce((acc, entry) => {
-    if (entry.fiveFactor?.emotion) {
-      acc[entry.fiveFactor.emotion] = (acc[entry.fiveFactor.emotion] || 0) + 1;
+    if (entry.fiveFactors?.emotionalState) {
+      const emotionStr = typeof entry.fiveFactors.emotionalState === 'object' ? (entry.fiveFactors.emotionalState as any).label : entry.fiveFactors.emotionalState;
+      acc[emotionStr] = (acc[emotionStr] || 0) + 1;
     }
     return acc;
   }, {} as Record<string, number>);
@@ -90,7 +93,7 @@ export function InsightsPage() {
       entries: entries.map(e => ({
         habitId: e.habitId,
         timestamp: e.timestamp,
-        fiveFactor: e.fiveFactor
+        fiveFactors: e.fiveFactors
       })),
       analytics: {
         totalHabits,

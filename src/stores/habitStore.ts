@@ -5,7 +5,6 @@ import {
   collection, 
   doc, 
   setDoc, 
-  getDoc, 
   getDocs, 
   updateDoc, 
   deleteDoc,
@@ -38,7 +37,7 @@ interface HabitState {
 // Helper function to calculate rope properties based on streak
 const calculateRopeProperties = (streak: number): RopeVisualization => {
   let thickness = 1;
-  let material = 'thread';
+  let material: 'thread' | 'string' | 'cord' | 'rope' | 'cable' = 'thread';
   let color = '#3b82f6';
   let glowIntensity = 0;
   let strands = 1;
@@ -46,14 +45,14 @@ const calculateRopeProperties = (streak: number): RopeVisualization => {
 
   if (streak >= 90) {
     thickness = 10;
-    material = 'steel cable';
+    material = 'cable';
     color = '#fbbf24';
     glowIntensity = 1;
     strands = 20;
     effects = ['shimmer', 'pulse', 'radiate'];
   } else if (streak >= 60) {
     thickness = 8;
-    material = 'thick rope';
+    material = 'rope';
     color = '#a855f7';
     glowIntensity = 0.8;
     strands = 15;
@@ -74,7 +73,7 @@ const calculateRopeProperties = (streak: number): RopeVisualization => {
     effects = ['glow'];
   } else if (streak >= 21) {
     thickness = 4;
-    material = 'twine';
+    material = 'cord';
     color = '#3b82f6';
     glowIntensity = 0.4;
     strands = 6;
@@ -88,14 +87,14 @@ const calculateRopeProperties = (streak: number): RopeVisualization => {
     effects = [];
   } else if (streak >= 7) {
     thickness = 2;
-    material = 'yarn';
+    material = 'string';
     color = '#10b981';
     glowIntensity = 0.2;
     strands = 3;
     effects = [];
   } else if (streak >= 3) {
     thickness = 1.5;
-    material = 'thin string';
+    material = 'string';
     color = '#22c55e';
     glowIntensity = 0.1;
     strands = 2;
@@ -315,13 +314,12 @@ export const useHabitStore = create<HabitState>((set, get) => ({
       await get().updateHabit(habitId, updates);
       
       // Create a basic tracking entry
-      const basicFiveFactor: FiveFactor = {
-        location: 'Not specified',
-        emotion: 'neutral',
-        people: 'alone',
-        timeOfDay: new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening',
-        trigger: 'routine',
-        userId: habit.userId
+      const basicFiveFactor: FiveFactors = {
+        location: { type: 'home', name: 'Not specified' },
+        emotionalState: { primary: 'neutral', intensity: 5, energy: 'medium', stress: 'normal' },
+        otherPeople: [],
+        time: new Date(),
+        precedingAction: 'routine'
       };
       
       await get().trackHabit(habitId, basicFiveFactor);
